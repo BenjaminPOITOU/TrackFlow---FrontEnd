@@ -1,0 +1,305 @@
+
+@import "tailwindcss";
+
+
+@layer base {
+  :root {
+
+      --background: oklch(0.17 0.001 270);
+        /* Approximates zinc-900 */
+        --foreground: oklch(0.85 0 0);
+        /* Approximates gray-300 */
+      
+        --card: oklch(0.205 0 0);
+        /* Approximates zinc-800 */
+        --card-foreground: oklch(0.85 0 0);
+        /* Matches foreground */
+      
+        --popover: oklch(0.205 0 0);
+        /* Approximates zinc-800 */
+        --popover-foreground: oklch(0.85 0 0);
+        /* Matches foreground */
+      
+        --primary: oklch(0.922 0 0);
+        /* Light gray/White (e.g., Text on primary button) */
+        --primary-foreground: oklch(0.205 0 0);
+        /* Dark gray (e.g., Background of primary button) */
+      
+        --secondary: oklch(0.269 0 0);
+        /* Approximates zinc-700 */
+        --secondary-foreground: oklch(0.85 0 0);
+        /* Matches foreground */
+      
+        --muted: oklch(0.269 0 0);
+        /* Approximates zinc-700 */
+        --muted-foreground: oklch(0.708 0 0);
+        /* Medium Gray (e.g., gray-400/500) */
+      
+        --accent: oklch(0.269 0 0);
+        /* Approximates zinc-700 (e.g., Hover states) */
+        --accent-foreground: oklch(0.85 0 0);
+        /* Matches foreground */
+      
+        --destructive: oklch(0.704 0.191 22.216);
+        /* Red */
+        --destructive-foreground: oklch(0.985 0 0);
+        /* Almost White (Text on destructive) - Kept original for contrast */
+      
+        --border: oklch(0.205 0 0);
+        /* Approximates zinc-800 */
+        --input: oklch(0.269 0 0);
+        /* Approximates zinc-700 */
+        --ring: oklch(0.556 0 0);
+        /* Medium Gray (Focus ring) */
+      
+        --radius: 0.5rem;
+        /* Gardé de l'exemple Shadcn typique */
+  }
+
+}
+
+
+
+@layer base {
+  * {
+
+    border-color: var(--border);
+  }
+
+  body {
+ 
+    background-color: var(--background);
+    color: var(--foreground);
+    font-feature-settings: "ss01" on, "ss02" on, "cv01" on, "cv02" on, "cv03" on;
+    font-family: var(--font-tech), ui-sans-serif, system-ui, sans-serif;
+    
+  }
+
+}
+
+@layer utilities {
+
+  .font-tech {
+     
+      font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    }
+
+ .glow-text {
+
+   text-shadow: 0 0 4px rgba(255, 255, 255, 0.4), 0 0 8px rgba(255, 255, 255, 0.2);
+   letter-spacing: 0.05em;
+  
+ }
+
+
+ .glow-text-sm {
+  
+   text-shadow: 0 0 2px rgba(255, 255, 255, 0.3), 0 0 5px rgba(255, 255, 255, 0.15);
+   letter-spacing: 0.03em;
+ }
+
+
+ .glow-card {
+   
+   box-shadow: 0 0 8px rgba(255, 255, 255, 0.15), 0 0 15px rgba(255, 255, 255, 0.07);
+ 
+   border-color: rgba(255, 255, 255, 0.5) !important;
+ }
+
+
+  /* Tags de projet */
+  .tag-electronic {
+    background-color: rgba(0, 163, 255, 0.1);
+    border-color: rgba(0, 163, 255, 0.5);
+    color: #00a3ff;
+  }
+
+  .tag-ambient {
+    background-color: rgba(0, 255, 213, 0.1);
+    border-color: rgba(0, 255, 213, 0.5);
+    color: #00ffd5;
+  }
+
+  /* ... autres tags ... */
+  .tag-default {
+    background-color: rgba(150, 150, 150, 0.1);
+    border-color: rgba(150, 150, 150, 0.5);
+    color: #969696;
+  }
+
+  /* Branches de composition */
+  .branch-main {
+    background-color: rgba(0, 255, 133, 0.1);
+    border-color: rgba(0, 255, 133, 0.5);
+    color: #00ff85;
+  }
+
+  /* ... autres branches ... */
+  .branch-default {
+    background-color: rgba(150, 150, 150, 0.1);
+    border-color: rgba(150, 150, 150, 0.5);
+    color: #969696;
+  }
+
+  /* Bouton Glow */
+  .glow-button {
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 10px rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  .glow-button:hover {
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7), 0 0 15px rgba(255, 255, 255, 0.5);
+  }
+}
+
+
+
+/* Styles pour la présentation (Optionnel) */
+.animation-showcase {
+  display: flex;
+  flex-wrap: wrap;
+  /* Pour passer à la ligne si pas assez de place */
+  justify-content: space-around;
+  align-items: flex-end;
+  /* Aligner les textes en bas */
+  gap: 40px;
+  /* Espacement entre les éléments */
+  padding: 30px;
+  background-color: #f0f0f0;
+  /* Fond léger pour voir les formes */
+  border-radius: 8px;
+  min-height: 150px;
+  /* Hauteur minimale pour la démo */
+}
+
+.shape-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.shape-container p {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #555;
+}
+
+/* Styles de base pour les formes */
+.shape {
+  width: 50px;
+  height: 50px;
+  background-color: #4f46e5;
+  /* Indigo */
+}
+
+/* --- Animation 1: Cercle qui Pulse --- */
+.pulse-circle {
+  border-radius: 50%;
+  /* Rend la forme circulaire */
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.2);
+    /* S'étend */
+    opacity: 0.7;
+    /* Devient légèrement transparent */
+  }
+}
+
+/* --- Animation 2: Carré qui Tourne --- */
+.spin-square {
+  /* Pas de border-radius, c'est un carré */
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Animation 3: Forme qui se Morph (Carré <-> Cercle) --- */
+.morph-square-circle {
+  animation: morph 2.5s ease-in-out infinite alternate;
+  /* Alternate pour aller-retour */
+}
+
+@keyframes morph {
+  0% {
+    border-radius: 0%;
+    /* Carré */
+    transform: rotate(0deg);
+    /* Légère rotation pour le fun */
+    background-color: #4f46e5;
+    /* Indigo */
+  }
+
+  100% {
+    border-radius: 50%;
+    /* Cercle */
+    transform: rotate(90deg);
+    background-color: #db2777;
+    /* Fuchsia */
+  }
+}
+
+/* --- Animation 4: Point qui Rebondit --- */
+.bounce-dot {
+  width: 30px;
+  /* Plus petit */
+  height: 30px;
+  border-radius: 50%;
+  background-color: #10b981;
+  /* Emerald */
+  /* Positionnement relatif pour que translateY fonctionne bien dans le flux */
+  position: relative;
+  animation: bounce 1s ease-in-out infinite alternate;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(0);
+    /* Position de départ (en bas) */
+  }
+
+  to {
+    transform: translateY(-30px);
+    /* Position haute */
+  }
+}
+
+/* --- Animation 5: Rectangle qui s'Étire --- */
+.stretch-rect {
+  width: 10px;
+  /* Commence fin */
+  height: 50px;
+  background-color: #f59e0b;
+  /* Amber */
+  animation: stretch 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes stretch {
+  from {
+    transform: scaleX(1);
+    /* Largeur initiale */
+  }
+
+  to {
+    transform: scaleX(5);
+    /* S'étend horizontalement (10px * 5 = 50px) */
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".", // Important
+    "paths": {
+      "@/*": ["src/*"] // Définition de l'alias
+    },
+    "jsx": "preserve"
+  },
+  "include": ["src/**/*.js", "src/**/*.jsx"], // Assure-toi que .jsx est inclus si tu utilises cette extension
+  "exclude": ["node_modules"]
+}
