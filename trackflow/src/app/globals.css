@@ -5,15 +5,11 @@
 @layer base {
   :root {
 
-      --background: oklch(0.17 0.001 270);
-        /* Approximates zinc-900 */
-        --foreground: oklch(0.85 0 0);
-        /* Approximates gray-300 */
+      --background: #18181b;
+      --foreground: #d1d5dc;
+      --card: #27272a;
+      --card-foreground: #d1d5dc;
       
-        --card: oklch(0.205 0 0);
-        /* Approximates zinc-800 */
-        --card-foreground: oklch(0.85 0 0);
-        /* Matches foreground */
       
         --popover: oklch(0.205 0 0);
         /* Approximates zinc-800 */
@@ -45,8 +41,8 @@
         --destructive-foreground: oklch(0.985 0 0);
         /* Almost White (Text on destructive) - Kept original for contrast */
       
-        --border: oklch(0.205 0 0);
-        /* Approximates zinc-800 */
+        --border: #d1d5dc;
+    
         --input: oklch(0.269 0 0);
         /* Approximates zinc-700 */
         --ring: oklch(0.556 0 0);
@@ -54,7 +50,14 @@
       
         --radius: 0.5rem;
         /* Gardé de l'exemple Shadcn typique */
+
+      
   }
+
+        html {
+          height: 100%;
+          /* Équivalent de h-full */
+        }
 
 }
 
@@ -67,22 +70,22 @@
   }
 
   body {
+  
+height: 100%;
  
-    background-color: var(--background);
-    color: var(--foreground);
-    font-feature-settings: "ss01" on, "ss02" on, "cv01" on, "cv02" on, "cv03" on;
-    font-family: var(--font-tech), ui-sans-serif, system-ui, sans-serif;
-    
-  }
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-tech);
+ 
+
+}
 
 }
 
 @layer utilities {
 
-  .font-tech {
-     
-      font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-    }
 
  .glow-text {
 
@@ -194,10 +197,22 @@
 }
 
 /* --- Animation 1: Cercle qui Pulse --- */
-.pulse-circle {
-  border-radius: 50%;
-  /* Rend la forme circulaire */
-  animation: pulse 1.5s ease-in-out infinite;
+@layer utilities {
+
+  /* ou base */
+  .pulse-circle {
+    display: inline-block;
+    /* ou block, selon le contexte */
+    width: 4rem;
+    /* 64px, équivalent à w-16 */
+    height: 4rem;
+    /* 64px, équivalent à h-16 */
+    background-color: oklch(var(--primary));
+    /* Utilise ta variable CSS de thème */
+    border-radius: 50%;
+    /* Garde ceci ici */
+    animation: pulse 1.5s ease-in-out infinite;
+  }
 }
 
 @keyframes pulse {
@@ -210,9 +225,7 @@
 
   50% {
     transform: scale(1.2);
-    /* S'étend */
     opacity: 0.7;
-    /* Devient légèrement transparent */
   }
 }
 
@@ -302,4 +315,12 @@
     transform: scaleX(5);
     /* S'étend horizontalement (10px * 5 = 50px) */
   }
+}
+
+
+[data-sonner-toast] {
+
+  background-color: oklch(44.2% 0.017 285.786) !important;
+  color: oklch(87.2% 0.01 258.338) !important;
+  border-color: oklch(87.2% 0.01 258.338) !important;
 }

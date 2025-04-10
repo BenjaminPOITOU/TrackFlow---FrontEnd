@@ -13,12 +13,12 @@ import SelectEnum from "../selects/SelectEnum";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { MiniVisualizer } from "../MiniVisualizer";
-
 
 import {
   getProjectTypes,
@@ -30,18 +30,26 @@ import {
 
 import { sendCreatedProject } from "@/lib/api/projects";
 
-export default function ProjectCreateNewModal({ isOpen, onOpenChange }) {
-
+export default function ProjectCreateNewModal({ isOpen, onOpenChange, onProjectCreated }) {
   const [projectTypesOptions, setProjectTypesOptions] = useState([]);
-  const [projectCommercialStatusesOptions,setProjectCommercialStatusesOptions] = useState([]);
-  const [projectMusicalGendersOptions, setProjectMusicalGendersOptions] = useState([]);
+  const [
+    projectCommercialStatusesOptions,
+    setProjectCommercialStatusesOptions,
+  ] = useState([]);
+  const [projectMusicalGendersOptions, setProjectMusicalGendersOptions] =
+    useState([]);
   const [projectProgressesOptions, setProjectProgressesOptions] = useState([]);
   const [projectPurposesOptions, setProjectPurposesOptions] = useState([]);
 
   const [selectedProjectType, setSelectedProjectType] = useState("");
-  const [selectedProjectCommercialStatuses, setSelectedProjectCommercialStatuses] = useState("");
-  const [selectedProjectMusicalGenders, setSelectedProjectMusicalGenders] = useState("");
-  const [selectedProjectProgresses, setSelectedProjectProgresses] = useState("");
+  const [
+    selectedProjectCommercialStatuses,
+    setSelectedProjectCommercialStatuses,
+  ] = useState("");
+  const [selectedProjectMusicalGenders, setSelectedProjectMusicalGenders] =
+    useState("");
+  const [selectedProjectProgresses, setSelectedProjectProgresses] =
+    useState("");
   const [selectedProjectPurposes, setSelectedProjectPurposes] = useState("");
 
   const [projectTitleInput, setProjectTitleInput] = useState("");
@@ -50,6 +58,8 @@ export default function ProjectCreateNewModal({ isOpen, onOpenChange }) {
   const [isLoadingEnums, setIsLoadingEnums] = useState(false);
   const [errorEnums, setErrorEnums] = useState(null);
 
+  const [devAutoFill, setDevAutoFill] = useState(false);
+
   const user = useAuth();
 
   const handleSubmit = (event) => {
@@ -57,11 +67,11 @@ export default function ProjectCreateNewModal({ isOpen, onOpenChange }) {
     console.log("Submitting form...");
 
     if (!user || !user.id) {
-        console.error("User not found or missing ID in AuthContext");
-      
-       return; }
+      console.error("User not found or missing ID in AuthContext");
 
-    
+      return;
+    }
+
     const userId = user.id;
 
     const projectData = {
@@ -72,47 +82,90 @@ export default function ProjectCreateNewModal({ isOpen, onOpenChange }) {
       projectCommercialStatus: selectedProjectCommercialStatuses,
       projectPurposes: [selectedProjectPurposes],
       projectMusicalGendersPreDefined: [selectedProjectMusicalGenders],
-    }
+    };
 
     console.log("Project data to send:", projectData);
 
-    sendCreatedProject(userId, projectData)
+    sendCreatedProject(userId, projectData);
+
+    toast.success("Project created successfully!");
+     if (onProjectCreated) {
+                onProjectCreated(); 
+            } else {
+                
+                 onOpenChange(false);
+            }
 
     onOpenChange(false);
   };
 
-  useEffect(() => {
-    const fetchAllEnums = async () => {
-    setIsLoadingEnums(true);
-    setErrorEnums(null);     
+  const handleDevAutoFill = (isChecked) => {
+    setDevAutoFill(isChecked); // Met à jour l'état de la case
 
-    try {
-      // Lance tous les appels API en parallèle
-      const results = await Promise.all([
-        getProjectTypes(),
-        getProjectCommercialStatuses(),
-        getProjectMusicalGenders(),
-        getProjectProgresses(), 
-        getProjectPurposes()
-      ]);
+    if (isChecked) {
+      // Si on coche, on remplit tout
+      setProjectTitleInput("Dev Auto-Filled Project " + Date.now()); // Ajoute un timestamp pour unicité
+      setProjectDescriptionInput(
+        "This is an automatically filled description for development testing purposes."
+      );
 
-      // Si tous les appels réussissent, Promise.all retourne un tableau avec les résultats DANS LE MÊME ORDRE
-      setProjectTypesOptions(results[0]);
-      setProjectCommercialStatusesOptions(results[1]);
-      setProjectMusicalGendersOptions(results[2]);
-      setProjectProgressesOptions(results[3]);
-      setProjectPurposesOptions(results[4]);
-
-    } catch (error) {
-      // Si UN SEUL des appels échoue, Promise.all rejette et on arrive ici
-      console.error("Failed to fetch one or more enums:", error);
-      setErrorEnums(error.message || "Failed to load enum options");
-    } finally {
-      setIsLoadingEnums(false);
+      // Pour les selects, prends la première option disponible ou une valeur par défaut valide
+      setSelectedProjectType(projectTypesOptions?.[0]?.value || "ALBUM"); // Utilise la 1ère option si elle existe, sinon 'ALBUM'
+      setSelectedProjectProgresses(
+        projectProgressesOptions?.[0]?.value || "EN_COURS"
+      );
+      setSelectedProjectMusicalGenders(
+        projectMusicalGendersOptions?.[0]?.value || "ELECTRONIC"
+      );
+      setSelectedProjectCommercialStatuses(
+        projectCommercialStatusesOptions?.[0]?.value || "LIBRE"
+      );
+      setSelectedProjectPurposes(
+        projectPurposesOptions?.[0]?.value || "PERSONNEL"
+      );
+    } else {
+      // Si on décoche, on vide les champs (optionnel, mais souvent utile)
+      setProjectTitleInput("");
+      setProjectDescriptionInput("");
+      setSelectedProjectType("");
+      setSelectedProjectProgresses("");
+      setSelectedProjectMusicalGenders("");
+      setSelectedProjectCommercialStatuses("");
+      setSelectedProjectPurposes("");
     }
   };
 
-  fetchAllEnums();
+  useEffect(() => {
+    const fetchAllEnums = async () => {
+      setIsLoadingEnums(true);
+      setErrorEnums(null);
+
+      try {
+        // Lance tous les appels API en parallèle
+        const results = await Promise.all([
+          getProjectTypes(),
+          getProjectCommercialStatuses(),
+          getProjectMusicalGenders(),
+          getProjectProgresses(),
+          getProjectPurposes(),
+        ]);
+
+        // Si tous les appels réussissent, Promise.all retourne un tableau avec les résultats DANS LE MÊME ORDRE
+        setProjectTypesOptions(results[0]);
+        setProjectCommercialStatusesOptions(results[1]);
+        setProjectMusicalGendersOptions(results[2]);
+        setProjectProgressesOptions(results[3]);
+        setProjectPurposesOptions(results[4]);
+      } catch (error) {
+        // Si UN SEUL des appels échoue, Promise.all rejette et on arrive ici
+        console.error("Failed to fetch one or more enums:", error);
+        setErrorEnums(error.message || "Failed to load enum options");
+      } finally {
+        setIsLoadingEnums(false);
+      }
+    };
+
+    fetchAllEnums();
   }, []);
 
   return (
@@ -128,6 +181,27 @@ export default function ProjectCreateNewModal({ isOpen, onOpenChange }) {
           </DialogHeader>
 
           <div className="h-px w-72 bg-gray-300 my-4"></div>
+
+          {process.env.NODE_ENV === "development" && (
+            <div className="my-4 flex items-center space-x-2 px-1">
+              {" "}
+              {/* Ajout padding horizontal */}
+              <input
+                type="checkbox"
+                id="dev-autofill"
+                checked={devAutoFill}
+                onChange={(e) => handleDevAutoFill(e.target.checked)}
+                className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 cursor-pointer" // Style simple
+              />
+              <label
+                htmlFor="dev-autofill"
+                className="text-sm text-gray-400 cursor-pointer select-none" // Style simple
+              >
+                Auto-fill form (Dev Only)
+              </label>
+            </div>
+          )}
+          {/* --- Fin Section Auto-remplissage --- */}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Section Titre */}
@@ -210,28 +284,29 @@ export default function ProjectCreateNewModal({ isOpen, onOpenChange }) {
                     placeholder="Add description..."
                     name="projectDescription"
                     value={projectDescriptionInput}
-                    onChange={(event) => setProjectDescriptionInput(event.target.value)}
+                    onChange={(event) =>
+                      setProjectDescriptionInput(event.target.value)
+                    }
                   />
                 </div>
               </div>
             </div>
             <DialogFooter className="flex justify-end items-center gap-3 pt-4 px-0 pb-0">
-            <Button
-              className="border border-gray-300 p-2 cursor-pointer"
-              onClick={() => onOpenChange(false)}
-            >
-              CANCEL
-            </Button>
-            <Button
-              className="border border-zinc-900 bg-gray-300 text-zinc-900 cursor-pointer"
-              type="submit"
-            >
-              CREATE_PROJECT
-            </Button>
-          </DialogFooter>
+              <Button
+                className="border border-gray-300 p-2 cursor-pointer"
+                onClick={() => onOpenChange(false)}
+              >
+                CANCEL
+              </Button>
+              <Button
+                className="border border-zinc-900 bg-gray-300 text-zinc-900 cursor-pointer"
+                type="submit"
+              >
+                CREATE_PROJECT
+              </Button>
+            </DialogFooter>
           </form>
           <div className="h-px w-72 bg-gray-300 my-4"></div>
-
         </div>
       </DialogContent>
     </Dialog>

@@ -75,35 +75,35 @@ function handleItemClick(vizToDisplay, itemId){
           </div>
           <ul className="space-y-1">
             <li>
-              <Link href="/dashboard" className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "DASHBOARD" ? "bg-gray-700" : "bg-body"}`}
+              <Link href="/dashboard" className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "DASHBOARD" ? "bg-zinc-500" : "bg-body"}`}
               onClick={() => handleItemClick("MAIN_SYS","DASHBOARD")}>
                 <Home size={18} />
                 <span>DASHBOARD</span>
               </Link>
             </li>
             <li>
-              <Link href="/projects" className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "PROJECTS" ? "bg-gray-700" : "bg-body"}`}
+              <Link href="/projects" className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "PROJECTS" ? "bg-zinc-500" : "bg-body"}`}
               onClick={() => handleItemClick("MAIN_SYS","PROJECTS")}>
                 <Music2 size={18} />
                 <span>PROJECTS</span>
               </Link>
             </li>
             <li>
-              <button className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "PLAYLIST" ? "bg-gray-700" : "bg-body"}`}
+              <button className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "PLAYLIST" ? "bg-zinc-500" : "bg-body"}`}
               onClick={() => handleItemClick("MAIN_SYS","PLAYLIST")}>
                 <PlaySquare size={18} />
                 <span>PLAYLIST</span>
               </button >
             </li>
             <li>
-              <button  className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "ARCHIVED" ? "bg-gray-700" : "bg-body"}`}
+              <button  className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "ARCHIVED" ? "bg-zinc-500" : "bg-body"}`}
               onClick={() => handleItemClick("MAIN_SYS","ARCHIVED")}>
                 <Archive size={18} />
                 <span>ARCHIVED</span>
               </button >
             </li>
             <li>
-              <button className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "TRASH" ? "bg-gray-700" : "bg-body"}`}
+              <button className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "TRASH" ? "bg-zinc-500" : "bg-body"}`}
               onClick={() => handleItemClick("MAIN_SYS","TRASH")}>
                 <Trash2 size={18} />
                 <span>TRASH</span>
@@ -121,14 +121,14 @@ function handleItemClick(vizToDisplay, itemId){
           </div>
           <ul className="space-y-1">
             <li>
-              <button  className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "LISTENERS" ? "bg-gray-700" : "bg-body"}`}
+              <button  className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "LISTENERS" ? "bg-zinc-500" : "bg-body"}`}
                 onClick={() => handleItemClick("COLLAB_SYS","LISTENERS")}>
                 <Users size={18} />
                 <span>LISTENERS</span>
               </button >
             </li>
             <li>
-              <button  className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "SHARE" ? "bg-gray-700" : "bg-body"}`}
+              <button  className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "SHARE" ? "bg-zinc-500" : "bg-body"}`}
               onClick={() => handleItemClick("COLLAB_SYS","SHARE")}>
                 <Share2 size={18} />
                 <span>SHARE</span>
@@ -146,7 +146,7 @@ function handleItemClick(vizToDisplay, itemId){
           </div>
           <ul className="space-y-1">
             <li>
-              <button  className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "COMPARE" ? "bg-gray-700" : "bg-body"}`}
+              <button  className={`flex w-full gap-3 px-3 py-2 rounded-md items-center cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700 ${activeItem === "COMPARE" ? "bg-zinc-500" : "bg-body"}`}
               onClick={() => handleItemClick("TOOL_SYS","COMPARE")}>
                 <GitCompare size={18}/>
                 <span>COMPARE A/B</span>

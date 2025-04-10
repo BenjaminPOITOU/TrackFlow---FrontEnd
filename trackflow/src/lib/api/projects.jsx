@@ -1,13 +1,9 @@
-
-
-const URL_BASE ="http://localhost:8080";
+const URL_BASE = "http://localhost:8080";
 
 export async function sendCreatedProject(userId, projectData) {
-
   try {
+    console.log(userId, projectData);
 
-    console.log(userId, projectData)
-    
     const requestOptions = {
       method: "POST",
       headers: {
@@ -23,14 +19,22 @@ export async function sendCreatedProject(userId, projectData) {
     const response = await fetch(url, requestOptions);
 
     if (!response.ok) {
-
-         let errorDetail = null;
+      let errorDetail = null;
       try {
         errorDetail = await response.json(); // Tente de parser une réponse d'erreur JSON
       } catch (e) {
-        console.error("API Error Response:", response.status, response.statusText, errorDetail);
-       // Lance une erreur AVEC les détails si disponibles
-       throw new Error(`API Error ${response.status}: ${response.statusText}. ${errorDetail ? JSON.stringify(errorDetail) : 'No details available.'}`);
+        console.error(
+          "API Error Response:",
+          response.status,
+          response.statusText,
+          errorDetail
+        );
+        // Lance une erreur AVEC les détails si disponibles
+        throw new Error(
+          `API Error ${response.status}: ${response.statusText}. ${
+            errorDetail ? JSON.stringify(errorDetail) : "No details available."
+          }`
+        );
       }
       console.error(
         "API Error Response:",
@@ -46,16 +50,15 @@ export async function sendCreatedProject(userId, projectData) {
     }
 
     if (response.status === 201 || response.status === 200) {
-     
       try {
         const createdProject = await response.json();
         console.log("Project created successfully:", createdProject);
-        return createdProject; 
+        return createdProject;
       } catch (e) {
         console.log(
           "Project created successfully (No Content/Non-JSON response)"
         );
-        return { success: true }; 
+        return { success: true };
       }
     } else {
       // Cas inattendu si response.ok est true mais pas 200/201 (ex: 204 No Content)
@@ -65,6 +68,26 @@ export async function sendCreatedProject(userId, projectData) {
   } catch (error) {
     console.error("Failed to send created project:", error);
 
+    throw error;
+  }
+}
+
+export async function getAllProjects(userId) {
+  try {
+    const url = `${URL_BASE}/api/users/${userId}/projects`;
+
+    console.log(userId);
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch project types:", error);
     throw error;
   }
 }

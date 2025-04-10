@@ -1,8 +1,8 @@
 import React from "react";
 import "@/app/globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Inter } from "next/font/google";
 import localFont from "next/font/local";
+import { cn } from "@/lib/utils";
 
 const techFont = localFont({
   src: [
@@ -16,6 +16,21 @@ const techFont = localFont({
   display: "swap",
 });
 
+
+
+const orbitronFont = localFont({
+  src: [
+    {
+      path: "../assets/fonts/Orbitron/static/Orbitron-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+  ],
+  variable: "--font-orbitron",
+  display: "swap",
+});
+
+
 export const metadata = {
   title: "SoundFlow - Gestion de projets musicaux",
   description:
@@ -24,11 +39,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="fr" suppressHydrationWarning={true} className="h-full">
-      <head></head>
-      <body
-        className={`${techFont.variable} antialiased h-full bg-zinc-900 text-gray-300`}
-      >
+    <html lang="fr" suppressHydrationWarning={true}>
+      <head></head>   
+      <body className={cn(techFont.variable)}>
         <ThemeProvider
           attribute="class"
           enableSystem={false}
