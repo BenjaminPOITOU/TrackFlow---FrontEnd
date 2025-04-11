@@ -91,3 +91,44 @@ export async function getAllProjects(userId) {
     throw error;
   }
 }
+
+export async function getRecentProjects({
+   page = 0,
+   size = 4,
+   sort = "createdDate,desc",
+  login
+}) {
+  const params = new URLSearchParams({
+    
+    page: page.toString(),
+    size: size.toString(),
+    sort: sort,
+    login: login
+  });
+
+  const url = `${URL_BASE}/api/projects/recent?${params}`;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      let errorBody = await response.text();
+      try {
+        errorBody = JSON.parse(errorBody);
+      } catch (e) {}
+
+      console.error(
+        `getRecentProjects: API Error Status ${response.status}, Body:`,
+        errorBody
+      );
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.content || data;
+  } catch (error) {
+
+    console.error("getRecentProjects: CATCH block error:", error);
+    throw error;
+  }
+}

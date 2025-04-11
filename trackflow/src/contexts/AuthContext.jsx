@@ -9,8 +9,7 @@ export function AuthProvider({ children }) {
   const mockUser = { 
     id: 1, 
     name: "Mock User", 
-    email: "mock@example.com",
-
+    login: "dbowie@music.com"
   };
 
 

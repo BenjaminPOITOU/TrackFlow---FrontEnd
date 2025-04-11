@@ -1,40 +1,63 @@
-// src/components/projects/ProjectCard.jsx
 
-// Imports (vérifie le chemin pour AnimatedShape !)
 import React, { useState, useEffect } from 'react';
 import { DropdownMenuProjectCard } from './DropdownMenuProjectCard';
-import DataBadge from "../shared/DataBadge"; // Vérifie le chemin
+import DataBadge from "../shared/DataBadge";
 import AnimatedShape from '@/lib/AnimatedShapes';
 import { cn } from "@/lib/utils";
 import Link from 'next/link';
+import { format, isValid, parseISO } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 
-// Mappings pour les labels (conservés)
+
 const statusLabels = { EN_COURS: "En cours", FINALISE: "Finalisé", EN_PAUSE: "En pause", DEFAULT: "Inconnu" };
-const genreLabels = { /* ... colle ton mapping de labels de genre ici si tu veux l'utiliser ... */ };
+const genreLabels = {};
+
 
 
 export default function ProjectCard({ project }) {
     // --- États et Handlers pour le survol/glitch ---
     const [isHovered, setIsHovered] = useState(false);
+    let shape="morph";
    
 
     const handleMouseEnter = () => setIsHovered(true);
     const handleMouseLeave = () => setIsHovered(false);
-
-   
+    
 
  
     const projectStatusValue = project?.projectStatus || 'DEFAULT';
-    const statusText = statusLabels[projectStatusValue] || statusLabels.DEFAULT;
     const genres = project?.projectMusicalGendersPreDefined || [];
  
-    const formattedDate = project?.updateDate
-                          ? new Date(project.updateDate[0]).toLocaleDateString()
-                          : 'N/A';
+   const formattedDate = project?.createdDate
+                      ? (() => {
+                          
+                           const dateObj = parseISO(project.createdDate);
+                       
+                           return isValid(dateObj)
+                               
+                                  ? format(dateObj, 'dd/MM/yyyy', { locale: fr }) 
+                                  : 'N/A';
+                        })()
+                      : 'N/A';
 
 
     const projectUrl = `/projects/${project?.id}`;
+
+
+    switch(projectStatusValue) {
+    
+
+        case("EN_COURS"): shape="pulse";
+            break;
+        case("FINALISE"): shape="spin";
+            break;
+        case("EN_PAUSE"): shape="sonar";
+            break;
+        
+        default:
+
+    }
     return (
         <Link
         href={projectUrl}
@@ -55,32 +78,32 @@ export default function ProjectCard({ project }) {
         >
             {/* === Section En-tête === */}
             <div className="flex justify-between items-center p-3 border-b border-zinc-700/50"> 
-                {/* --- Gauche : Animation --- */}
+              
             
                 <div className="opacity-50 group-hover:opacity-100 transition-opacity duration-300">
                     
                     <AnimatedShape
-                        type="pulse"     
+                        type={shape}    
                         size="small" 
                         speed="normal"
                         isAnimating={isHovered} 
                     /> 
                 </div> 
 
-                {/* --- Droite : Statut + Ellipsis --- */}
-                <div className="flex items-center space-x-2"> {/* Aligne point, texte, icône */}
+               
+                <div className="flex items-center space-x-2"> 
                     <DataBadge
                         type="projectStatus"
                         value={projectStatusValue}
-                        variant="dot" // Affiche le point coloré
+                        variant="dot" 
                     />
                     <span className="text-xs text-muted-foreground">
-                        {statusText}
+                        {projectStatusValue}
                     </span>
-                    {/* Icône Ellipsis (menu potentiel ?) */}
+                  
                     <div className="text-muted-foreground hover:text-foreground transition-colors">
                          <DropdownMenuProjectCard className="w-5 h-5 border border-gray-300 hover:bg-zinc-700 rounded" />
-                         <span className="sr-only">Options</span> {/* Pour l'accessibilité */}
+                         <span className="sr-only">Options</span>
                     </div>
                 </div>
             </div>
@@ -101,7 +124,6 @@ export default function ProjectCard({ project }) {
                              key={`${genreValue}-${index}`}
                              type="projectMusicalGender"
                              value={genreValue}
-                             // Utilise le label si défini, sinon la valeur brute
                              label={genreLabels?.[genreValue] || genreValue}
                              variant="badge"
                              styleIndex={index} // Pour la couleur cyclique
@@ -113,9 +135,9 @@ export default function ProjectCard({ project }) {
             </div>
 
             {/* === Section Footer (Date + Glitch) === */}
-            <div className="flex justify-between items-center p-3 text-xs border-t border-zinc-700/50"> {/* Padding, bordure haute légère */}
+            <div className="flex justify-between items-center p-3 text-xs border-t border-zinc-700/50">
                 <div className="text-muted-foreground">
-                    Maj: {formattedDate}
+                    MAJ : {formattedDate}
                 </div>
             </div>
         </Link>

@@ -21,16 +21,17 @@ export default function ProjectPage() {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  
+
     const fetchProjects = useCallback(async () => {
-    // Vérifie 'user' et 'user.id' au moment de l'exécution
     if (!user || !user.id) {
       console.log("fetchProjects: No user or user.id, resetting.");
       setProjects([]);
-      setIsLoading(false); // Assure-toi d'arrêter le chargement
+      setIsLoading(false); 
       return;
     }
 
-    console.log(`fetchProjects: Fetching for user ID: ${user.id}`); // Log au moment de l'exécution
+    console.log(`fetchProjects: Fetching for user ID: ${user.id}`);
     setIsLoading(true);
     setError(null);
     try {
@@ -43,22 +44,21 @@ export default function ProjectPage() {
     } finally {
       setIsLoading(false);
     }
-  // Dépendances : user (pour user.id) et les fonctions setState (qui sont stables)
   }, [user, setIsLoading, setError, setProjects]); 
    
 
   useEffect(() => {
-    // Appelle fetchProjects seulement si user est prêt
+ 
     if (user && user.id) {
       console.log("useEffect: User ready, calling fetchProjects");
       fetchProjects();
     } else {
        console.log("useEffect: User not ready");
-       // Assure-toi que l'état initial est géré
+ 
        setIsLoading(false);
        setProjects([]);
     }
-    // Le fetch se fera via fetchProjects, qui dépend de user
+
   }, [user, fetchProjects]);
 
 
@@ -71,8 +71,6 @@ export default function ProjectPage() {
    const handleProjectCreationSuccess = useCallback(() => {
  
     setIsModalOpen(false);
-
- 
     setTimeout(() => {
          console.log("Timeout finished. Refetching project list now!");
          fetchProjects(); 

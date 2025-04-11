@@ -1,7 +1,7 @@
-// src/components/shared/DataBadge.jsx
+
 
 import React from 'react';
-import { cn } from "@/lib/utils"; // Assure-toi que cette fonction utilitaire existe et est correctement importée
+import { cn } from "@/lib/utils"; 
 
 // --- Style Mappings ---
 
@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"; // Assure-toi que cette fonction utilitaire ex
 const projectStatusStyles = {
   EN_COURS: { dot: 'bg-orange-500', bg: 'bg-orange-950', text: 'text-orange-400', border: 'border-orange-700' },
   FINALISE: { dot: 'bg-lime-500', bg: 'bg-lime-950', text: 'text-lime-400', border: 'border-lime-700' },
-  EN_PAUSE: { dot: 'bg-emerald-500', bg: 'bg-emerald-950', text: 'text-emerald-400', border: 'border-emerald-700' },
+  EN_PAUSE: { dot: 'bg-gray-300', bg: 'bg-gray-300', text: 'text-emerald-400', border: 'border-emerald-700' },
   DEFAULT:  { dot: 'bg-gray-500', bg: 'bg-gray-800', text: 'text-gray-400', border: 'border-gray-600' }
 };
 

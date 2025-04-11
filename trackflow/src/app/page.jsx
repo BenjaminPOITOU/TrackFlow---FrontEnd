@@ -1,7 +1,7 @@
 
-import React from 'react'; // Ou juste 'import React from "react";'
+import React from 'react';
 
-// Doit avoir un export par défaut d'un composant fonctionnel ou classe
+
 export default function HomePage() {
   return (
     <div>

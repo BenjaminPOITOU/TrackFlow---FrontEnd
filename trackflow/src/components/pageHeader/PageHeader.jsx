@@ -2,8 +2,7 @@
 
 import React from "react";
 import { Plus } from "lucide-react";
-import { Button } from "../ui/button";
-// import { Button } from "@/components/ui/button"; // Importe quand nécessaire
+
 
 export default function PageHeader({ title, subtitle, buttonText, onActionClick}) {
 

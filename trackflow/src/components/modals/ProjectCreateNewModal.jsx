@@ -100,18 +100,18 @@ export default function ProjectCreateNewModal({ isOpen, onOpenChange, onProjectC
   };
 
   const handleDevAutoFill = (isChecked) => {
-    setDevAutoFill(isChecked); // Met à jour l'état de la case
+    setDevAutoFill(isChecked); 
 
     if (isChecked) {
-      // Si on coche, on remplit tout
-      setProjectTitleInput("Dev Auto-Filled Project " + Date.now()); // Ajoute un timestamp pour unicité
+     
+      setProjectTitleInput("Dev Auto-Filled Project " + Date.now()); 
       setProjectDescriptionInput(
         "This is an automatically filled description for development testing purposes."
       );
 
-      // Pour les selects, prends la première option disponible ou une valeur par défaut valide
-      setSelectedProjectType(projectTypesOptions?.[0]?.value || "ALBUM"); // Utilise la 1ère option si elle existe, sinon 'ALBUM'
-      setSelectedProjectProgresses(
+      
+      setSelectedProjectType(projectTypesOptions?.[0]?.value || "ALBUM"); 
+         setSelectedProjectProgresses(
         projectProgressesOptions?.[0]?.value || "EN_COURS"
       );
       setSelectedProjectMusicalGenders(
@@ -124,7 +124,7 @@ export default function ProjectCreateNewModal({ isOpen, onOpenChange, onProjectC
         projectPurposesOptions?.[0]?.value || "PERSONNEL"
       );
     } else {
-      // Si on décoche, on vide les champs (optionnel, mais souvent utile)
+     
       setProjectTitleInput("");
       setProjectDescriptionInput("");
       setSelectedProjectType("");
@@ -141,7 +141,7 @@ export default function ProjectCreateNewModal({ isOpen, onOpenChange, onProjectC
       setErrorEnums(null);
 
       try {
-        // Lance tous les appels API en parallèle
+      
         const results = await Promise.all([
           getProjectTypes(),
           getProjectCommercialStatuses(),
@@ -150,14 +150,14 @@ export default function ProjectCreateNewModal({ isOpen, onOpenChange, onProjectC
           getProjectPurposes(),
         ]);
 
-        // Si tous les appels réussissent, Promise.all retourne un tableau avec les résultats DANS LE MÊME ORDRE
+       
         setProjectTypesOptions(results[0]);
         setProjectCommercialStatusesOptions(results[1]);
         setProjectMusicalGendersOptions(results[2]);
         setProjectProgressesOptions(results[3]);
         setProjectPurposesOptions(results[4]);
       } catch (error) {
-        // Si UN SEUL des appels échoue, Promise.all rejette et on arrive ici
+
         console.error("Failed to fetch one or more enums:", error);
         setErrorEnums(error.message || "Failed to load enum options");
       } finally {
@@ -183,25 +183,23 @@ export default function ProjectCreateNewModal({ isOpen, onOpenChange, onProjectC
           <div className="h-px w-72 bg-gray-300 my-4"></div>
 
           {process.env.NODE_ENV === "development" && (
-            <div className="my-4 flex items-center space-x-2 px-1">
-              {" "}
-              {/* Ajout padding horizontal */}
+            <div className="my-4 flex items-center space-x-2 px-1">     
               <input
                 type="checkbox"
                 id="dev-autofill"
                 checked={devAutoFill}
                 onChange={(e) => handleDevAutoFill(e.target.checked)}
-                className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 cursor-pointer" // Style simple
+                className="h-4 w-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 cursor-pointer" 
               />
               <label
                 htmlFor="dev-autofill"
-                className="text-sm text-gray-400 cursor-pointer select-none" // Style simple
+                className="text-sm text-gray-400 cursor-pointer select-none"
               >
                 Auto-fill form (Dev Only)
               </label>
             </div>
           )}
-          {/* --- Fin Section Auto-remplissage --- */}
+
 
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Section Titre */}
