@@ -20,23 +20,30 @@ export default function ProjectPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+   const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+   const [totalPages, setTotalPages] = useState(0);
 
   
 
-    const fetchProjects = useCallback(async () => {
+    const fetchProjects = useCallback(async (pageToFetch = 0) => { 
     if (!user || !user.id) {
-      console.log("fetchProjects: No user or user.id, resetting.");
-      setProjects([]);
-      setIsLoading(false); 
-      return;
+      setProjects([]); setIsLoading(false); return;
     }
-
-    console.log(`fetchProjects: Fetching for user ID: ${user.id}`);
-    setIsLoading(true);
-    setError(null);
+    console.log(`fetchProjects: Fetching page ${pageToFetch} for user ID: ${user.id}`);
+    setIsLoading(true); setError(null);
     try {
-      const userProjectList = await getAllProjects(user.id);
-      setProjects(userProjectList);
+
+      const pageData = await getAllProjects({
+        userId: user.id,
+        page: pageToFetch,
+      
+      });
+
+      setProjects(pageData.content);
+      setTotalPages(pageData.totalPages);
+      setCurrentPage(pageData.currentPage); 
+
     } catch (err) {
       console.error("Failed to fetch projects:", err);
       setError("Impossible de charger les projets.");
@@ -44,8 +51,7 @@ export default function ProjectPage() {
     } finally {
       setIsLoading(false);
     }
-  }, [user, setIsLoading, setError, setProjects]); 
-   
+  }, [user, pageSize, setIsLoading, setError, setProjects, setTotalPages, setCurrentPage]);
 
   useEffect(() => {
  
