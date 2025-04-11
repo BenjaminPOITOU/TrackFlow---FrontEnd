@@ -85,7 +85,7 @@ export default function ProjectPage() {
 
 
    return (
-    <div className="m-1 px-5 w-full">
+    <div className="m-1 p-5 w-full h-screen overflow-y-auto">
       <PageHeader
         title="PROJECTS"
         subtitle="MANAGE_YOUR_CREATIVE_PROJECTS"

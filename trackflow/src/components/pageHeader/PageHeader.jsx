@@ -21,7 +21,7 @@ export default function PageHeader({ title, subtitle, buttonText, onActionClick}
       <div>
         {buttonText && onActionClick &&(
             
-            <button className="p-4 flex text-gray-300 gap-2 border border-gray-300 cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700" onClick={onActionClick}>
+            <button className="p-4 flex text-gray-300 gap-2 border bg-neutral-800 border-gray-300 cursor-pointer hover:bg-gray-500 focus:outline-offset-2 focus:outline-bg-gray-500 active:bg-gray-700" onClick={onActionClick}>
             <Plus/>
             {buttonText}
         </button>)}

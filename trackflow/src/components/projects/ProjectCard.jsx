@@ -126,18 +126,19 @@ export default function ProjectCard({ project }) {
                              value={genreValue}
                              label={genreLabels?.[genreValue] || genreValue}
                              variant="badge"
-                             styleIndex={index} // Pour la couleur cyclique
+                             styleIndex={index}
                              className="text-xs"
                            />
                          ))}
                     </div>
                 )}
+                
             </div>
 
             {/* === Section Footer (Date + Glitch) === */}
             <div className="flex justify-between items-center p-3 text-xs border-t border-zinc-700/50">
                 <div className="text-muted-foreground">
-                    MAJ : {formattedDate}
+                    CREATED : {formattedDate}
                 </div>
             </div>
         </Link>

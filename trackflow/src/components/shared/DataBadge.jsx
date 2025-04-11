@@ -14,28 +14,92 @@ const projectStatusStyles = {
 };
 
 // 2. Musical Genre Styles (10 Palettes Cycliques Techno/Néon)
-const genreColorStyles = [
-  // 1. Pink
-  { bg: 'bg-pink-950', text: 'text-pink-400', border: 'border-pink-700' },
-  // 2. Cyan
-  { bg: 'bg-cyan-950', text: 'text-cyan-400', border: 'border-cyan-700' },
-  // 3. Lime Green
-  { bg: 'bg-lime-950', text: 'text-lime-400', border: 'border-lime-700' },
-  // 4. Orange
-  { bg: 'bg-orange-950', text: 'text-orange-400', border: 'border-orange-700' },
-  // 5. Violet
-  { bg: 'bg-violet-950', text: 'text-violet-400', border: 'border-violet-700' },
-  // 6. Teal
-  { bg: 'bg-teal-950', text: 'text-teal-400', border: 'border-teal-700' },
-  // 7. Yellow
-  { bg: 'bg-yellow-950', text: 'text-yellow-400', border: 'border-yellow-700' },
-  // 8. Sky Blue
-  { bg: 'bg-sky-950', text: 'text-sky-400', border: 'border-sky-700' },
-  // 9. Fuchsia
-  { bg: 'bg-fuchsia-950', text: 'text-fuchsia-400', border: 'border-fuchsia-700' },
-  // 10. Emerald
-  { bg: 'bg-emerald-950', text: 'text-emerald-400', border: 'border-emerald-600' }, // Légère variation bordure pour #10
+const genreColorPalettes = [
+  { bg: 'bg-pink-950',    text: 'text-pink-400',    border: 'border-pink-700' },    // Palette 0 (Pink)
+  { bg: 'bg-cyan-950',    text: 'text-cyan-400',    border: 'border-cyan-700' },    // Palette 1 (Cyan)
+  { bg: 'bg-lime-950',    text: 'text-lime-400',    border: 'border-lime-700' },    // Palette 2 (Lime)
+  { bg: 'bg-orange-950',  text: 'text-orange-400',  border: 'border-orange-700' },  // Palette 3 (Orange)
+  { bg: 'bg-violet-950',  text: 'text-violet-400',  border: 'border-violet-700' },  // Palette 4 (Violet)
+  { bg: 'bg-teal-950',    text: 'text-teal-400',    border: 'border-teal-700' },    // Palette 5 (Teal)
+  { bg: 'bg-yellow-950',  text: 'text-yellow-400',  border: 'border-yellow-700' },  // Palette 6 (Yellow)
+  { bg: 'bg-sky-950',     text: 'text-sky-400',     border: 'border-sky-700' },     // Palette 7 (Sky Blue)
+  { bg: 'bg-fuchsia-950', text: 'text-fuchsia-400', border: 'border-fuchsia-700' }, // Palette 8 (Fuchsia)
+  { bg: 'bg-emerald-950', text: 'text-emerald-400', border: 'border-emerald-600' }, // Palette 9 (Emerald)
 ];
+
+const genreToStyleMap = {
+  // --- Rock / Metal / Punk (Palettes 0, 8, 3) ---
+  ROCK: genreColorPalettes[0],
+  METAL: genreColorPalettes[8], // Fuchsia (agressif?)
+  PUNK: genreColorPalettes[3], // Orange
+  ALTERNATIVE: genreColorPalettes[0],
+  GRUNGE: genreColorPalettes[8],
+  PROGRESSIVE_ROCK: genreColorPalettes[4], // Violet (complexe?)
+  POST_ROCK: genreColorPalettes[4],
+  SHOEGAZE: genreColorPalettes[4],
+
+  // --- Pop / Funk / Disco / R&B / Soul (Palettes 0, 8, 6) ---
+  POP: genreColorPalettes[0], // Pink
+  FUNK: genreColorPalettes[6], // Yellow
+  DISCO: genreColorPalettes[8], // Fuchsia
+  RNB: genreColorPalettes[4], // Violet
+  SOUL: genreColorPalettes[4],
+  NEOSOUL: genreColorPalettes[4],
+  K_POP: genreColorPalettes[0],
+  J_POP: genreColorPalettes[0],
+  CITY_POP: genreColorPalettes[6], // Yellow
+  SYNTHPOP: genreColorPalettes[1], // Cyan (lien avec electro)
+
+  // --- Electronic / House / Techno etc (Palettes 1, 7, 9, 5) ---
+  ELECTRONIC: genreColorPalettes[1], // Cyan
+  HOUSE: genreColorPalettes[7], // Sky Blue
+  TECHNO: genreColorPalettes[9], // Emerald
+  TRANCE: genreColorPalettes[1],
+  DUBSTEP: genreColorPalettes[5], // Teal
+  DNB: genreColorPalettes[5],
+  EDM: genreColorPalettes[7],
+  AMBIENT: genreColorPalettes[1],
+  LOUNGE: genreColorPalettes[7],
+  LO_FI: genreColorPalettes[4], // Violet (chill?)
+  CHIPTUNE: genreColorPalettes[6], // Yellow (retro?)
+  VAPORWAVE: genreColorPalettes[0], // Pink (aesthetic?)
+  GARAGE: genreColorPalettes[5], // Teal
+  TRAP: genreColorPalettes[3], // Orange (lien avec HipHop)
+  GRIME: genreColorPalettes[3],
+  DRILL: genreColorPalettes[3],
+
+
+  // --- HipHop / Rap (Palette 3) ---
+  HIP_HOP: genreColorPalettes[3], // Orange
+  RAP: genreColorPalettes[3],
+
+  // --- Jazz / Blues / Gospel (Palettes 7, 5) ---
+  JAZZ: genreColorPalettes[7], // Sky Blue
+  BLUES: genreColorPalettes[7],
+  GOSPEL: genreColorPalettes[6], // Yellow
+  SWING: genreColorPalettes[7],
+
+  // --- World / Latin / Reggae / Ska (Palettes 2, 5) ---
+  REGGAE: genreColorPalettes[2], // Lime
+  LATIN: genreColorPalettes[3], // Orange
+  SALSA: genreColorPalettes[3],
+  SKA: genreColorPalettes[2],
+  AFROBEAT: genreColorPalettes[6], // Yellow
+  BOSSA_NOVA: genreColorPalettes[5], // Teal
+
+  // --- Folk / Country (Palette 2) ---
+  FOLK: genreColorPalettes[2], // Lime
+  COUNTRY: genreColorPalettes[2],
+
+  // --- Classique (Palette 9) ---
+  CLASSICAL: genreColorPalettes[9], // Emerald
+
+  // --- Indie (Peut-être une couleur neutre ou spécifique?) ---
+  INDIE: genreColorPalettes[5], // Teal
+
+  // DEFAULT: Si on veut un style par défaut spécifique aux genres non mappés
+  // DEFAULT: neutralStyles // Ou genreColorPalettes[quelque chose]
+};
 
 // 3. Style Neutre (Pour types inconnus ou fallback)
 const neutralStyles = {
@@ -76,24 +140,11 @@ const DataBadge = ({
       break;
 
     case 'projectMusicalGender':
-      // Utilise styleIndex pour choisir cycliquement parmi les 10 styles de genre
-      if (typeof styleIndex === 'number' && styleIndex >= 0 && genreColorStyles.length > 0) {
-        // L'opérateur modulo (%) assure le cycle
-        styles = genreColorStyles[styleIndex % genreColorStyles.length] || neutralStyles;
-      } else {
-        // Si pas d'index ou tableau vide, utiliser le premier style ou le neutre comme fallback
-        styles = genreColorStyles[0] || neutralStyles;
-        if (typeof styleIndex !== 'number' || styleIndex < 0) {
-            // console.warn("DataBadge: styleIndex invalide ou manquant pour 'projectMusicalGender', fallback utilisé.");
-        }
-      }
+      styles = genreToStyleMap[value] || neutralStyles;
       break;
 
-    // Ajoutez d'autres 'case' ici pour de futurs types
-
     default:
-      // Type non reconnu -> utilise les styles neutres
-      // console.warn(`DataBadge: type "${type}" non reconnu.`);
+      // Type inconnu -> style neutre
       styles = neutralStyles;
   }
 

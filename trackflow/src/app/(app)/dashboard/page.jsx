@@ -62,7 +62,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="m-1 px-5 w-full">
+    <div className="m-1 p-5 h-screen w-full">
       <PageHeader
         title="DASHBOARD"
         subtitle="WELCOME_TO_YOUR_CREATIVE_SPACE"
@@ -70,11 +70,25 @@ export default function DashboardPage() {
         onActionClick={() => handleOpenNewProjectModal()}
       ></PageHeader>
 
+  
+
       <ProjectCreateNewModal
         isOpen={isModalOpen}
         onOpenChange={setIsModalOpen}
       />
+
+      <div className="flex flex-col flex-grow gap-4">
+      <div className="flex w-full border justify-center items-center border-gray-300 p-4"> [LECTEUR TRACK]</div>
+      
+      <div className="flex flex-col w-full gap-2">
+        <div className="flex border-t w-52 border-t-gray-300 pt-1 text-xl glow-text">RECENTS_PROJECTS</div> 
       <ProjectCardList projects={recentProjects} />
+      </div>
+      </div>
+
+
+
+
     </div>
   );
 }
