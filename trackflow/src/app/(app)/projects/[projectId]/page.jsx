@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState, use } from "react";
 import PageHeader from "@/components/pageHeader/PageHeader";
 import { ProjectDetails } from "@/components/projects/ProjectDetails";
+import { CompositionList } from "@/components/compositions/CompositionList";
 
 export default function compositionPage({ params }) {
   const resolvedParams = use(params);
@@ -61,8 +62,9 @@ export default function compositionPage({ params }) {
           onActionClick={() => handleOpenNewProjectModal()}
         ></PageHeader>
       </div>
-      <div className="">
+      <div className="flex flex-col gap-4 justify-center items-start">
         <ProjectDetails project={project} />
+        <CompositionList projectId={projectId}/>
       </div>
     </div>
   );

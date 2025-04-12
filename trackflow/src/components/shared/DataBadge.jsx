@@ -125,7 +125,6 @@ const DataBadge = ({
   value,
   label,
   variant = 'badge',
-  styleIndex,
   className
 }) => {
 
@@ -178,7 +177,7 @@ const DataBadge = ({
       <span
         className={cn(
           // Classes de base pour le badge
-          "inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium border whitespace-nowrap",
+          "inline-flex items-center rounded-md px-2 py-0.5 text-xs mx-0.5 font-medium border whitespace-nowrap",
           // Styles de couleur spécifiques au type/valeur/index
           styles.bg,
           styles.text,
