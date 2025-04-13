@@ -2,10 +2,11 @@
 
 import { getProjectById } from "@/lib/api/projects";
 import { useAuth } from "@/contexts/AuthContext";
-import { useEffect, useState, use } from "react";
+import { useEffect, useState, use, useCallback } from "react";
 import PageHeader from "@/components/pageHeader/PageHeader";
 import { ProjectDetails } from "@/components/projects/ProjectDetails";
 import { CompositionList } from "@/components/compositions/CompositionList";
+import CompositionCreateNewModal from "@/components/modals/CompositionCreateNewModal";
 
 export default function compositionPage({ params }) {
   const resolvedParams = use(params);
@@ -16,6 +17,9 @@ export default function compositionPage({ params }) {
   const [project, setProject] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  
 
   useEffect(() => {
     const userId = user.id;
@@ -51,6 +55,13 @@ export default function compositionPage({ params }) {
       </div>
     );
   }
+function handleOpenNewCompositionModal(){
+
+  setIsModalOpen(!isModalOpen)
+}
+ 
+
+
 
   return (
     <div className="flex flex-col h-screen w-full gap-3 p-5">
@@ -59,9 +70,14 @@ export default function compositionPage({ params }) {
           title={project.title}
           subtitle="PROJECT_DETAILS_AND_COMPOSITIONS"
           buttonText="NEW_COMPOSITION"
-          onActionClick={() => handleOpenNewProjectModal()}
+          onActionClick={() => handleOpenNewCompositionModal()}
         ></PageHeader>
       </div>
+      <CompositionCreateNewModal
+        isOpen={isModalOpen}
+        onOpenChange={setIsModalOpen}
+        projectId={projectId}
+            />
       <div className="flex flex-col gap-4 justify-center items-start">
         <ProjectDetails project={project} />
         <CompositionList projectId={projectId}/>

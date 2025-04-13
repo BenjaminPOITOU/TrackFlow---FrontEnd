@@ -67,12 +67,12 @@ export function ProjectDetails({ project }) {
   }
 
   return (
-    <div className="flex flex-col justify-start items-center gap-1 rounded">
+    <div className="flex flex-col justify-start items-center w-full gap-1 rounded">
       <div className="w-full flex justify-start items-center  p-2 border border-gray-300 rounded-t">
         <div className="flex justify-between items-center gap-2 px-2 w-full">
           <button
             onClick={setHandleClickProjectDetails}
-            className="flex justify-start items-center gap-2"
+            className="flex justify-start items-center gap-2 cursor-pointer"
           >
             {!isDetailsOpen && <ChevronRight color="#e0e0e0" />}
             {isDetailsOpen && <ChevronDown color="#e0e0e0" />}
@@ -82,15 +82,15 @@ export function ProjectDetails({ project }) {
             <ChartLine color="#e0e0e0" />
 
             <span className="text-sm">STATUS : </span>
-            <button onClick={setHandleClickProjectStatus}>
+            <button onClick={setHandleClickProjectStatus} className="cursor-pointer flex gap-2 justify-start items-center">
               {isProjectStatusOpen && (
                 <ChevronDown className="w-4 h-4" color="#e0e0e0" />
               )}{" "}
               {!isProjectStatusOpen && (
                 <ChevronRight className="w-4 h-4" color="#e0e0e0" />
               )}
-            </button>
-            <div className="bg-neutral-800 p-2 items-center flex justify-center rounded">
+
+                          <div className="bg-neutral-800 p-2 items-center flex justify-center rounded cursor-pointer">
               <span
                 className={`text-sm ${
                   (
@@ -102,6 +102,8 @@ export function ProjectDetails({ project }) {
                 {project.projectStatus}
               </span>
             </div>
+            </button>
+
           </div>
         </div>
         <div className="h-6 border-r border-gray-300"></div>
@@ -207,7 +209,7 @@ export function ProjectDetails({ project }) {
                 <span className="text-sm"> COMPOSITIONS </span>
               </div>
               <div className="w-full text-sm flex gap-2 bg-neutral-800 px-2">
-                {`${project?.compositionsTotal} TOTAL`}
+                {`${project?.compositionsTotal}-TOTAL`}
               </div>
             </div>
           </div>
