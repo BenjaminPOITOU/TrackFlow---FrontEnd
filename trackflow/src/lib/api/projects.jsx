@@ -87,7 +87,7 @@ export async function getAllProjects({
     throw new Error("API configuration error");
   }
 
-  // Construire les paramètres de requête
+ 
   const params = new URLSearchParams({
     page: page.toString(),
     size: size.toString(),
@@ -169,7 +169,7 @@ export async function getRecentProjects({
 }
 
 export async function getProjectById(userId, projectId) {
-  const url = `${URL_BASE}/api/users/${userId}/projects/project/${projectId}`;
+  const url = `${URL_BASE}/api/users/${userId}/projects/${projectId}`;
 
   if (userId && projectId) {
     try {
@@ -195,5 +195,227 @@ export async function getProjectById(userId, projectId) {
       console.error("getProjectById: CATCH block error:", error);
       throw error;
     }
+  }
+}
+
+export async function updateProjectById(
+  userId,
+  projectId,
+  { projectDetailsToUpdate }
+) {
+  if (!userId || !projectId || !projectDetailsToUpdate) {
+    const missingArgs = [
+      !userId && "userId",
+      !projectId && "projectId",
+      !projectDetailsToUpdate && "projectDetailsToUpdate",
+    ]
+      .filter(Boolean)
+      .join(", ");
+    console.error(
+      `updateProjectById: Missing required arguments: ${missingArgs}`
+    );
+    throw new Error(`Missing required arguments: ${missingArgs}`);
+  }
+
+  const url = `${URL_BASE}/api/users/${userId}/projects/${projectId}`;
+  console.log(`updateProjectById: Sending PATCH to ${url}`);
+  console.log(`updateProjectById: Data:`, projectDetailsToUpdate);
+
+  const requestOptions = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(projectDetailsToUpdate),
+  };
+
+  try {
+    const response = await fetch(url, requestOptions);
+
+    if (!response.ok) {
+      let errorBody = await response.text();
+      let parsedErrorBody = errorBody;
+      try {
+        parsedErrorBody = JSON.parse(errorBody);
+      } catch (e) {
+        console.warn(
+          "updateProjectById: Could not parse error response body as JSON."
+        );
+      }
+
+      console.error(
+        `updateProjectById: API Error Status ${response.status}, Body:`,
+        parsedErrorBody
+      );
+
+      const errorMessage =
+        parsedErrorBody?.message ||
+        (typeof parsedErrorBody === "string" && parsedErrorBody.length < 100
+          ? parsedErrorBody
+          : response.statusText);
+      throw new Error(`API Error (${response.status}): ${errorMessage}`);
+    }
+
+    if (response.status === 204) {
+      console.log(
+        "updateProjectById: Success (204 No Content). No body to parse."
+      );
+      return null;
+    }
+
+    const contentType = response.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      console.warn(
+        `updateProjectById: Received status ${response.status} but Content-Type is not application/json (${contentType}). Attempting to parse anyway.`
+      );
+    }
+
+    try {
+      const data = await response.json();
+      console.log("updateProjectById: Success (parsed JSON body):", data);
+      return data;
+    } catch (jsonError) {
+      console.error(
+        "updateProjectById: Failed to parse JSON response even though status was OK:",
+        jsonError
+      );
+      throw new Error(
+        `API returned ${response.status} but failed to provide valid JSON body.`
+      );
+    }
+  } catch (error) {
+    console.error("updateProjectById: CATCH block error:", error);
+    throw error;
+  }
+}
+
+
+
+/**
+ * Archive un projet spécifié. Attend une réponse 200 OK du serveur,
+ * même si le corps de la réponse est vide.
+ * @param {number|string} userId - L'ID de l'utilisateur.
+ * @param {number|string} projectId - L'ID du projet.
+ * @returns {Promise<object>} Une promesse qui résout avec l'objet de données retourné par l'API,
+ *                           ou un objet { success: true } si la réponse était OK mais vide/invalide.
+ * @throws {Error} Si les arguments sont manquants ou si la réponse API n'est pas OK (status hors 2xx).
+ */
+export async function archiveProjectById(userId, projectId) {
+
+  if (!userId || !projectId) {
+    const missing = !userId ? 'userId' : 'projectId';
+    console.error(`archiveProjectById: Missing required argument: ${missing}`);
+    throw new Error(`Missing required argument: ${missing}`);
+  }
+
+  const url = `${URL_BASE}/api/users/${userId}/projects/${projectId}/archive`;
+  console.log(`archiveProjectById: Sending POST to ${url}`);
+
+  const requestOptions = {
+    method: "POST",
+    headers: {
+    },
+    
+  };
+
+  try {
+    const response = await fetch(url, requestOptions);
+
+  
+    if (!response.ok) { 
+      let errorBody = await response.text();
+      let parsedErrorBody = errorBody;
+      try { parsedErrorBody = JSON.parse(errorBody); } catch (e) {}
+      console.error(`archiveProjectById API Error Status ${response.status}, Body:`, parsedErrorBody);
+      const errorMessage = parsedErrorBody?.message || (typeof parsedErrorBody === 'string' && parsedErrorBody.length < 100 ? parsedErrorBody : `Request failed with status ${response.status}`);
+      throw new Error(`API Error (${response.status}): ${errorMessage}`);
+    }
+
+   
+    if (response.status === 200) {
+      console.log("archiveProjectById: Received 200 OK. Attempting to parse body...");
+      try {
+        const data = await response.json();
+        console.log("archiveProjectById: Success (parsed JSON body):", data);
+        return data || { success: true };
+
+      } catch (jsonError) {
+        if (jsonError instanceof SyntaxError) {
+          console.log("archiveProjectById: Success (200 OK), but response body was empty or invalid JSON. Treating as success.");
+          return { success: true }; 
+        } else {
+          console.error("archiveProjectById: Error processing JSON response (even though status was 200 OK):", jsonError);
+          throw new Error(`API returned 200 OK but failed processing JSON body: ${jsonError.message}`);
+        }
+      }
+    } else if (response.status === 204) {
+       console.log("archiveProjectById: Success (204 No Content).");
+       return { success: true };
+    } else {
+      console.warn(`archiveProjectById: Received unexpected success status ${response.status}. Treating as success.`);
+       try {
+           const data = await response.text(); 
+           if (data) console.log("archiveProjectById: Response body for unexpected status:", data);
+       } catch (e) {}
+      return { success: true, status: response.status };
+    }
+
+  } catch (error) { 
+    console.error("archiveProjectById: CATCH block error:", error);
+    if (!error.message) error.message = "Network error or failed to fetch";
+    throw error;
+  }
+}
+
+
+
+/**
+ * Supprime un projet spécifié de manière permanente. Attend une réponse 204 No Content.
+ * @param {number|string} userId - L'ID de l'utilisateur.
+ * @param {number|string} projectId - L'ID du projet.
+ * @returns {Promise<{success: boolean}>} Une promesse qui résout avec un objet indiquant le succès.
+ * @throws {Error} Si les arguments sont manquants ou si la réponse API n'est pas OK (status hors 2xx).
+ */
+export async function deleteProjectById(userId, projectId) {
+  if (!userId || !projectId) {
+    const missing = !userId ? 'userId' : 'projectId';
+    console.error(`deleteProjectById: Missing required argument: ${missing}`);
+    throw new Error(`Missing required argument: ${missing}`);
+  }
+
+  const url = `${URL_BASE}/api/users/${userId}/projects/${projectId}`;
+  console.log(`deleteProjectById: Sending DELETE to ${url}`);
+
+  const requestOptions = {
+    method: "DELETE",
+    headers: {
+    },
+  };
+
+  try {
+    const response = await fetch(url, requestOptions);
+
+    if (!response.ok) {
+      let errorBody = await response.text();
+      let parsedErrorBody = errorBody;
+      try { parsedErrorBody = JSON.parse(errorBody); } catch (e) { /* Ignorer */ }
+      console.error(`deleteProjectById API Error Status ${response.status}, Body:`, parsedErrorBody);
+      const errorMessage = parsedErrorBody?.message || (typeof parsedErrorBody === 'string' && parsedErrorBody.length < 100 ? parsedErrorBody : `Request failed with status ${response.status}`);
+      throw new Error(`API Error (${response.status}): ${errorMessage}`);
+    }
+
+
+    if (response.status === 204) {
+      console.log("deleteProjectById: Success (204 No Content).");
+      return { success: true }; 
+    } else {
+       console.log(`deleteProjectById: Success (Received status ${response.status}). Treating as success.`);
+       return { success: true, status: response.status };
+    }
+
+  } catch (error) { 
+    console.error("deleteProjectById: CATCH block error:", error);
+    if (!error.message) error.message = "Network error or failed to fetch";
+    throw error;
   }
 }

@@ -1,109 +1,144 @@
 "use client";
 
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import PageHeader from "@/components/pageHeader/PageHeader";
-import { useState } from "react";
 import ProjectCreateNewModal from "@/components/modals/ProjectCreateNewModal";
 import { ProjectListHeader } from "@/components/projects/ProjectListHeader";
 import ProjectCardList from "@/components/projects/ProjectCardList";
 import { getAllProjects } from "@/lib/api/projects";
-import { useAuth } from "@/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext"; 
+import { Loader2 } from "lucide-react"; 
+import { toast } from "sonner";
 
 export default function ProjectPage() {
-  const user = useAuth();
-  console.log("ProjectPage rendered. User:", user);
+
+  const { user, isLoading: isLoadingAuth, error: errorAuth } = useAuth();
+
+  console.log("ProjectPage rendered. Auth State:", { user, isLoadingAuth, errorAuth });
+
   const [projects, setProjects] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [isLoadingProjects, setIsLoadingProjects] = useState(false); 
+  const [errorProjects, setErrorProjects] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(10); 
   const [totalPages, setTotalPages] = useState(0);
 
-  const fetchProjects = useCallback(
-    async (pageToFetch = 0) => {
+  const fetchProjects = useCallback(async (pageToFetch = 0) => {
+
       if (!user || !user.id) {
-        setProjects([]);
-        setIsLoading(false);
+        console.warn("fetchProjects called without valid user, skipping.");
+        setProjects([]); setIsLoadingProjects(false); 
         return;
       }
-      console.log(
-        `fetchProjects: Fetching page ${pageToFetch} for user ID: ${user.id}`
-      );
-      setIsLoading(true);
-      setError(null);
+      console.log(`fetchProjects: Fetching page ${pageToFetch} for user ID: ${user.id}, page size: ${pageSize}`);
+      setIsLoadingProjects(true); 
+      setErrorProjects(null); 
       try {
         const pageData = await getAllProjects({
           userId: user.id,
           page: pageToFetch,
+          size: pageSize, 
+          sort: 'createdDate,desc' 
         });
-
-        setProjects(pageData.content);
+        console.log("fetchProjects: Received page data:", pageData);
+        setProjects(pageData.content || []); 
         setTotalPages(pageData.totalPages);
         setCurrentPage(pageData.currentPage);
       } catch (err) {
         console.error("Failed to fetch projects:", err);
-        setError("Impossible de charger les projets.");
-        setProjects([]);
+        setErrorProjects(err.message || "Impossible de charger les projets.");
+        setProjects([]); 
       } finally {
-        setIsLoading(false);
+        setIsLoadingProjects(false); 
       }
-    },
-    [
-      user,
-      pageSize,
-      setIsLoading,
-      setError,
-      setProjects,
-      setTotalPages,
-      setCurrentPage,
-    ]
+    }, [user, pageSize] 
   );
 
+
+
   useEffect(() => {
-    if (user && user.id) {
-      console.log("useEffect: User ready, calling fetchProjects");
-      fetchProjects();
+    console.log("ProjectPage useEffect triggered. isLoadingAuth:", isLoadingAuth, "User:", !!user);
+
+    if (!isLoadingAuth) {
+      if (user && user.id) {
+
+        console.log("useEffect: Auth ready, user found. Calling fetchProjects.");
+        fetchProjects(0); 
+      } else {
+
+        console.log("useEffect: Auth ready, no user found.");
+        setIsLoadingProjects(false);
+        setProjects([]); 
+        setTotalPages(0);
+        setCurrentPage(0);
+        setErrorProjects(null); 
+      }
     } else {
-      console.log("useEffect: User not ready");
 
-      setIsLoading(false);
-      setProjects([]);
+       console.log("useEffect: Waiting for authentication to complete...");
+  
     }
-  }, [user, fetchProjects]);
+  
+  }, [user, isLoadingAuth, fetchProjects]); 
 
-  function handleOpenNewProjectModal() {
-    setIsModalOpen(true);
-  }
+
+ function handleOpenNewProjectModal() {
+    if (!isLoadingAuth && user && user.id) {
+      setIsModalOpen(true);
+    } else if (isLoadingAuth) {
+      toast.info("Please wait, verifying user session...");
+    } else {
+      toast.error("You must be logged in to create a new project.");
+    }
+ }
+
 
   const handleProjectCreationSuccess = useCallback(() => {
     setIsModalOpen(false);
-    setTimeout(() => {
-      console.log("Timeout finished. Refetching project list now!");
-      fetchProjects();
-    }, 500);
-  }, [fetchProjects]);
+     toast.info("Refreshing project list...");
+
+    console.log("Project created. Refetching project list now!");
+    fetchProjects(0); 
+  }, [fetchProjects]); 
 
   return (
-    <div className="m-1 p-5 w-full h-screen overflow-y-auto">
+ 
+    <div className="m-1 p-5 w-full h-screen overflow-y-auto flex flex-col">
       <PageHeader
         title="PROJECTS"
         subtitle="MANAGE_YOUR_CREATIVE_PROJECTS"
         buttonText="NEW_PROJECT"
-        onActionClick={() => handleOpenNewProjectModal()}
-      ></PageHeader>
-
-      <div className="flex flex-col gap-4">
-        <ProjectListHeader />
-
-        {!isLoading && !error && <ProjectCardList projects={projects} />}
-      </div>
-
-      <ProjectCreateNewModal
-        isOpen={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        onProjectCreated={handleProjectCreationSuccess}
+        onActionClick={handleOpenNewProjectModal} 
       />
+
+
+      {isModalOpen && user && ( 
+          <ProjectCreateNewModal
+            isOpen={isModalOpen}
+            onOpenChange={setIsModalOpen}
+            onProjectCreated={handleProjectCreationSuccess}
+            user={user} 
+          />
+      )}
+
+
+      <div className="flex flex-col flex-grow gap-4 mt-4">
+          <ProjectListHeader />
+
+          {isLoadingAuth ? ( 
+             <div className="flex justify-center items-center py-10 text-zinc-400"> <Loader2 className="h-8 w-8 animate-spin mr-3"/> Loading user data... </div>
+          ) : isLoadingProjects ? ( 
+             <div className="flex justify-center items-center py-10 text-zinc-400"> <Loader2 className="h-8 w-8 animate-spin mr-3"/> Loading projects... </div>
+          ) : errorProjects ? ( 
+            <div className="text-center text-red-500 py-10">Error loading projects: {errorProjects}</div>
+          ) : projects.length > 0 ? ( 
+            <ProjectCardList userId={user.id} projects={projects} />
+          ) : ( 
+            <div className="text-center text-zinc-500 py-10">No projects found.</div>
+          )}
+      </div>
+        {/* TODO: Ajouter la pagination ici si totalPages > 1 */}
     </div>
   );
 }
