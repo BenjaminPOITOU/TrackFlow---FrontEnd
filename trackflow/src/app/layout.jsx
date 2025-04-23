@@ -32,7 +32,7 @@ const orbitronFont = localFont({
 
 
 export const metadata = {
-  title: "SoundFlow - Gestion de projets musicaux",
+  title: "TrackFlow - Gestion de projets musicaux",
   description:
     "Plateforme de gestion de projets musicaux avec visualisation audio avancée",
 };

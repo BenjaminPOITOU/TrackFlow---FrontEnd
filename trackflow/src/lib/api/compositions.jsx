@@ -14,7 +14,7 @@ export async function getCompositionsByProjectId(projectId) {
         } catch (e) {}
 
         console.error(
-          `getAllCompositions: API Error Status ${response.status}, Body:`,
+          `getCompositionsByProjectId: API Error Status ${response.status}, Body:`,
           errorBody
         );
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -24,7 +24,86 @@ export async function getCompositionsByProjectId(projectId) {
 
       return data;
     } catch (errorBody) {
-      console.error("getRecentProjects: CATCH block error:", errorBody);
+      console.error(
+        "getCompositionsByProjectId: CATCH block error:",
+        errorBody
+      );
+      throw errorBody;
+    }
+  }
+}
+
+export async function deleteCompositionById(projectId, compositionId) {
+  const url = `${URL_BASE}/api/projects/${projectId}/compositions/${compositionId}`;
+
+  if (projectId && compositionId) {
+    try {
+      const requestOptions = {
+        method: "DELETE",
+      };
+      const response = await fetch(url, requestOptions);
+
+      if (!response.ok) {
+        let errorBody = await response.text();
+        try {
+          errorBody = JSON.parse(errorBody);
+        } catch (e) {}
+
+        console.error(
+          `deleteCompositionById: API Error Status ${response.status}, Body:`,
+          errorBody
+        );
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      if (response.status === "204") {
+        return { success: true };
+      }
+    } catch (errorBody) {
+      console.error("deleteCompositonById: CATCH block error:", errorBody);
+      throw errorBody;
+    }
+  }
+}
+
+export async function createCompositionByProjectId(projectId, formData) {
+  const url = `${URL_BASE}/api/projects/${projectId}/compositions`;
+
+  if (projectId) {
+    try {
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      };
+      const response = await fetch(url, requestOptions);
+
+      if (!response.ok) {
+        let errorBody = await response.text();
+        try {
+          errorBody = JSON.parse(errorBody);
+        } catch (e) {}
+
+        console.error(
+          `createCompositionByProjectId: API Error Status ${response.status}, Body:`,
+          errorBody
+        );
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+   
+        try {
+          const data = response.json();
+          return data;
+        } catch (error) {}
+      
+    } catch (errorBody) {
+      console.error(
+        "createCompositionByProjectId: CATCH block error:",
+        errorBody
+      );
       throw errorBody;
     }
   }

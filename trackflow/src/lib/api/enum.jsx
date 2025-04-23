@@ -83,3 +83,22 @@ export async function getProjectProgresses() {
     throw error;
   }
 }
+
+
+export async function getCompositionStatuses() {
+  try {
+    const response = await fetch(`${URL_BASE}/api/enums/composition-statuses`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch project progresses:", error);
+    throw error;
+  }
+}
+

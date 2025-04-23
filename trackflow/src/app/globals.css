@@ -50,6 +50,7 @@
       
         --radius: 0.5rem;
         /* Gardé de l'exemple Shadcn typique */
+        --c1: hsl(219, 79%, 66%);
 
       
   }
@@ -295,28 +296,19 @@ height: 100%;
   }
 }
 
-/* --- Animation 5: Rectangle qui s'Étire --- */
-.stretch-rect {
-  width: 10px;
-  /* Commence fin */
-  height: 50px;
-  background-color: #f59e0b;
-  /* Amber */
-  animation: stretch 1.8s ease-in-out infinite alternate;
-}
 
-@keyframes stretch {
-  from {
-    transform: scaleX(1);
-    /* Largeur initiale */
+
+@keyframes scrollUp {
+  0% {
+    background-position-y: 0;
+    /* Position de départ (haut) */
   }
 
-  to {
-    transform: scaleX(5);
-    /* S'étend horizontalement (10px * 5 = 50px) */
+  100% {
+    background-position-y: -45px;
+ 
   }
 }
-
 
 [data-sonner-toast] {
 
