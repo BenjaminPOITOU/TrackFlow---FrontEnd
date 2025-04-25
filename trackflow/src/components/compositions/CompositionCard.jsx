@@ -17,7 +17,7 @@ export function CompositionCard({
   
 
 
-  const compositionUrl = `/compositions/${composition?.id}`;
+  const compositionUrl = `/projects/${projectId}/compositions/${composition?.id}`;
   let branche = "BRANCHE";
   let version = "VERSION";
   const totalBranches =

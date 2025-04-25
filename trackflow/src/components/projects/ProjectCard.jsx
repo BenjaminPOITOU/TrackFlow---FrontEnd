@@ -128,8 +128,7 @@ export default function ProjectCard({ project, userId, onArchive, onDelete }) { 
                                         key={`${genreValue}-${index}`}
                                         type="projectMusicalGender"
                                         value={genreValue}
-                                        // label={genreLabels?.[genreValue] || genreValue} // PAS DE LABELS ICI
-                                        label={genreValue} // Afficher la valeur brute comme avant
+                                        label={genreValue} 
                                         variant="badge"
                                         styleIndex={index}
                                         className="text-xs"

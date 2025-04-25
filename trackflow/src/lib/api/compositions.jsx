@@ -108,3 +108,83 @@ export async function createCompositionByProjectId(projectId, formData) {
     }
   }
 }
+
+
+export async function getCompositionById(projectId, compositionId) {
+  const url = `${URL_BASE}/api/projects/${projectId}/compositions/${compositionId}`;
+
+  if (projectId && compositionId) {
+    try {
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        let errorBody = await response.text();
+        try {
+          errorBody = JSON.parse(errorBody);
+        } catch (e) {}
+
+        console.error(
+          `getCompositionById: API Error Status ${response.status}, Body:`,
+          errorBody
+        );
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      return data;
+    } catch (errorBody) {
+      console.error(
+        "getCompositionById: CATCH block error:",
+        errorBody
+      );
+      throw errorBody;
+    }
+  }
+}
+
+
+
+
+export async function updateCompositionById(projectId, compositionId, compositionUpdated) {
+  const url = `${URL_BASE}/api/projects/${projectId}/compositions/${compositionId}`;
+
+  if (projectId && compositionId) {
+    try {
+      const requestOptions = {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(compositionUpdated),
+      };
+      const response = await fetch(url, requestOptions);
+
+      if (!response.ok) {
+        let errorBody = await response.text();
+        try {
+          errorBody = JSON.parse(errorBody);
+        } catch (e) {}
+
+        console.error(
+          `updateCompositionById: API Error Status ${response.status}, Body:`,
+          errorBody
+        );
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+   
+        try {
+          const data = response.json();
+          return data;
+        } catch (error) {}
+      
+    } catch (errorBody) {
+      console.error(
+        "updateCompositionById: CATCH block error:",
+        errorBody
+      );
+      throw errorBody;
+    }
+  }
+}

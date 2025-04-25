@@ -9,7 +9,7 @@ import { CompositionList } from "@/components/compositions/CompositionList";
 import CompositionCreateNewModal from "@/components/modals/CompositionCreateNewModal";
 import { Loader2 } from "lucide-react";
 
-export default function CompositionPage({ params }) {
+export default function ProjectPage({ params }) {
   const projectId = use(params)?.projectId;
   const {
     user: authUser,
@@ -23,14 +23,13 @@ export default function CompositionPage({ params }) {
   const [isCompositionModalOpen, setIsCompositionModalOpen] = useState(false);
   const [responseCreateModal, setResponseCreateModal] = useState(null);
 
-  // Chargement initial du projet
   useEffect(() => {
     if (authUser?.id && projectId && !project) {
       fetchProject();
     }
   }, [authUser, projectId]);
 
-  // Rafraîchir le projet après création d'une composition
+
   useEffect(() => {
     if (responseCreateModal && authUser?.id && projectId) {
       fetchProject();
@@ -49,7 +48,7 @@ export default function CompositionPage({ params }) {
       .finally(() => setIsLoadingProject(false));
   };
 
-  // Gestion de l'ouverture du modal
+
   const handleOpenNewCompositionModal = () => {
     setIsCompositionModalOpen(true);
   };

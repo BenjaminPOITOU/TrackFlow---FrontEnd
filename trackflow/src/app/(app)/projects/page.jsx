@@ -10,7 +10,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Loader2 } from "lucide-react"; 
 import { toast } from "sonner";
 
-export default function ProjectPage() {
+export default function ProjectListPage() {
 
   const { user, isLoading: isLoadingAuth, error: errorAuth } = useAuth();
 
