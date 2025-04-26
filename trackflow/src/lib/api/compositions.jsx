@@ -188,3 +188,38 @@ export async function updateCompositionById(projectId, compositionId, compositio
     }
   }
 }
+
+
+
+export async function getVersionsByCompositionId(compositionId) {
+  const url = `${URL_BASE}/api/compositions/${compositionId}/versions`;
+
+  if (compositionId) {
+    try {
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        let errorBody = await response.text();
+        try {
+          errorBody = JSON.parse(errorBody);
+        } catch (e) {}
+
+        console.error(
+          `getVersionsByCompositionId: API Error Status ${response.status}, Body:`,
+          errorBody
+        );
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      return data;
+    } catch (errorBody) {
+      console.error(
+        "getVersionsByCompositionId: CATCH block error:",
+        errorBody
+      );
+      throw errorBody;
+    }
+  }
+}

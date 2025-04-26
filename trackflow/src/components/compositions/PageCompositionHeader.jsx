@@ -75,11 +75,11 @@ export function PageCompositionHeader({
     <div className="flex w-full items-center justify-between">
       <div className="flex flex-col items-start gap-1">
         <div className="flex justify-start items-center gap-3">
-          <span className="text-3xl glow-text">{composition.title}</span>
+          <span className="text-4xl glow-text">{composition.title}</span>
           <Terminal color="#e0e0e0" />
 
           {!showDropdown ? (
-            <div className="flex justify-start items-center gap-2s">
+            <div className="flex justify-start items-center gap-2">
               <DataBadge
                 type="compositionStatus"
                 value={composition.compositionStatus}
@@ -157,7 +157,7 @@ export function PageCompositionHeader({
             genre ? (
               <span
                 key={index}
-                className={`flex-1 text-center px-2  rounded-md border ${subGenreStyle} text-sm`}
+                className={`flex-1 text-center px-2 rounded border ${subGenreStyle} text-sm`}
               >
                 {subGenreText}
               </span>

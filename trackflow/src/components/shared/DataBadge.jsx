@@ -226,7 +226,7 @@ const DataBadge = ({ type, value, label, variant = "badge", className }) => {
   } else if (variant === "badge" && displayText) {
     // Styles communs pour tous les badges
     const badgeClasses = cn(
-      "inline-flex items-center rounded-md px-2 text-xs mx-0.5 font-medium border whitespace-nowrap",
+      "inline-flex items-center rounded px-2 text-xs mx-0.5 font-medium border whitespace-nowrap",
       styles.bg,
       styles.text,
       styles.border,
