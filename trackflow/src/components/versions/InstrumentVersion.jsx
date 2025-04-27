@@ -4,7 +4,6 @@ import { getInstrumentBadgeStyle } from "../shared/InstrumentBadge";
 
 export function InstrumentVersion({versionInstruments = []}) {
 
-    console.log()
 
   return (
   <div className="flex flex-col w-full justify-center items-start rounded gap-2 border border-gray-300 p-2 bg-neutral-800">

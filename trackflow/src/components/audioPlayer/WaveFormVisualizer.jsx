@@ -1,47 +1,33 @@
-import { useEffect, useRef } from "react";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 
 export function WaveformVisualizer({ audioUrl }) {
   const waveformRef = useRef(null);
-  const audioRef = useRef(null);
-  const wavesurferRef = useRef(null);
 
   useEffect(() => {
-    if (!audioUrl) return;
-
-    if (waveformRef.current && audioRef.current) {
+    if (waveformRef.current) {
       const wavesurfer = WaveSurfer.create({
         container: waveformRef.current,
-        waveColor: 'oklch(87.2% 0.01 258.338)',
-        progressColor: 'oklch(50% 0 0)',
-        backgroundColor: 'oklch(26.9% 0 0)',
+        waveColor: "#4F4A85",
+        progressColor: "#383351",
+        url: audioUrl,
         barWidth: 2,
-        responsive: true,
-        height: 80,
-        cursorColor: 'white',
-        backend: 'MediaElement', // <= très important ici
-        mediaControls: false,
-        media: audioRef.current, // <= Utilise l'élément audio existant
+        barGap: 1,
+        barRadius: 2,
       });
 
-      wavesurferRef.current = wavesurfer;
-    }
+      wavesurfer.on("interaction", () => {
+        wavesurfer.play();
+      });
 
-    return () => {
-      if (wavesurferRef.current) {
-        try {
-          wavesurferRef.current.destroy();
-        } catch (error) {
-          console.warn('Erreur destruction wavesurfer:', error);
-        }
-      }
-    };
+
+       return () => {
+        wavesurfer.destroy();
+      };
+    }
   }, [audioUrl]);
 
-  return (
-    <>
-      <div id="waveform" ref={waveformRef}></div>
-      <audio ref={audioRef} src={audioUrl} preload="auto" hidden />
-    </>
-  );
+  return <div ref={waveformRef} id="waveform"></div>;
 }

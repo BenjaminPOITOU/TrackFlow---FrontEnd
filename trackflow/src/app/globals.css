@@ -315,3 +315,28 @@
 
 .rhap_time{
   color: oklch(87.2% 0.01 258.338) !important;}
+
+
+
+
+
+    input[type="range"] {
+      cursor: pointer;
+    }
+  
+    /* Style du Thumb pour WebKit/Blink (Chrome, Safari, Edge, Opera) */
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      /* Nécessaire pour outrepasser le style par défaut */
+      appearance: none;
+      width: 16px;
+      /* Largeur du thumb */
+      height: 16px;
+      /* Hauteur du thumb */
+      background: gray;
+      /* VOTRE COULEUR ICI (ex: gris clair) */
+      border-radius: 50%;
+      /* Pour un thumb rond */
+      cursor: pointer;
+    
+          }
