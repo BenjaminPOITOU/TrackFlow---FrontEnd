@@ -2,9 +2,8 @@ import WaveSurfer from "wavesurfer.js";
 import { useEffect, useRef, useState } from "react";
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX } from "lucide-react";
 
-export function AudioPlayerContent() {
-  const audioUrl =
-    "https://storage.googleapis.com/my-audio-file-bucket/musiques/166a1f3b-b713-4b0b-a085-02b07b865e6e.mp3";
+export function AudioPlayerContent({versionAudioUrl}) {
+ 
 
   const waveformRef = useRef(null);
   const audioRef = useRef(null);
@@ -23,7 +22,7 @@ export function AudioPlayerContent() {
         container: waveformRef.current,
         waveColor: "#99a1af",
         progressColor: "#383351",
-        url: audioUrl,
+        url: versionAudioUrl,
         barWidth: 2,
         barGap: 1,
         barRadius: 2,
@@ -112,7 +111,7 @@ export function AudioPlayerContent() {
   };
 
   return (
-    <div className="w-full mx-auto rounded overflow-hidden shadow-lg bg-neutral-800 p-6 border border-gray-300">
+    <div className="w-full mx-auto rounded overflow-hidden bg-neutral-700 shadow-lg p-6 border border-gray-300">
       {/* Visualiseur d'onde */}
       <div 
         ref={waveformRef} 

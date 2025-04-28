@@ -7,12 +7,14 @@ import { use, useEffect, useState } from "react";
 import { PageCompositionHeader } from "@/components/compositions/PageCompositionHeader";
 import { Loader2 } from "lucide-react";
 import { VersionBlockDetails } from "@/components/versions/VersionBlockDetails";
-import { AudioPlayerContent } from "@/components/audioPlayer/AudioPlayerContent";
+
+import { VersionBlockMediaPlayer } from "@/components/versions/VersionBlockMediaPlayer";
+import { VersionBlock } from "@/components/versions/VersionBlock";
 
 export default function compositionPage({ params }) {
   const compositionId = use(params)?.compositionId;
   const projectId = use(params)?.projectId;
-  const indexVersionList = 0;
+  let indexVersionList = 0;
 
   const [composition, setComposition] = useState(null);
   const [isLoadingComposition, setIsLoadingComposition] = useState(false);
@@ -35,6 +37,7 @@ export default function compositionPage({ params }) {
         try {
           setIsLoadingComposition(true);
           const fetchData = await getCompositionById(projectId, compositionId);
+
           setComposition(fetchData);
           setError(null);
         } catch (error) {
@@ -79,7 +82,7 @@ export default function compositionPage({ params }) {
   }, [projectId, compositionId]);
 
   return (
-    <div className={`m-1 p-5 w-full h-screen overflow-y-auto flex flex-col`}>
+    <div className={`m-1 p-5 w-full h-screen flex flex-col`}>
       {composition && (
         <div className="flex flex-col gap-4">
           <PageCompositionHeader
@@ -91,12 +94,7 @@ export default function compositionPage({ params }) {
           />
 
           <div className="w-75 border border-gray-300"></div>
-          {versionList && (
-            <VersionBlockDetails
-              versionId={versionList[indexVersionList]?.versionId}
-            />
-          )}
-          <AudioPlayerContent />
+          {versionList && <VersionBlock versionId ={versionList[indexVersionList]?.versionId}/>}
         </div>
       )}
 

@@ -2,7 +2,7 @@ import { KeyboardMusic } from "lucide-react";
 import { getInstrumentBadgeStyle } from "../shared/InstrumentBadge";
 
 
-export function InstrumentVersion({versionInstruments = []}) {
+export function InstrumentVersion({versionInstruments}) {
 
 
   return (

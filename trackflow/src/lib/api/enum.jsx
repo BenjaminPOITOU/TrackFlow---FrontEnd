@@ -97,7 +97,44 @@ export async function getCompositionStatuses() {
 
     return data;
   } catch (error) {
-    console.error("Failed to fetch project progresses:", error);
+    console.error("Failed to fetch CompositionStatuses:", error);
+    throw error;
+  }
+}
+
+
+export async function getAnnotationCategories() {
+  try {
+    const response = await fetch(`${URL_BASE}/api/enums/annotation-categories`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch annotation-categories:", error);
+    throw error;
+  }
+}
+
+
+
+export async function getAnnotationStatus() {
+  try {
+    const response = await fetch(`${URL_BASE}/api/enums/annotation-statuses`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch annotation-statuses:", error);
     throw error;
   }
 }
