@@ -3,17 +3,12 @@ import { SelectStatus } from "./SelectStatus";
 import { useState } from "react";
 import { Link2Off, Link2 } from "lucide-react";
 
-export function TimeAndCategory() {
-  const [showSynchBtn, setShowSynchBtn] = useState(false);
+export function TimeAndCategory({btnSynchStatus, onBtnSynchStatus}) {
+  
   const [valueTime, setValueTime] = useState("0 : 00");
   const [isTimeDisabled, setIsTimeDisabled] = useState(true);
   const [isSynchHovering, setIsSynchHovering] = useState(false);
 
-  const toggleSynchBtn = () => {
-    setShowSynchBtn(!showSynchBtn);
-    
-   
-  };
 
   return (
     <div className="flex flex-col justify-center items-start gap-2">
@@ -21,16 +16,16 @@ export function TimeAndCategory() {
         <div className="flex gap-1 items-center text-sm">
           <span>TIME : </span>
           <input  disabled className={`border border-gray-300 p-1 px-2 rounded ${
-          !showSynchBtn ? "bg-gray-400 text-gray-500" : "bg-neutral-700 text-gray-300"
-        }  cursor-not-allowed w-18`} value={showSynchBtn ? valueTime : "- : - -"} onChange={setValueTime}/> 
+          !btnSynchStatus ? "bg-gray-400 text-gray-500" : "bg-neutral-700 text-gray-300"
+        }  cursor-not-allowed w-18`} value={btnSynchStatus ? valueTime : "- : - -"} onChange={setValueTime}/> 
          <button
             onMouseLeave={() => setIsSynchHovering(false)}
             onMouseEnter={() => setIsSynchHovering(true)}
-            className={`border rounded-full  p-2 cursor-pointer right-3 ml-2 ${showSynchBtn ? "border-[#21e114]" : "border-gray-300"}`}
-            onClick={() => toggleSynchBtn()}
+            className={`border rounded-full  p-2 cursor-pointer right-3 ml-2 ${btnSynchStatus ? "border-[#21e114]" : "border-gray-300"}`}
+            onClick={() => onBtnSynchStatus()}
            
           >
-            {showSynchBtn ? (
+            {btnSynchStatus ? (
               <Link2
                 className="transition-all ease-out-linear"
                 size={20}

@@ -19,12 +19,12 @@ export function PageCompositionHeader({
   projectId,
   onUpdate,
 }) {
-  console.log("Titre du projet :", projectTitle);
 
-  const subGenreText =
-    composition.subGenders !== undefined && composition.subGenders !== null
-      ? String(composition.subGenders).toLocaleUpperCase()
-      : "N/A";
+  const subGenreText = composition?.subGenders.map((genre) => genre.toLocaleUpperCase() || "N/A");
+console.log("composition : ", composition)
+  console.log("SubGenreText : ", composition.subGenders)
+
+
   const projectTitleUpperCase = projectTitle?.toLocaleUpperCase() || "N/A";
 
   const [isDropdownHovering, setIsDropdownHovering] = useState(null);
@@ -153,13 +153,13 @@ export function PageCompositionHeader({
         </div>
 
         <div className="flex items-center justify-start gap-1 ">
-          {composition.subGenders?.map((genre, index) =>
+          {subGenreText?.map((genre, index) =>
             genre ? (
               <span
                 key={index}
                 className={`flex-1 text-center px-2 rounded border ${subGenreStyle} text-sm`}
               >
-                {subGenreText}
+                {genre}
               </span>
             ) : (
               " "
