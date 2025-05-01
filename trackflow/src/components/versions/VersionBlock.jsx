@@ -11,6 +11,7 @@ export function VersionBlock({ versionId }) {
   console.log("Version Id : ", versionId);
 
   const [versionDetailsData, setVersionDetailsData] = useState({
+    versionId:"",
     versionName: "",
     branchName: "",
     description: "Aucune description.",
@@ -34,6 +35,7 @@ export function VersionBlock({ versionId }) {
           const fetchData = await getVersionById(versionId);
           setVersion(fetchData);
           setVersionDetailsData({
+            versionId: fetchData?.versionId || "",
             versionName: fetchData?.versionName || "",
             branchName: fetchData?.branchName || "",
             description: fetchData?.description || "Aucune description.",
@@ -64,6 +66,7 @@ export function VersionBlock({ versionId }) {
       <VersionBlockDetails versionDetailsData={versionDetailsData} />
 
       <VersionBlockMediaPlayer
+        versionId={versionDetailsData.versionId}
         versionName={versionDetailsData.versionName}
         branchName={versionDetailsData.branchName}
         versionAudioUrl="https://storage.googleapis.com/my-audio-file-bucket/musiques/166a1f3b-b713-4b0b-a085-02b07b865e6e.mp3"
