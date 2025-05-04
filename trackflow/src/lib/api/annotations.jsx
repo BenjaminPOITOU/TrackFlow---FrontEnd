@@ -6,6 +6,8 @@ const URL_BASE = "http://localhost:8080";
 export async function createAnnotationByVersionId(versionId, formData) {
   const url = `${URL_BASE}/api/versions/${versionId}/annotations`;
 
+   console.log("form data : ", formData)
+
   if (versionId) {
     try {
       const requestOptions = {

@@ -8,6 +8,7 @@ export function TimeAndCategory({
   onBtnSynchStatus,
   value,
   onChange,
+  isAnnotationBtnClicked
 }) {
   const [isSynchHovering, setIsSynchHovering] = useState(false);
 
@@ -17,6 +18,15 @@ export function TimeAndCategory({
       [field]: val,
     });
   };
+
+   const formatTime = (time) => {
+    if (time === undefined || time === null || time === "") return "- : - -";
+    
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
 
   return (
     <div className="flex flex-col justify-center items-start gap-2">
@@ -30,7 +40,7 @@ export function TimeAndCategory({
                 ? "bg-gray-400 text-gray-500"
                 : "bg-neutral-700 text-gray-300"
             }  cursor-not-allowed w-18`}
-            value={btnSynchStatus ? value.timePosition ?? "" : "- : - -"}
+            value={isAnnotationBtnClicked ? formatTime(value.timePosition) : "- : - -"}
             onChange={(e) => handleFieldChange("timePosition", e.target.value)}
           />
           <button

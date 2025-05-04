@@ -11,10 +11,11 @@ export function VersionBlockMediaPlayer({
   branchName,
   versionAudioUrl,
 }) {
-  const [annotationToAdd, setAnnotationToAdd] = useState([]);
+  const [annotationData, setAnnotationData] = useState([]);
   const [annotationCreatedResponse, setAnnotationCreatedResponse] = useState(
     []
   );
+  const [currentTime, setCurrentTime] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,15 +24,24 @@ export function VersionBlockMediaPlayer({
 
 
    async function handleAnnotationSubmit(annotationData) {
-    if (!versionId || !annotationData || !annotationData.content) {
+    if (!versionId || !annotationData) {
+
+      console.log("annotationData : ", annotationData);
+      
       console.error("Données d'annotation ou ID de version manquants.");
-      setError("Impossible d'enregistrer : données manquantes."); // Informer l'utilisateur
-      return false; // Indiquer que la soumission a échoué
+      setError("Impossible d'enregistrer : données manquantes."); 
+      return false; 
+    }
+
+     if (!annotationData.content) {
+      console.error("Contenu d'annotation manquant.");
+      setError("Impossible d'enregistrer : veuillez ajouter un contenu à votre annotation.");
+      return false;
     }
 
     setIsSubmitting(true);
     setError(null);
-    setAnnotationCreatedResponse([]); // Réinitialiser la réponse précédente
+    setAnnotationCreatedResponse([]);
 
     try {
       const sendAnnotationResponse = await createAnnotationByVersionId(
@@ -62,7 +72,7 @@ export function VersionBlockMediaPlayer({
         <span className="text-sm"> Branche : {branchNameUpperCase}</span>
       </div>
 
-      <AudioPlayerContent versionAudioUrl={versionAudioUrl} />
+      <AudioPlayerContent currentTime={currentTime} onCurrentTime ={setCurrentTime} versionAudioUrl={versionAudioUrl} />
 
       <div className="w-full border border-gray-300"></div>
 
@@ -70,6 +80,7 @@ export function VersionBlockMediaPlayer({
         <AddAnnotationBlock
           onAnnotationSubmit={handleAnnotationSubmit}
           isSubmitting={isSubmitting}
+          currentTime={currentTime}
         />
         <AnnotationList />
       </div>

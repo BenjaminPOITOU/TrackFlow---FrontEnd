@@ -35,6 +35,7 @@ export function SelectStatus({ value, onValueChange }) {
     <Select value={value} onValueChange={onValueChange}>
       <SelectTrigger className="w-42 cursor-pointer bg-neutral-700">
         <SelectValue placeholder={isLoading ? "Chargement..." : "Selectionner"} />
+    
       </SelectTrigger>
       <SelectContent className="bg-neutral-700">
         <SelectGroup>

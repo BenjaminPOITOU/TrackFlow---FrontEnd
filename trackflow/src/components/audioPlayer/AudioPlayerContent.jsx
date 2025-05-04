@@ -2,14 +2,12 @@ import WaveSurfer from "wavesurfer.js";
 import { useEffect, useRef, useState } from "react";
 import { Play, Pause, SkipBack, SkipForward, Volume2, VolumeX } from "lucide-react";
 
-export function AudioPlayerContent({versionAudioUrl}) {
+export function AudioPlayerContent({currentTime, onCurrentTime, versionAudioUrl}) {
  
 
   const waveformRef = useRef(null);
-  const audioRef = useRef(null);
   const [wavesurfer, setWavesurfer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
@@ -45,18 +43,18 @@ export function AudioPlayerContent({versionAudioUrl}) {
       });
 
       ws.on("audioprocess", () => {
-        setCurrentTime(ws.getCurrentTime());
+        onCurrentTime(ws.getCurrentTime());
       });
 
       ws.on("seek", () => {
-        setCurrentTime(ws.getCurrentTime());
+        onCurrentTime(ws.getCurrentTime());
       });
 
       return () => {
         ws.destroy();
       };
     }
-  }, [waveformRef]);
+  }, [waveformRef, versionAudioUrl]);
 
   // Fonctions de contrôle
   const togglePlay = () => {
@@ -68,7 +66,7 @@ export function AudioPlayerContent({versionAudioUrl}) {
   const seekTo = (position) => {
     if (wavesurfer) {
       wavesurfer.seekTo(position / duration);
-      setCurrentTime(position);
+      onCurrentTime(position);
     }
   };
 
@@ -102,7 +100,7 @@ export function AudioPlayerContent({versionAudioUrl}) {
     }
   };
 
-  // Formater le temps (mm:ss)
+
   const formatTime = (seconds) => {
     if (isNaN(seconds)) return "00:00";
     const min = Math.floor(seconds / 60);
@@ -203,3 +201,7 @@ export function AudioPlayerContent({versionAudioUrl}) {
     </div>
   );
 }
+
+
+
+
