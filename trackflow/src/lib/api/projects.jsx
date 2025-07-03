@@ -22,7 +22,7 @@ export async function sendCreatedProject(userId, projectData) {
     if (!response.ok) {
       let errorDetail = null;
       try {
-        errorDetail = await response.json(); // Tente de parser une réponse d'erreur JSON
+        errorDetail = await response.json(); 
       } catch (e) {
         console.error(
           "API Error Response:",
@@ -30,7 +30,6 @@ export async function sendCreatedProject(userId, projectData) {
           response.statusText,
           errorDetail
         );
-        // Lance une erreur AVEC les détails si disponibles
         throw new Error(
           `API Error ${response.status}: ${response.statusText}. ${
             errorDetail ? JSON.stringify(errorDetail) : "No details available."

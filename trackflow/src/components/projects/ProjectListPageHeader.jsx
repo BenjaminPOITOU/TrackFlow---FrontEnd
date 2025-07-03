@@ -13,9 +13,9 @@ export default function ProjectListPageHeader({ onActionClick }) {
   return (
     <div className="flex items-center justify-between">
       <div>
-        <h1 className="text-3xl font-bold font-orbitron">Projects</h1>
+        <h1 className="text-3xl font-bold font-orbitron">Projets</h1>
         <p className="mt-1 text-muted-foreground">
-          Manage your creative endeavors
+        Organisez vos démarches créatives
         </p>
       </div>
       <button

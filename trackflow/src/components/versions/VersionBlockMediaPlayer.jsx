@@ -90,7 +90,7 @@ export function VersionBlockMediaPlayer({
   }, []);
 
   return (
-    <div className="flex flex-col w-full border border-zinc-700 bg-neutral-800 px-2 md:px-4 py-4 min-h-0 gap-6 justify-between rounded-lg">
+    <div className="flex flex-col w-full border border-gray-300 bg-neutral-800 px-2 md:px-4 py-4 min-h-0 gap-6 justify-between rounded-lg">
       <div className="w-full">
         <AudioPlayer
           versionAudioUrl={versionAudioUrl}

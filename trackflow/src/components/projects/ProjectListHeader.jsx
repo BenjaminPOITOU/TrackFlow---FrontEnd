@@ -12,11 +12,11 @@ export function ProjectListHeader() {
       <div className="flex items-center gap-2">
         <button className="flex items-center gap-2 rounded-md p-2 text-sm transition-colors hover:bg-muted">
           <Funnel size={16} />
-          <span>Filter</span>
+          <span>Filtrer</span>
         </button>
         <button className="flex items-center gap-2 rounded-md p-2 text-sm transition-colors hover:bg-muted">
           <ArrowDownNarrowWide size={16} />
-          <span>Sort</span>
+          <span>Trier</span>
         </button>
       </div>
       <div className="flex items-center gap-2">

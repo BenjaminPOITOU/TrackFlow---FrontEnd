@@ -17,7 +17,7 @@ import fetcher from "./api-helpers";
  */
 export async function getProjectEnums() {
   try {
-    const response = await fetch(`${URL_BASE}/api/enums/projects/enums`);
+    const response = await fetch(`${URL_BASE}/api/enums/projects`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
