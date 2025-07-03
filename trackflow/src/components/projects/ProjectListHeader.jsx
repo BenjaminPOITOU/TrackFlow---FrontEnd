@@ -1,26 +1,31 @@
 import { Funnel, ArrowDownNarrowWide, LayoutGrid, List } from "lucide-react";
 
+/**
+ * Renders the header for the project list, containing filter, sort, and view controls.
+ * This is a Server Component as it is purely presentational.
+ * Future interactivity would be handled by making it a Client Component.
+ * @returns {JSX.Element} The project list header.
+ */
 export function ProjectListHeader() {
   return (
-    <div className="flex justify-between rounded items-center w-full h-20 border border-gray-300 px-4">
-      <div className="flex justify-center items-center gap-2">
-        <button className="border rounded flex justify-center items-center w-full gap-4 p-2 border-gray-300 hover:bg-zinc-500 cursor-pointer">
-          <span> Filter </span> <Funnel color="#e0e0e0" />
+    <div className="flex items-center justify-between rounded-lg border bg-card p-2 text-card-foreground">
+      <div className="flex items-center gap-2">
+        <button className="flex items-center gap-2 rounded-md p-2 text-sm transition-colors hover:bg-muted">
+          <Funnel size={16} />
+          <span>Filter</span>
         </button>
-        <button className="border rounded flex justify-center items-center w-full gap-4 p-2 border-gray-300 hover:bg-zinc-500 cursor-pointer">
-          <span> Sort </span><ArrowDownNarrowWide color="#e0e0e0" />
+        <button className="flex items-center gap-2 rounded-md p-2 text-sm transition-colors hover:bg-muted">
+          <ArrowDownNarrowWide size={16} />
+          <span>Sort</span>
         </button>
       </div>
-      <div className="flex justify-center items-center w-56">
-        <div className="w-full text-center"> VIEW_MODE: </div>
-        <div className="flex justify-center items-center w-full gap-2 p-2">
-          <button className="border rounded border-gray-300 p-1 hover:bg-zinc-500 cursor-pointer">
-            <LayoutGrid color="#e0e0e0" />
-          </button>
-          <button className="border rounded border-gray-300 p-1 hover:bg-zinc-500 cursor-pointer">
-            <List color="#e0e0e0" />
-          </button>
-        </div>
+      <div className="flex items-center gap-2">
+        <button className="rounded-md p-2 transition-colors hover:bg-muted">
+          <LayoutGrid size={18} />
+        </button>
+        <button className="rounded-md bg-muted p-2">
+          <List size={18} />
+        </button>
       </div>
     </div>
   );

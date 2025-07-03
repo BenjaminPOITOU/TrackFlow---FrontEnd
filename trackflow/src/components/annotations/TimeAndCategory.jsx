@@ -6,20 +6,18 @@ import { Link2Off, Link2 } from "lucide-react";
 export function TimeAndCategory({
   btnSynchStatus,
   onBtnSynchStatus,
-  value,
-  onChange,
-  isAnnotationBtnClicked
+  timePosition,
+  category,
+  status, 
+  onChange
 }) {
   const [isSynchHovering, setIsSynchHovering] = useState(false);
 
   const handleFieldChange = (field, val) => {
-    onChange({
-      ...value,
-      [field]: val,
-    });
+    onChange(field, val);
   };
 
-   const formatTime = (time) => {
+  const formatTime = (time) => {
     if (time === undefined || time === null || time === "") return "- : - -";
     
     const minutes = Math.floor(time / 60);
@@ -27,11 +25,10 @@ export function TimeAndCategory({
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-
   return (
-    <div className="flex flex-col justify-center items-start gap-2">
-      <div className="flex w-full justify-between items-center px-4">
-        <div className="flex gap-1 items-center text-sm">
+    <div className="flex flex-col justify-center items-end gap-2 w-full">
+      <div className="flex flex-col w-full justify-center items-end px-4">
+        <div className="flex gap-1 justify-end items-center text-sm w-full py-2 ">
           <span>TIME : </span>
           <input
             disabled
@@ -40,8 +37,8 @@ export function TimeAndCategory({
                 ? "bg-gray-400 text-gray-500"
                 : "bg-neutral-700 text-gray-300"
             }  cursor-not-allowed w-18`}
-            value={isAnnotationBtnClicked ? formatTime(value.timePosition) : "- : - -"}
-            onChange={(e) => handleFieldChange("timePosition", e.target.value)}
+            value={formatTime(timePosition)}
+            readOnly
           />
           <button
             onMouseLeave={() => setIsSynchHovering(false)}
@@ -54,21 +51,21 @@ export function TimeAndCategory({
             {btnSynchStatus ? (
               <Link2
                 className="transition-all ease-out-linear"
-                size={20}
+                size={15}
                 color="#21e114"
                 strokeWidth={2.5}
               />
             ) : (
-              <Link2Off size={20} color="#e0e0e0" />
+              <Link2Off size={15} color="#e0e0e0" />
             )}
           </button>
         </div>
 
-        <div className="flex justify-center items-center gap-2 text-sm">
-          <span>CATEGORIE : </span>
+        <div className="flex justify-end items-center gap-2 text-sm w-full">
+          <span className="items-start whitespace-nowrap">CATEGORIE : </span>
           <SelectCategory
             className="cursor-pointer"
-            value={value.category}
+            value={category}
             onValueChange={(val) => handleFieldChange("category", val)}
           />
         </div>
@@ -78,7 +75,7 @@ export function TimeAndCategory({
         <span>STATUT : </span>
         <SelectStatus
           className="cursor-pointer"
-          value={value.status}
+          value={status}
           onValueChange={(val) => handleFieldChange("status", val)}
         />
       </div>

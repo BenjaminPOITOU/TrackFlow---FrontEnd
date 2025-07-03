@@ -1,247 +1,108 @@
-"use client"
+"use client";
 
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useProjectAction } from "@/components/projects/hooks/useProjectAction";
 import { Ellipsis, Trash2, Archive, Loader2, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner"; // Pour les notifications
-
-
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-
+import ActionConfirmationDialog from "@/components/shared/ActionConfirmationDialog";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
-import { archiveProjectById, deleteProjectById } from "@/lib/api/projects";
+/**
+ * Provides a dropdown menu for project actions, using a custom hook for logic
+ * and a reusable dialog for confirmations.
+ * @param {object} props
+ * @param {string} props.projectId - The ID of the project.
+ * @param {string} [props.className] - Optional additional class names.
+ * @param {(isHovered: boolean) => void} props.onSetCardHovered - Callback to control the parent card's hover state.
+ */
+export function DropdownMenuProjectCard({ projectId, className, onSetCardHovered }) {
+  const { user } = useAuth();
+  const { isProcessing, handleArchive, handleDelete } = useProjectAction();
+  const [dialogAction, setDialogAction] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const handleActionSelect = (actionType) => {
+    setIsMenuOpen(false);
+    setTimeout(() => {
+      setDialogAction(actionType);
+    }, 0);
+  };
 
-export function DropdownMenuProjectCard({
-  className,
-  projectId,
-  userId,
-  onProjectArchived, 
-  onProjectDeleted  
-}) {
+  const handleConfirmAction = async () => {
+    if (dialogAction === 'archive') {
+      await handleArchive(user?.id, projectId);
+    } else if (dialogAction === 'delete') {
+      await handleDelete(user?.id, projectId);
+    }
+    setDialogAction(null);
+  };
 
+  const stopPropagation = useCallback((e) => {
+    e.stopPropagation();
+    e.preventDefault();
+  }, []);
   
-  const [isArchiving, setIsArchiving] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [showArchiveConfirm, setShowArchiveConfirm] = useState(false);
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  const [error, setError] = useState(null); 
-
-
-  const handleArchiveClick = useCallback(() => {
-    setShowArchiveConfirm(true);
-  }, []);
-
-  const handleDeleteClick = useCallback(() => {
-    setShowDeleteConfirm(true);
-  }, []);
-
-
- 
-  const confirmArchive = async () => {
-    if (!userId || !projectId) {
-      toast.error("Missing user or project information.");
-      return;
-    }
-    setIsArchiving(true);
-    setError(null);
-    setShowArchiveConfirm(false);
-
-    try {
-      console.log(`Archiving project ${projectId} for user ${userId}...`);
-    
-       await archiveProjectById(userId, projectId);
-
-      toast.success("Project archived successfully!");
-      if (onProjectArchived) {
-        onProjectArchived(projectId);
-      }
-    } catch (err) {
-      console.error("Failed to archive project:", err);
-      setError(err.message || "Failed to archive project.");
-      toast.error(`Archive failed: ${err.message}`);
-    } finally {
-      setIsArchiving(false);
+  const handleMenuOpenChange = (open) => {
+    setIsMenuOpen(open);
+    if (open && onSetCardHovered) {
+      onSetCardHovered(false);
     }
   };
 
-
-  const confirmDelete = async () => {
-    if (!userId || !projectId) {
-      toast.error("Missing user or project information.");
-      return;
-    }
-    setIsDeleting(true);
-    setError(null);
-    setShowDeleteConfirm(false);
-
-    try {
-       console.log(`Deleting project ${projectId} for user ${userId}...`);
-       await deleteProjectById(userId, projectId);
-       toast.success("Project deleted successfully!");
-       if (onProjectDeleted) {
-         onProjectDeleted(projectId); 
-       }
-    } catch (err) {
-       console.error("Failed to delete project:", err);
-       setError(err.message || "Failed to delete project.");
-       toast.error(`Delete failed: ${err.message}`);
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
-
-  const isLoading = isArchiving || isDeleting; 
+  const isActionLoading = isProcessing('archive') || isProcessing('delete');
 
   return (
     <>
-   
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild
-         onClick={(event) => {
-              console.log("Dropdown trigger clicked, stopping propagation & preventing default.");
-              event.stopPropagation();
-              event.preventDefault();
-          }}
-          onMouseDown={(event) => {
-           // Tenter d'arrêter l'événement avant même le 'click'
-           console.log("Trigger onMouseDown, stopping propagation & preventing default.");
-           event.stopPropagation();
-           event.preventDefault();
-        }}>
+      <DropdownMenu open={isMenuOpen} onOpenChange={handleMenuOpenChange}>
+        <DropdownMenuTrigger asChild onClick={stopPropagation}>
           <Button
-             variant="ghost"
-             size="icon"    
-             className={cn(
-                "h-6 w-6 rounded", 
-                "text-muted-foreground hover:text-foreground hover:bg-zinc-700",
-                "focus:outline-none focus-visible:ring-1 focus-visible:ring-ring", 
-                 isLoading ? "cursor-not-allowed opacity-50" : "", 
-                className
-                
-             )}
-             disabled={isLoading} 
-             aria-label="Project options"
+            variant="ghost"
+            size="icon"
+            className={cn("h-6 w-6 rounded text-muted-foreground hover:bg-zinc-700 hover:text-foreground", isActionLoading && "cursor-not-allowed opacity-50", className)}
+            disabled={isActionLoading}
+            aria-label="Project options"
           >
-            {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-                <Ellipsis className="w-4 h-4" />
-            )}
+            {isActionLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Ellipsis className="h-4 w-4" />}
           </Button>
         </DropdownMenuTrigger>
-
-        <DropdownMenuContent align="end" className="w-56 bg-neutral-800 border-neutral-700 text-gray-300">
-          <DropdownMenuLabel className="text-gray-400">Project Actions</DropdownMenuLabel>
-          <DropdownMenuSeparator className="bg-neutral-700"/>
-
-          <DropdownMenuItem
-            className="hover:bg-neutral-700 focus:bg-neutral-700 cursor-pointer"
-
-            onSelect={(event) => {
-              event.stopPropagation(); 
-              event.preventDefault(); 
-              if (!isLoading) {
-                 handleArchiveClick(); 
-              }
-            }}
-            disabled={isLoading} 
+        <DropdownMenuContent 
+          align="end" 
+          className="w-56 border-neutral-700 bg-neutral-800 text-gray-300" 
+          onClick={stopPropagation}
+          onCloseAutoFocus={(e) => e.preventDefault()}
+        >
+          <DropdownMenuLabel className="text-gray-400">Actions</DropdownMenuLabel>
+          <DropdownMenuSeparator className="bg-neutral-700" />
+          <DropdownMenuItem 
+            onSelect={() => handleActionSelect('archive')} 
+            disabled={isActionLoading} 
+            className="cursor-pointer"
           >
-            <div className="flex items-center justify-start gap-2">
-              <Archive className="w-4 h-4" color="#e0e0e0" />
-              <span>Archive</span>
-            </div>
+            <Archive className="mr-2 h-4 w-4" /><span>Archive</span>
           </DropdownMenuItem>
-
-
-          <DropdownMenuItem
-            className="text-red-500 hover:bg-neutral-700 focus:bg-neutral-700 focus:text-red-400 cursor-pointer"
-
-            onSelect={(event) => {
-              event.stopPropagation(); 
-              event.preventDefault(); 
-               if (!isLoading) {
-                  handleDeleteClick(); 
-               }
-            }}
-            disabled={isLoading} 
+          <DropdownMenuItem 
+            onSelect={() => handleActionSelect('delete')} 
+            disabled={isActionLoading} 
+            className="cursor-pointer text-red-500 focus:text-red-400"
           >
-            <div className="flex items-center justify-start gap-2">
-              <Trash2 className="w-4 h-4" color="#ef4444"/> {}
-              <span>Delete</span>
-            </div>
+            <Trash2 className="mr-2 h-4 w-4" /><span>Delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
-
-      <AlertDialog open={showArchiveConfirm} onOpenChange={setShowArchiveConfirm}>
-        <AlertDialogContent className="bg-zinc-900 border-yellow-600">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2">
-                <Archive className="w-5 h-5 text-yellow-400"/> Archive Project?
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-zinc-400 pt-2">
-              Archiving this project will hide it from the main lists but it can usually be restored later. Are you sure you want to proceed?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel className="bg-transparent hover:bg-zinc-700 border-zinc-600 text-zinc-300">Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-yellow-600 hover:bg-yellow-700 text-black"
-              onClick={confirmArchive} 
-              disabled={isArchiving} 
-            >
-              {isArchiving ? <Loader2 className="h-4 w-4 animate-spin mr-2"/> : null}
-              Confirm Archive
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-
- 
-       <AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
-        <AlertDialogContent className="bg-zinc-900 border-red-600">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-red-500"/> Delete Project Permanently?
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-zinc-400 pt-2">
-              This action is irreversible. All associated data (compositions, files, etc.) will be permanently deleted. Are you absolutely sure?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel className="bg-transparent hover:bg-zinc-700 border-zinc-600 text-zinc-300">Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              className="bg-red-600 hover:bg-red-700 text-white"
-              onClick={confirmDelete} 
-              disabled={isDeleting} 
-            >
-               {isDeleting ? <Loader2 className="h-4 w-4 animate-spin mr-2"/> : null}
-              Yes, Delete Permanently
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ActionConfirmationDialog
+        isOpen={!!dialogAction}
+        onOpenChange={(open) => !open && setDialogAction(null)}
+        onConfirm={handleConfirmAction}
+        isConfirming={isProcessing(dialogAction)}
+        title={dialogAction === 'archive' ? "Archive Project?" : "Delete Project Permanently?"}
+        titleIcon={dialogAction === 'archive' ? <Archive className="h-5 w-5 text-yellow-400" /> : <AlertTriangle className="h-5 w-5 text-red-500" />}
+        description={dialogAction === 'archive' ? "Archiving this project will hide it from view, but it can be restored later." : "This action is irreversible. All associated data will be permanently deleted."}
+        confirmText={dialogAction === 'archive' ? "Confirm Archive" : "Yes, Delete Permanently"}
+        variant={dialogAction === 'archive' ? 'warning' : 'danger'}
+      />
     </>
   );
 }

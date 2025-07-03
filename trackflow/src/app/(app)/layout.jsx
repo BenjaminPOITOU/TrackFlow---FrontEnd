@@ -1,24 +1,20 @@
-"use client";
-
-import React from "react";
 import Sidebar from "@/components/layout/Sidebar";
-import { TechnicalFrame } from "@/components/layout/TechnicalFrame";
-import { AuthProvider } from "@/contexts/AuthContext";
-import { Toaster } from "sonner";
+import TechnicalFrame from "@/components/layout/TechnicalFrame";
 
+/**
+ * The layout for the authenticated section of the application.
+ * It establishes the main structure with a sidebar and a content area.
+ * @param {{ children: React.ReactNode }} props - The component props.
+ * @param {React.ReactNode} props.children - The page content to be rendered within the main area.
+ * @returns {JSX.Element} The main application layout.
+ */
 export default function AppLayout({ children }) {
   return (
-    <AuthProvider>
-      <Toaster richColors position="bottom-right" />
-      <div className="flex h-screen bg-background text-gray-300">
-        <Sidebar />
-
-        <main className="flex-1 flex flex-col overflow-y-auto p-4">
-          <TechnicalFrame>
-            <div className="flex-1  p-6">{children}</div>
-          </TechnicalFrame>
-        </main>
-      </div>
-    </AuthProvider>
+    <div className="flex flex-col lg:flex-row h-screen bg-background text-foreground">
+      <Sidebar />
+      <main className="flex-1 overflow-y-auto">
+        <TechnicalFrame>{children}</TechnicalFrame>
+      </main>
+    </div>
   );
 }

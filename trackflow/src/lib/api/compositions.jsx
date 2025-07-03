@@ -66,7 +66,7 @@ export async function deleteCompositionById(projectId, compositionId) {
   }
 }
 
-export async function createCompositionByProjectId(projectId, formData) {
+export async function createComposition(projectId, formData) {
   const url = `${URL_BASE}/api/projects/${projectId}/compositions`;
 
   if (projectId) {
@@ -142,9 +142,6 @@ export async function getCompositionById(projectId, compositionId) {
     }
   }
 }
-
-
-
 
 export async function updateCompositionById(projectId, compositionId, compositionUpdated) {
   const url = `${URL_BASE}/api/projects/${projectId}/compositions/${compositionId}`;

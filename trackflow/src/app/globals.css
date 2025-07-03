@@ -179,6 +179,7 @@
 
 /* --- Animation 1: Cercle qui Pulse --- */
 @layer utilities {
+
   /* ou base */
   .pulse-circle {
     display: inline-block;
@@ -196,6 +197,7 @@
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     transform: scale(1);
@@ -291,52 +293,4 @@
   border-color: oklch(87.2% 0.01 258.338) !important;
 }
 
-.rhap_container {
-  background-color: oklch(26.9% 0 0)!important;;
-  color: oklch(87.2% 0.01 258.338)!important;;
-  border: oklch(87.2% 0.01 258.338)!important;;
-  border-radius: 2px!important;;
-}
 
-/* Boutons (play, pause, next, prev) */
-.rhap_button-clear {
-  color: oklch(87.2% 0.01 258.338)!important;;
-}
-
-/* Progression de la piste */
-.rhap_progress-bar-show-download {
-  background-color: oklch(96.7% 0.003 264.542)!important;;
-}
-
-/* La partie déjà jouée */
-.rhap_progress-indicator {
-  background: oklch(87.2% 0.01 258.338)!important;;
-}
-
-.rhap_time{
-  color: oklch(87.2% 0.01 258.338) !important;}
-
-
-
-
-
-    input[type="range"] {
-      cursor: pointer;
-    }
-  
-    /* Style du Thumb pour WebKit/Blink (Chrome, Safari, Edge, Opera) */
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      /* Nécessaire pour outrepasser le style par défaut */
-      appearance: none;
-      width: 16px;
-      /* Largeur du thumb */
-      height: 16px;
-      /* Hauteur du thumb */
-      background: gray;
-      /* VOTRE COULEUR ICI (ex: gris clair) */
-      border-radius: 50%;
-      /* Pour un thumb rond */
-      cursor: pointer;
-    
-          }
