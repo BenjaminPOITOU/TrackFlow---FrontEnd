@@ -19,11 +19,11 @@ import {
 } from "lucide-react";
 
 const mainNavItems = [
-  { id: "DASHBOARD", text: "Tableau de bord", href: "/dashboard", icon: Home },
-  { id: "PROJECTS", text: "Projets", href: "/projects", icon: Music2 },
-  { id: "PLAYLIST", text: "Playlist", href: "/playlist", icon: PlaySquare },
-  { id: "ARCHIVED", text: "Archivés", href: "/archived", icon: Archive },
-  { id: "TRASH", text: "Corbeille", href: "/trash", icon: Trash2 },
+  { id: "DASHBOARD", text: "Tableau de bord", href: "/", icon: Home },
+  { id: "PROJECTS", text: "Projets", href: "/", icon: Music2 },
+  { id: "PLAYLIST", text: "Playlist", href: "/", icon: PlaySquare },
+  { id: "ARCHIVED", text: "Archivés", href: "/", icon: Archive },
+  { id: "TRASH", text: "Corbeille", href: "/", icon: Trash2 },
 ];
 
 const collabNavItems = [
