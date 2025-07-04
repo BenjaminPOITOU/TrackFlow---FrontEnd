@@ -27,12 +27,12 @@ const mainNavItems = [
 ];
 
 const collabNavItems = [
-  { id: "LISTENERS", text: "Auditeurs", href: "/listeners", icon: Users },
-  { id: "SHARE", text: "Partager", href: "/share", icon: Share2 },
+  { id: "LISTENERS", text: "Auditeurs", href: "/", icon: Users },
+  { id: "SHARE", text: "Partager", href: "/", icon: Share2 },
 ];
 
 const toolNavItems = [
-  { id: "COMPARE", text: "Comparer A/B", href: "/compare", icon: GitCompare },
+  { id: "COMPARE", text: "Comparer A/B", href: "/", icon: GitCompare },
 ];
 
 const navSections = [
