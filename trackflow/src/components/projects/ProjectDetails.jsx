@@ -38,7 +38,7 @@ const DetailItem = ({ icon: Icon, label, children }) => (
   </div>
 );
 
-export function ProjectDetails({ project, user }) {
+export function ProjectDetails({ project, user, onProjectUpdated }) {
   const router = useRouter();
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(true);
@@ -50,7 +50,7 @@ export function ProjectDetails({ project, user }) {
   const openUpdateModal = useCallback(() => setIsUpdateModalOpen(true), []);
 
   const handleProjectUpdated = () => {
-    router.refresh();
+    onProjectUpdated();
   };
 
   return (

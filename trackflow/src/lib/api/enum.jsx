@@ -1,111 +1,92 @@
-/**
- * The base URL for the TrackFlow API.
- * In a real-world application, this should come from an environment variable
- * (e.g., process.env.NEXT_PUBLIC_API_URL).
- */
-const URL_BASE = "http://localhost:8080";
+import fetcher from './api-helpers';
 
 /**
- * @file API functions for retrieving enumerated types from the backend.
+ * @file API service functions for retrieving enumerated types from the backend.
+ * All functions use a centralized fetcher helper to interact with the API.
  */
-import fetcher from "./api-helpers";
+
 /**
  * Fetches all project-related enums from the server in a single API call.
- * This is more efficient than making multiple separate requests.
- * @returns {Promise<object>} A promise that resolves to an object containing all enum lists.
- * Example: { types: [], statuses: [], ... }
+ * This is more efficient than making multiple separate requests for each enum type.
+ *
+ * @async
+ * @function getProjectEnums
+ * @returns {Promise<object>} A promise that resolves to an object containing all project-related enum lists (e.g., { types: [], statuses: [] }).
+ * @throws {Error} Re-throws any errors from the `fetcher` helper, typically for network failures or non-OK HTTP responses.
  */
 export async function getProjectEnums() {
   try {
-    const response = await fetch(`${URL_BASE}/api/enums/projects`);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
+    return await fetcher('/api/enums/projects');
   } catch (error) {
-    console.error("Failed to fetch project enums:", error);
+    console.error("Failed to fetch project enums:", error.message);
     throw error;
   }
 }
-
-
-export async function getCompositionStatuses() {
-  try {
-    const response = await fetch(`${URL_BASE}/api/enums/composition-statuses`);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch CompositionStatuses:", error);
-    throw error;
-  }
-}
-
-
-export async function getAnnotationCategories() {
-  try {
-    const response = await fetch(`${URL_BASE}/api/enums/annotation-categories`);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch annotation-categories:", error);
-    throw error;
-  }
-}
-
-
-
-export async function getAnnotationStatus() {
-  try {
-    const response = await fetch(`${URL_BASE}/api/enums/annotation-statuses`);
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    return data;
-  } catch (error) {
-    console.error("Failed to fetch annotation-statuses:", error);
-    throw error;
-  }
-}
-
-
 
 /**
- * Fetches all predefined version instruments.
- * Corresponds to: GET /api/enums/instruments
+ * Fetches the list of possible statuses for a composition.
  *
- * @returns {Promise<Array<{value: string, label: string}>>} A promise that resolves to a list of instruments.
- * The data is expected to be already in the correct format { value, label } from the API.
- * @throws {Error} Throws an error if the fetch operation fails.
+ * @async
+ * @function getCompositionStatuses
+ * @returns {Promise<string[]>} A promise that resolves to an array of composition status strings.
+ * @throws {Error} Re-throws any errors from the `fetcher` helper.
+ */
+export async function getCompositionStatuses() {
+  try {
+    return await fetcher('/api/enums/composition-statuses');
+  } catch (error) {
+    console.error("Failed to fetch CompositionStatuses:", error.message);
+    throw error;
+  }
+}
+
+/**
+ * Fetches the list of possible categories for an annotation.
+ *
+ * @async
+ * @function getAnnotationCategories
+ * @returns {Promise<string[]>} A promise that resolves to an array of annotation category strings.
+ * @throws {Error} Re-throws any errors from the `fetcher` helper.
+ */
+export async function getAnnotationCategories() {
+  try {
+    return await fetcher('/api/enums/annotation-categories');
+  } catch (error) {
+    console.error("Failed to fetch annotation-categories:", error.message);
+    throw error;
+  }
+}
+
+/**
+ * Fetches the list of possible statuses for an annotation.
+ *
+ * @async
+ * @function getAnnotationStatus
+ * @returns {Promise<string[]>} A promise that resolves to an array of annotation status strings.
+ * @throws {Error} Re-throws any errors from the `fetcher` helper.
+ */
+export async function getAnnotationStatus() {
+  try {
+    return await fetcher('/api/enums/annotation-statuses');
+  } catch (error) {
+    console.error("Failed to fetch annotation-statuses:", error.message);
+    throw error;
+  }
+}
+
+/**
+ * Fetches all predefined version instruments from the `/api/enums/instruments` endpoint.
+ *
+ * @async
+ * @function getInstruments
+ * @returns {Promise<Array<{value: string, label: string}>>} A promise that resolves to a list of instrument objects, each with a `value` and `label` property.
+ * @throws {Error} Re-throws any errors from the `fetcher` helper if the API call fails.
  */
 export async function getInstruments() {
   try {
-    // The fetcher should already return the data in the correct format.
-    // We trust the API and return the data directly.
-    const instruments = await fetcher("/api/enums/instruments");
-    return instruments;
+    return await fetcher("/api/enums/instruments");
   } catch (error) {
-    console.error("Failed to fetch instruments:", error);
+    console.error("Failed to fetch instruments:", error.message);
     throw new Error("Could not load the list of instruments.");
   }
 }
-
-

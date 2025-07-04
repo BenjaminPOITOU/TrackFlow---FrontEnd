@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useProjectUpdateForm } from "./hooks/useProjectUpdateForm";
 import { CheckboxGroupWithFilter } from "./CheckboxGroupWithFilter";
 import { Label } from "@/components/ui/label";
@@ -14,6 +14,8 @@ import { Loader2 } from "lucide-react";
  * Renders the form for updating a project, using the useProjectUpdateForm hook for its logic.
  */
 export function ProjectUpdateForm({ projectId, userId, onCancel, onSuccess }) {
+  console.log("ProjectUpdateForm rendered with props:", { projectId, userId });
+
   const { status, error, formData, enums, filters, filteredOptions, handlers } =
     useProjectUpdateForm({
       projectId,
@@ -21,10 +23,27 @@ export function ProjectUpdateForm({ projectId, userId, onCancel, onSuccess }) {
       onSuccess,
     });
 
+
+  console.log("useProjectUpdateForm output:", {
+    status,
+    error,
+    formData,
+    enums,
+    filters,
+    filteredOptions,
+  });
+
+  useEffect(() => {
+    if (error) {
+      console.warn("Form error detected:", error);
+    }
+  }, [error]);
+
   const isSubmitting = status === "submitting";
   const isLoading = status === "loading";
 
   if (isLoading) {
+    console.log("Form is loading...");
     return (
       <div className="flex justify-center items-center min-h-[400px]">
         <Loader2 className="h-12 w-12 animate-spin text-zinc-400" />
@@ -32,8 +51,14 @@ export function ProjectUpdateForm({ projectId, userId, onCancel, onSuccess }) {
     );
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Form submitted with data:", formData);
+    handlers.handleSubmit(e);
+  };
+
   return (
-    <form onSubmit={handlers.handleSubmit} className="flex flex-col h-full">
+    <form onSubmit={handleSubmit} className="flex flex-col h-full">
       <div className="flex-1 overflow-y-auto p-6 space-y-8">
         {error && (
           <p className="p-3 bg-red-950 border border-red-700 rounded text-red-400 text-sm">
@@ -46,9 +71,10 @@ export function ProjectUpdateForm({ projectId, userId, onCancel, onSuccess }) {
           <Input
             id="title"
             value={formData.title}
-            onChange={(e) =>
-              handlers.handleFieldChange("title", e.target.value)
-            }
+            onChange={(e) => {
+              console.log("Title changed to:", e.target.value);
+              handlers.handleFieldChange("title", e.target.value);
+            }}
             disabled={isSubmitting}
           />
         </div>
@@ -60,9 +86,10 @@ export function ProjectUpdateForm({ projectId, userId, onCancel, onSuccess }) {
               <SelectEnum
                 options={enums.projectTypes}
                 value={formData.projectType}
-                onValueChange={(v) =>
-                  handlers.handleFieldChange("projectType", v)
-                }
+                onValueChange={(v) => {
+                  console.log("Project type changed to:", v);
+                  handlers.handleFieldChange("projectType", v);
+                }}
                 disabled={isSubmitting}
               />
             </div>
@@ -71,25 +98,32 @@ export function ProjectUpdateForm({ projectId, userId, onCancel, onSuccess }) {
               <SelectEnum
                 options={enums.projectStatuses}
                 value={formData.projectStatus}
-                onValueChange={(v) =>
-                  handlers.handleFieldChange("projectStatus", v)
-                }
+                onValueChange={(v) => {
+                  console.log("Project status changed to:", v);
+                  handlers.handleFieldChange("projectStatus", v);
+                }}
                 disabled={isSubmitting}
               />
             </div>
             <CheckboxGroupWithFilter
               label="GENRE(S) MUSICAUX"
               filterValue={filters.genre}
-              onFilterChange={(v) => handlers.handleFilterChange("genre", v)}
+              onFilterChange={(v) => {
+                console.log("Genre filter changed to:", v);
+                handlers.handleFilterChange("genre", v);
+              }}
               options={filteredOptions.genres}
               selectedValues={formData.projectMusicalGendersPreDefined}
-              onSelectionChange={(val, checked) =>
+              onSelectionChange={(val, checked) => {
+                console.log(
+                  `Genre selection changed: ${val} is now ${checked ? "checked" : "unchecked"}`
+                );
                 handlers.handleCheckboxChange(
                   "projectMusicalGendersPreDefined",
                   val,
                   checked
-                )
-              }
+                );
+              }}
               disabled={isSubmitting}
             />
           </div>
@@ -100,21 +134,28 @@ export function ProjectUpdateForm({ projectId, userId, onCancel, onSuccess }) {
               <SelectEnum
                 options={enums.projectCommercialStatuses}
                 value={formData.projectCommercialStatus}
-                onValueChange={(v) =>
-                  handlers.handleFieldChange("projectCommercialStatus", v)
-                }
+                onValueChange={(v) => {
+                  console.log("Commercial status changed to:", v);
+                  handlers.handleFieldChange("projectCommercialStatus", v);
+                }}
                 disabled={isSubmitting}
               />
             </div>
             <CheckboxGroupWithFilter
               label="OBJECTIF(S)"
               filterValue={filters.purpose}
-              onFilterChange={(v) => handlers.handleFilterChange("purpose", v)}
+              onFilterChange={(v) => {
+                console.log("Purpose filter changed to:", v);
+                handlers.handleFilterChange("purpose", v);
+              }}
               options={filteredOptions.purposes}
               selectedValues={formData.projectPurposes}
-              onSelectionChange={(val, checked) =>
-                handlers.handleCheckboxChange("projectPurposes", val, checked)
-              }
+              onSelectionChange={(val, checked) => {
+                console.log(
+                  `Purpose selection changed: ${val} is now ${checked ? "checked" : "unchecked"}`
+                );
+                handlers.handleCheckboxChange("projectPurposes", val, checked);
+              }}
               disabled={isSubmitting}
             />
             <div className="flex flex-col gap-2">
@@ -122,9 +163,10 @@ export function ProjectUpdateForm({ projectId, userId, onCancel, onSuccess }) {
               <Textarea
                 id="description"
                 value={formData.description}
-                onChange={(e) =>
-                  handlers.handleFieldChange("description", e.target.value)
-                }
+                onChange={(e) => {
+                  console.log("Description changed to:", e.target.value);
+                  handlers.handleFieldChange("description", e.target.value);
+                }}
                 disabled={isSubmitting}
                 className="min-h-[100px]"
               />
@@ -137,7 +179,10 @@ export function ProjectUpdateForm({ projectId, userId, onCancel, onSuccess }) {
         <Button
           type="button"
           variant="ghost"
-          onClick={onCancel}
+          onClick={() => {
+            console.log("Cancel clicked");
+            onCancel();
+          }}
           disabled={isSubmitting}
         >
           Annuler

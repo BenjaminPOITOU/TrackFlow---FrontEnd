@@ -109,9 +109,7 @@ export function useProjectUpdateForm({ projectId, userId, onSuccess }) {
       setStatus("submitting");
       setError(null);
       try {
-        await updateProjectById(userId, projectId, {
-          projectDetailsToUpdate: formData,
-        });
+        await updateProjectById(userId, projectId, formData);
         toast.success("Project updated successfully!");
         if (onSuccess) onSuccess();
       } catch (err) {

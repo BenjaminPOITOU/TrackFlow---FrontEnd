@@ -30,7 +30,7 @@ const spaceMono = Space_Mono({
  * @returns {Promise<JSX.Element>} The root HTML structure of the application.
  */
 export default async function RootLayout({ children }) {
-  const { user } = await getUserSession();
+  const { user, isTokenExpired } = await getUserSession();
 
   return (
     <html
@@ -39,7 +39,7 @@ export default async function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <body>
-        <AuthProvider user={user}>
+      <AuthProvider user={user} isTokenExpired={isTokenExpired}>
           {children}
           <Toaster richColors position="bottom-right" />
         </AuthProvider>

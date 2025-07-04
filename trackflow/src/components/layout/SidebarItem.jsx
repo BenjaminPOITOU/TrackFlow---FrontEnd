@@ -1,48 +1,55 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 /**
- * Renders a single item in the sidebar navigation.
- * It can be a link or a button and adjusts its appearance based on collapsed state.
- * @param {object} props - The component props.
- * @param {string} [props.href] - The URL to link to. If not provided, it renders as a button.
- * @param {React.ElementType} props.icon - The icon component to display.
- * @param {string} props.text - The text label for the item.
- * @param {boolean} props.isActive - Whether the item is currently active.
+ * A single item in the sidebar navigation.
+ *
+ * @param {Object} props - Component properties.
+ * @param {string} [props.href] - The target URL for navigation.
+ * @param {React.ElementType} props.icon - Icon component to render.
+ * @param {string} props.text - The display label (in French).
  * @param {boolean} props.isCollapsed - Whether the sidebar is collapsed.
- * @param {() => void} props.onClick - The function to call when the item is clicked.
- * @returns {JSX.Element} A single sidebar navigation item.
+ * @param {boolean} props.disabled - Whether the item is disabled (non-clickable).
+ * @returns {JSX.Element} The sidebar item element.
  */
-export default function SidebarItem({ href, icon: Icon, text, isActive, isCollapsed, onClick }) {
+export default function SidebarItem({ href, icon: Icon, text, isCollapsed, disabled }) {
+  const pathname = usePathname();
+  const isActive = href && pathname.startsWith(href);
+
   const content = (
     <>
       <Icon size={18} className="flex-shrink-0" />
-      <span className={`whitespace-nowrap transition-opacity duration-200 hidden ${!isCollapsed && "lg:inline"}`}>
+      <span className={cn("whitespace-nowrap transition-opacity duration-200 hidden", {
+        "lg:inline": !isCollapsed,
+      })}>
         {text}
       </span>
     </>
   );
 
-  const commonClasses = `flex w-full gap-3 px-3 py-2 rounded-md items-center transition-colors duration-200
-    justify-center ${!isCollapsed && "lg:justify-start"}
-    ${isActive ? "bg-zinc-700" : "hover:bg-zinc-700/50"}`;
-
-  if (href) {
-    return (
-      <li>
-        <Link href={href} className={commonClasses} onClick={onClick}>
-          {content}
-        </Link>
-      </li>
-    );
-  }
+  const commonClasses = cn(
+    "flex w-full gap-3 px-3 py-2 rounded-md items-center transition-colors duration-200",
+    {
+      "justify-center": isCollapsed,
+      "lg:justify-start": !isCollapsed,
+      "bg-zinc-700": isActive,
+      "hover:bg-zinc-700/50": !isActive && !disabled,
+      "opacity-50 cursor-not-allowed pointer-events-none": disabled,
+    }
+  );
 
   return (
     <li>
-      <button type="button" onClick={onClick} className={commonClasses}>
-        {content}
-      </button>
+      {href ? (
+        <Link href={href} className={commonClasses}>
+          {content}
+        </Link>
+      ) : (
+        <div className={commonClasses}>{content}</div>
+      )}
     </li>
   );
 }

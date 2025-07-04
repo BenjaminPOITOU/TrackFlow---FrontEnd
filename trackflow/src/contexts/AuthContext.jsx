@@ -1,39 +1,56 @@
 "use client";
 
-import React, { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useEffect, useMemo } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { toast } from "sonner";
 
 const AuthContext = createContext(undefined);
 
-/**
- * Provides authentication context to its children components.
- * It receives the initial user data from a server component parent.
- * @param {object} props
- * @param {React.ReactNode} props.children The child components to be wrapped by the provider.
- * @param {object | null} props.user The initial user object or null, passed from the server.
- */
-export function AuthProvider({ children, user: initialUser }) {
-  
-  const contextValue = useMemo(() => ({
-    user: initialUser,
-    isAuthenticated: !!initialUser,
-  }), [initialUser]);
+export function AuthProvider({
+  children,
+  user: initialUser,
+  isTokenExpired = false,
+}) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (isTokenExpired && pathname !== "/") {
+      toast.error("Votre session a expiré. Veuillez vous reconnecter.");
+      router.push("/");
+    }
+  }, [isTokenExpired, pathname, router]);
+
+  const logout = async () => {
+    try {
+      await fetch('/api/logout', { method: 'POST' });
+    } catch (error) {
+      console.error('Logout failed:', error);
+    } finally {
+      router.push('/login');
+      router.refresh();
+    }
+  };
+
+  const contextValue = useMemo(
+    () => ({
+      user: initialUser,
+      isAuthenticated: !!initialUser,
+      isTokenExpired,
+      logout,
+    }),
+    [initialUser, isTokenExpired]
+  );
 
   return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 }
 
-/**
- * Custom hook to access the authentication context.
- * @returns {{user: object|null, isAuthenticated: boolean}} The authentication context value.
- * @throws {Error} If used outside of an AuthProvider.
- */
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }

@@ -19,14 +19,15 @@ import ProjectDetailPageClient from '@/components/projects/ProjectDetailPageClie
  */
 export default async function ProjectDetailPage({ params }) {
     const { user } = await getUserSession();
+    const projectId = params.projectId;
     if (!user) {
         redirect('/');
     }
 
     try {
         const [projectData, compositionsData] = await Promise.all([
-            getProjectById(user.id, params.projectId),
-            getCompositionsByProjectId(params.projectId)
+            getProjectById(user.id, projectId),
+            getCompositionsByProjectId(projectId)
         ]);
 
         if (!projectData) {

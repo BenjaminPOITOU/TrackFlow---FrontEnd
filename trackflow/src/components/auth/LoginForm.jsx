@@ -41,8 +41,6 @@ export default function LoginForm({
    */
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    console.log("EMAIL & PASSWORD : ", email, password)
     if (!email || !password) {
       toast.error("Veuillez renseigner votre email et votre mot de passe.");
       return;

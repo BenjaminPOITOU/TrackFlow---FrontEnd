@@ -19,45 +19,37 @@ import {
 } from "lucide-react";
 
 const mainNavItems = [
-  { id: "DASHBOARD", text: "Dashboard", href: "/dashboard", icon: Home },
-  { id: "PROJECTS", text: "Projects", href: "/projects", icon: Music2 },
-  { id: "PLAYLIST", text: "Playlist", icon: PlaySquare },
-  { id: "ARCHIVED", text: "Archived", icon: Archive },
-  { id: "TRASH", text: "Trash", icon: Trash2 },
+  { id: "DASHBOARD", text: "Tableau de bord", href: "/dashboard", icon: Home },
+  { id: "PROJECTS", text: "Projets", href: "/projects", icon: Music2 },
+  { id: "PLAYLIST", text: "Playlist", href: "/playlist", icon: PlaySquare },
+  { id: "ARCHIVED", text: "Archivés", href: "/archived", icon: Archive },
+  { id: "TRASH", text: "Corbeille", href: "/trash", icon: Trash2 },
 ];
 
 const collabNavItems = [
-  { id: "LISTENERS", text: "Listeners", icon: Users },
-  { id: "SHARE", text: "Share", icon: Share2 },
+  { id: "LISTENERS", text: "Auditeurs", href: "/listeners", icon: Users },
+  { id: "SHARE", text: "Partager", href: "/share", icon: Share2 },
 ];
 
 const toolNavItems = [
-  { id: "COMPARE", text: "Compare A/B", icon: GitCompare },
+  { id: "COMPARE", text: "Comparer A/B", href: "/compare", icon: GitCompare },
 ];
 
 const navSections = [
-  { id: "MAIN_SYS", title: "Main", items: mainNavItems, visualizerType: "cube" },
-  { id: "COLLAB_SYS", title: "Collab", items: collabNavItems, visualizerType: "wave" },
-  { id: "TOOL_SYS", title: "Tools", items: toolNavItems, visualizerType: "circles" },
+  { id: "MAIN", title: "Principal", items: mainNavItems, visualizerType: "cube" },
+  { id: "COLLAB", title: "Collaboration", items: collabNavItems, visualizerType: "wave" },
+  { id: "TOOLS", title: "Outils", items: toolNavItems, visualizerType: "circles" },
 ];
 
 /**
- * Main application sidebar, handling navigation and its own collapsed state.
- * It is a Client Component due to its use of state for interactivity.
- * It is composed of smaller, more manageable child components.
- * @returns {JSX.Element} The main sidebar and mobile header.
+ * Sidebar component with navigation and collapsible behavior.
+ *
+ * @returns {JSX.Element} The rendered sidebar with sectioned navigation.
  */
 export default function Sidebar() {
-  const [activeSection, setActiveSection] = useState("MAIN_SYS");
-  const [activeItem, setActiveItem] = useState("DASHBOARD");
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
-
-  const handleItemClick = (sectionId, itemId) => {
-    setActiveSection(sectionId);
-    setActiveItem(itemId);
-  };
 
   const Logo = () => (
     <div className="flex items-center gap-2">
@@ -73,6 +65,8 @@ export default function Sidebar() {
       </span>
     </div>
   );
+
+  let reachedRestricted = false;
 
   return (
     <>
@@ -97,27 +91,32 @@ export default function Sidebar() {
         </div>
 
         <nav className="flex-1 p-2 overflow-y-auto overflow-x-hidden">
-          {navSections.map((section) => (
-            <SidebarSection
-              key={section.id}
-              title={section.title}
-              visualizerType={section.visualizerType}
-              isCollapsed={isCollapsed}
-              isActiveSection={activeSection === section.id}
-            >
-              {section.items.map((item) => (
-                <SidebarItem
-                  key={item.id}
-                  text={item.text}
-                  href={item.href}
-                  icon={item.icon}
-                  isCollapsed={isCollapsed}
-                  isActive={activeItem === item.id}
-                  onClick={() => handleItemClick(section.id, item.id)}
-                />
-              ))}
-            </SidebarSection>
-          ))}
+          {navSections.map((section) => {
+            return (
+              <SidebarSection
+                key={section.id}
+                title={section.title}
+                visualizerType={section.visualizerType}
+                isCollapsed={isCollapsed}
+              >
+                {section.items.map((item) => {
+                  const isProjects = item.id === "PROJECTS";
+                  if (isProjects) reachedRestricted = true;
+
+                  return (
+                    <SidebarItem
+                      key={item.id}
+                      text={item.text}
+                      href={item.href}
+                      icon={item.icon}
+                      isCollapsed={isCollapsed}
+                      disabled={reachedRestricted && !isProjects}
+                    />
+                  );
+                })}
+              </SidebarSection>
+            );
+          })}
         </nav>
       </aside>
     </>

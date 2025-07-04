@@ -1,37 +1,39 @@
 import { redirect } from 'next/navigation';
 import { getUserSession } from '@/lib/api/authService';
-import { getAllProjects } from '@/lib/api/projectsServeur';
+import { getAllProjects } from '@/lib/api/projects';
 import ProjectsPageClient from '@/components/projects/ProjectsPageClient';
+import { Toaster } from 'sonner';
 
 /**
- * @file The server-side page for displaying the list of projects.
+ * @file Server-side page component for the list of projects.
+ * This page handles authentication and initial data fetch.
+ *
+ * @param {Object} props - The page parameters.
+ * @param {Record<string, string>} props.searchParams - The query parameters from the URL.
+ * @returns {Promise<JSX.Element>} The rendered projects page.
  */
-export default async function ProjectsPage({ searchParams }) {
-  const { user, token } = await getUserSession();
+export default async function ProjectsPage() {
+  const { user, authToken, isTokenExpired } = await getUserSession();
 
-  if (!user) {
+  if (!user || isTokenExpired) {
     redirect('/');
   }
-  
 
-  const page = parseInt(searchParams?.page, 10) || 0;
-  const size = parseInt(searchParams?.size, 10) || 12;
-  const sort = searchParams?.sort || "createdDate,desc";
 
   let initialData = { content: [] };
   let error = null;
 
   try {
-    initialData = await getAllProjects({ page, size, sort });
+    initialData = await getAllProjects({ page: 0, size: 12, sort: "createdDate,desc" }, authToken);
   } catch (err) {
-    error = err.message || "Could not load projects. Please try again.";
+    error = err.message || "Impossible de charger les projets. Veuillez réessayer.";
   }
 
   return (
     <ProjectsPageClient
       initialProjects={initialData.content}
       error={error}
-      authToken={token} 
+      authToken={authToken}
     />
   );
 }
