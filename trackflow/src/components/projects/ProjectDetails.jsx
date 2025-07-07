@@ -18,9 +18,20 @@ import { fr } from "date-fns/locale";
 import DataBadge from "../shared/DataBadge";
 import { ProjectUpdateModal } from "../modals/projectUpdateModal/ProjectUpdateModal";
 
-const formatDate = (dateString) => {
-  if (!dateString) return "N/A";
-  const dateObj = parseISO(dateString);
+const formatDate = (dateInput) => {
+  if (!dateInput) return "N/A";
+
+  let dateObj;
+
+  if (typeof dateInput === "string") {
+    dateObj = parseISO(dateInput);
+  } else if (typeof dateInput === "number") {
+    // timestamp en secondes, convertir en millisecondes
+    dateObj = new Date(dateInput * 1000);
+  } else {
+    return "N/A";
+  }
+
   return isValid(dateObj)
     ? format(dateObj, "dd/MM/yyyy", { locale: fr })
     : "N/A";

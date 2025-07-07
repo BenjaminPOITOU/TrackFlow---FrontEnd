@@ -19,15 +19,25 @@ import { cn } from "@/lib/utils";
  */
 export default function ProjectCard({ project }) {
   const [isHovered, setIsHovered] = useState(false);
+  console.log("PROJECTS : ", project)
 
-  const formattedDate = project?.createdDate
-    ? (() => {
-        const dateObj = parseISO(project.createdDate);
-        return isValid(dateObj)
-          ? format(dateObj, "dd/MM/yyyy", { locale: fr })
-          : "N/A";
-      })()
-    : "N/A";
+  const formattedDate = (() => {
+    const cd = project?.createdDate;
+    if (!cd) return "N/A";
+  
+    let dateObj;
+  
+    if (typeof cd === "string") {
+      dateObj = parseISO(cd);
+    } else if (typeof cd === "number") {
+      dateObj = new Date(cd * 1000);
+    } else {
+      return "N/A";
+    }
+  
+    return isValid(dateObj) ? format(dateObj, "dd/MM/yyyy", { locale: fr }) : "N/A";
+  })();
+  
 
   const projectUrl = `/projects/${project?.id}`;
   let shape = "morph";

@@ -39,11 +39,21 @@ export function CompositionCard({ composition, background, projectId, onComposit
   const versionLabel = totalVersions > 1 ? "VERSIONS" : "VERSION";
 
   const formattedDate = composition?.lastUpdateDate
-    ? (() => {
-        const dateObj = parseISO(composition.lastUpdateDate);
-        return isValid(dateObj) ? format(dateObj, "dd/MM/yyyy", { locale: fr }) : "N/A";
-      })()
-    : "N/A";
+  ? (() => {
+      let dateObj;
+      const dateInput = composition.lastUpdateDate;
+
+      if (typeof dateInput === "string") {
+        dateObj = parseISO(dateInput);
+      } else if (typeof dateInput === "number") {
+        dateObj = new Date(dateInput * 1000);
+      } else {
+        return "N/A";
+      }
+
+      return isValid(dateObj) ? format(dateObj, "dd/MM/yyyy", { locale: fr }) : "N/A";
+    })()
+  : "N/A";
 
   const handleSaveTitle = async () => {
     if (editedTitle === composition.title || !editedTitle.trim()) {
