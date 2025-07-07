@@ -43,7 +43,7 @@ async function fetcher(endpoint, options = {}) {
       errorBody = "Could not retrieve error body.";
     }
     const errorMessage = `HTTP Error: ${response.status} ${response.statusText} for ${endpoint}. Body: ${errorBody}`;
-    console.error("[fetcher] " + errorMessage);
+    console.log("[fetcher] " + errorMessage);
     throw new Error(errorMessage);
   }
 }
