@@ -62,7 +62,6 @@ export const FileUploader = ({ onFileSelect }) => {
           }`}
       >
         <div className="space-y-2 text-center">
-          {/* La coche verte signifie maintenant "Fichier sélectionné" */}
           {fileName ? <CheckmarkIcon /> : <UploadIcon />}
 
           <div className="text-sm">
@@ -76,7 +75,7 @@ export const FileUploader = ({ onFileSelect }) => {
             )}
             <label
               htmlFor="file-upload"
-              className="relative cursor-pointer rounded-md font-medium text-blue-400 hover:text-indigo-500"
+              className="relative cursor-pointer rounded-md font-medium text-gray-300 hover:text-gray-400"
             >
               <span className="ml-1">
                 {fileName ? "Changer de fichier" : "choisissez un fichier"}

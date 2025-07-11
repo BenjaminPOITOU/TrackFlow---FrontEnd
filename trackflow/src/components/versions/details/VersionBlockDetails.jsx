@@ -29,13 +29,13 @@ export function VersionBlockDetails({ version, onVersionUpdate, onBranchUpdate, 
         />
       </div>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 w-full">
-        <TempoVersion versionBpm={version?.bpm} onBpmSave={onVersionUpdate} isEditable={isVersionEditable} />
-        <KeyVersion versionKey={version?.key} onKeySave={onVersionUpdate} isEditable={isVersionEditable}/>
-        <DurationVersion versionDuration={version?.durationSeconds} isEditable={isVersionEditable}/>
+        <TempoVersion versionBpm={version?.bpm} onBpmSave={onVersionUpdate} isEditable={false} />
+        <KeyVersion versionKey={version?.key} onKeySave={onVersionUpdate} isEditable={false} />
+        <DurationVersion versionDuration={version?.durationSeconds} isEditable={false} />
         <InstrumentVersion
           versionInstruments={version?.instruments}
           onInstrumentsSave={onVersionUpdate}
-          isEditable={isVersionEditable}
+          isEditable={false} 
         />
       </div>
     </div>

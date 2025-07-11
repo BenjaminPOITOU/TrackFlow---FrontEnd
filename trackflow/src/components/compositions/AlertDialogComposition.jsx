@@ -1,5 +1,4 @@
 import { deleteCompositionById } from "@/lib/api/compositions";
-// Importez votre composant de dialogue (ex: de ShadCN)
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,16 +25,17 @@ export function AlertDialogCompostion({
 
       onCompositionDeleted(composition.id);
 
-      onClose(); // On ferme la modale
+      onClose(); 
     } catch (error) {
       toast.error("Échec de la suppression de la composition.");
-      console.error(error); // L'erreur API 500 apparaîtra ici
+      console.error(error);
     }
   };
 
   return (
+  
     <AlertDialog open={isOpen} onOpenChange={onClose}>
-      <AlertDialogContent>
+      <AlertDialogContent className="bg-zinc-800">
         <AlertDialogHeader>
           <AlertDialogTitle>Êtes-vous sûr de vouloir supprimer ?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -43,12 +43,13 @@ export function AlertDialogCompostion({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={onClose}>Annuler</AlertDialogCancel>
-          <AlertDialogAction onClick={handleConfirmDelete}>
+          <AlertDialogCancel onClick={onClose} className="cursor-pointer">Annuler</AlertDialogCancel>
+          <AlertDialogAction onClick={handleConfirmDelete} className="cursor-pointer bg-gray-300 text-zinc-800 hover:bg-gray-400">
             Confirmer
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
+    
   );
 }

@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation';
 import { getUserSession } from '@/lib/api/authService';
 import { getAllProjects } from '@/lib/api/projects';
 import ProjectsPageClient from '@/components/projects/ProjectsPageClient';
-import { Toaster } from 'sonner';
+
 
 /**
  * @file Server-side page component for the list of projects.
@@ -24,30 +24,24 @@ export default async function ProjectsPage() {
   });
 
   if (!user || isTokenExpired) {
-    console.log('🚫 [ProjectsPage] Redirection vers login - user:', !!user, 'expired:', isTokenExpired);
     redirect('/');
   }
 
-  console.log('✅ [ProjectsPage] Utilisateur authentifié, chargement des projets');
 
   let initialData = { content: [] };
   let error = null;
-
   try {
-    console.log('🔄 [ProjectsPage] Appel getAllProjects...');
     initialData = await getAllProjects({ page: 0, size: 12, sort: "createdDate,desc" }, authToken);
-    console.log('✅ [ProjectsPage] Projets chargés:', initialData.content?.length || 0, 'projets');
   } catch (err) {
-    console.error('❌ [ProjectsPage] Erreur chargement projets:', err);
+    console.error('[ProjectsPage] Erreur chargement projets:', err);
     error = err.message || "Impossible de charger les projets. Veuillez réessayer.";
   }
 
-  console.log('🎉 [ProjectsPage] Rendu du composant client');
+  console.log('[ProjectsPage] Rendu du composant client');
   return (
     <ProjectsPageClient
       initialProjects={initialData.content}
       error={error}
-      authToken={authToken}
     />
   );
 }

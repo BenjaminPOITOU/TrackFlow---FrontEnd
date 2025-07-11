@@ -32,6 +32,7 @@ export function CompositionCreateModal({
       onClose={() => onOpenChange(false)}
       title="NOUVELLE COMPOSITION"
       description="AJOUTEZ UNE NOUVELLE PISTE À VOTRE PROJET"
+      className="sm:max-w-4xl px-4"
     >
       <CompositionCreateForm
         projectId={projectId}

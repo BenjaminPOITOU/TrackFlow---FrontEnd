@@ -28,7 +28,6 @@ export function AnnotationList({
   const [editingId, setEditingId] = useState(null);
   const [editedContent, setEditedContent] = useState("");
 
-
   const handleEditClick = (annotation) => {
     setEditingId(annotation.id);
     setEditedContent(annotation.content);
@@ -46,7 +45,9 @@ export function AnnotationList({
   };
 
   const handleDeleteClick = (annotationId) => {
-    if (window.confirm("Etes-vous sur.e de vouloir supprimer cette annotation ?")) {
+    if (
+      window.confirm("Etes-vous sur.e de vouloir supprimer cette annotation ?")
+    ) {
       onAnnotationDelete(annotationId);
     }
   };
@@ -75,9 +76,6 @@ export function AnnotationList({
                 <th className="w-2/5 px-4 py-2 text-left font-medium text-gray-200">
                   Annotation
                 </th>
-                <th className="w-[100px] px-4 py-2 text-center font-medium text-gray-200">
-                  Actions
-                </th>
               </tr>
             </thead>
             <tbody>
@@ -104,21 +102,6 @@ export function AnnotationList({
                       item.content
                     )}
                   </td>
-                  <td className="px-4 py-2 text-center">
-                    <div className="flex items-center justify-center gap-2">
-                      {editingId === item.id ? (
-                        <>
-                          <button onClick={() => handleSaveClick(item.id)} className="p-1 text-green-400 hover:text-green-300" title="Save"> <Check size={18} /> </button>
-                          <button onClick={handleCancelClick} className="p-1 text-red-400 hover:text-red-300" title="Cancel"> <X size={18} /> </button>
-                        </>
-                      ) : (
-                        <>
-                          <button onClick={() => handleEditClick(item)} className="p-1 text-gray-400 hover:text-white" title="Edit"> <SquarePen size={16} /> </button>
-                          <button onClick={() => handleDeleteClick(item.id)} className="p-1 text-gray-400 hover:text-red-400" title="Delete"> <Trash2 size={16} /> </button>
-                        </>
-                      )}
-                    </div>
-                  </td>
                 </tr>
               ))}
             </tbody>
@@ -126,7 +109,7 @@ export function AnnotationList({
         ) : (
           <div className="flex items-center justify-center h-full">
             <p className="text-gray-400">
-             Aucune annotation pour cette version
+              Aucune annotation pour cette version
             </p>
           </div>
         )}

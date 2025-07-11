@@ -98,10 +98,11 @@ export function CompositionCreateForm({ projectId, onCancel, onSuccess }) {
           variant="ghost"
           onClick={onCancel}
           disabled={isSubmitting}
+          className="border cursor-pointer"
         >
           ANNULER
         </Button>
-        <Button type="submit" disabled={isSubmitting || isLoading}>
+        <Button type="submit" disabled={isSubmitting || isLoading} className="bg-gray-300 text-zinc-800 hover:bg-gray-400 cursor-pointer">
           {isSubmitting && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
           {isSubmitting ? "CRÉATION..." : "CRÉER LA COMPOSITION"}
         </Button>

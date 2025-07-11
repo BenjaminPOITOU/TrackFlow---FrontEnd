@@ -27,12 +27,9 @@ export default function UserMenu({ isCollapsed }) {
   return (
     <Sheet>
       <SheetTrigger className="w-full">
-        {/* Version icône, affichée par défaut et quand la sidebar est réduite sur grand écran */}
         <div className={`flex items-center justify-center h-10 w-10 rounded-full hover:bg-zinc-700/50 transition-colors ${!isCollapsed && "lg:hidden"}`}>
           <UserCircle2 size={24} />
         </div>
-
-        {/* Version texte, affichée uniquement sur grand écran et quand la sidebar n'est PAS réduite */}
         <div className={`hidden h-10 px-4 py-2 rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground ${!isCollapsed && "lg:inline-flex items-center justify-center"}`}>
           {name} ACCOUNT
         </div>

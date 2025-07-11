@@ -125,7 +125,6 @@ export default function ProjectCreationForm({ onSuccess, onCancel }) {
     <form onSubmit={handleSubmit} className="flex h-full flex-col">
       <div className="flex-1 overflow-y-auto pb-24">
         <div className="space-y-8 p-6">
-          {process.env.NODE_ENV === "development" && (
             <div className="flex items-center space-x-2 p-3 border border-gray-300 rounded-lg bg-zinc-700">
               <Checkbox 
                 id="dev-autofill" 
@@ -137,7 +136,7 @@ export default function ProjectCreationForm({ onSuccess, onCancel }) {
                 Remplissage auto (Dév.)
               </Label>
             </div>
-          )}
+          
           <FormFields
             formState={formState}
             onFieldChange={handleFieldChange}

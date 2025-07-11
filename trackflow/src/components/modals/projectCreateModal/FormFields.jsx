@@ -15,12 +15,14 @@ import MultiSelectCheckboxGroup from "./MultiSelectCheckboxGroup";
  * @returns {JSX.Element} The form fields component.
  */
 export function FormFields({ formState, onFieldChange, enums, disabled }) {
+
+  console.log("ENUMS : ", enums)
   return (
     <div className="space-y-8">
       {/* Titre en pleine largeur */}
       <div className="space-y-3">
         <Label htmlFor="title" className="text-white font-medium">
-          Titre du Projet *
+          Titre du Projet
         </Label>
         <Input
           id="title"
@@ -33,9 +35,8 @@ export function FormFields({ formState, onFieldChange, enums, disabled }) {
         />
       </div>
 
-      {/* Grille à deux colonnes pour le reste */}
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Colonne de gauche */}
         <div className="space-y-6">
           <div className="space-y-3">
             <Label className="text-white font-medium">Type de Projet</Label>

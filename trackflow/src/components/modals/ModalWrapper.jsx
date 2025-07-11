@@ -53,7 +53,7 @@ export function ModalWrapper({
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center"
+      className="fixed inset-0 z-100 flex items-center justify-center"
     >
       <div
         className="fixed inset-0 bg-black/80 backdrop-blur-sm"
@@ -62,7 +62,7 @@ export function ModalWrapper({
 
       <div
         className={cn(
-          "relative z-50 flex max-h-[90vh] w-[95vw] flex-col overflow-hidden rounded-lg border border-gray-700 bg-zinc-900 text-white shadow-lg",
+          "relative z-50 flex max-h-[90vh] w-[95vw] flex-col overflow-hidden rounded-lg border border-gray-700 bg-zinc-900 text-gray-300 shadow-lg",
           "max-w-lg",
           className
         )}
@@ -72,9 +72,7 @@ export function ModalWrapper({
           <h2 id="modal-title" className="text-xl font-semibold text-white">
             {title}
           </h2>
-          {description && (
-            <p className="mt-1 text-gray-400">{description}</p>
-          )}
+          {description && <p className="mt-1 text-gray-400">{description}</p>}
           <button
             onClick={onClose}
             className="absolute right-4 top-4 rounded-sm p-1 opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-white"

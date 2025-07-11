@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const BACKEND_URL = process.env.SPRING_BOOT_API_URL || "http://localhost:8080";
+const backendApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 /**
  * Handles new user registration requests by proxying them to the backend service.
@@ -16,7 +16,7 @@ export async function POST(request) {
   try {
     const body = await request.json();
     
-    const targetUrl = `${BACKEND_URL}/api/auth/register`;
+    const targetUrl = `${backendApiUrl}/api/auth/register`;
 
     const backendResponse = await fetch(targetUrl, {
       method: 'POST',

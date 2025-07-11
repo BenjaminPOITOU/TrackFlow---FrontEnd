@@ -5,17 +5,16 @@
  * @returns {string} Le nom de la prochaine version (ex: "V1.1" ou "V1.0" si la première).
  */
 export const generateNextVersionName = (currentVersionName) => {
-    // Cas 1 : Aucune version précédente, c'est la toute première sur cette branche.
+
     if (!currentVersionName) {
       return "V1.0";
     }
   
-    // Cas 2 : Une version existe, on incrémente la version mineure.
-    const parts = currentVersionName.split('.');
     
-    // On s'assure que le format est bien celui attendu (ex: V1.0)
+    const parts = currentVersionName.split('.');
+
     if (parts.length !== 2 || !parts[0].startsWith('V')) {
-      // Si le format est inattendu, on retourne un nom par défaut pour éviter un crash.
+ 
       console.warn(`Format de version inattendu : "${currentVersionName}". Retour à un nom par défaut.`);
       return `${currentVersionName} - (Nouveau)`;
     }

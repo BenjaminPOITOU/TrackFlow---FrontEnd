@@ -1,5 +1,5 @@
 import Sidebar from "@/components/layout/Sidebar";
-import TechnicalFrame from "@/components/layout/TechnicalFrame";
+
 
 /**
  * The layout for the authenticated section of the application.
@@ -12,9 +12,7 @@ export default function AppLayout({ children }) {
   return (
     <div className="flex flex-col lg:flex-row h-screen bg-background text-foreground">
       <Sidebar />
-      <main className="flex-1 overflow-y-auto">
-        <TechnicalFrame>{children}</TechnicalFrame>
-      </main>
+      <main className="flex-1 overflow-y-auto px-4">{children}</main>
     </div>
   );
 }

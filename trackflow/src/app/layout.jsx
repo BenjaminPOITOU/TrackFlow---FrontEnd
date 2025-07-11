@@ -1,25 +1,25 @@
-import { Audiowide, Orbitron, Space_Mono } from 'next/font/google';
-import { Toaster } from 'sonner';
-import { AuthProvider } from '@/contexts/AuthContext';
-import { getUserSession } from '@/lib/api/authService';
-import './globals.css';
+import { Audiowide, Orbitron, Space_Mono } from "next/font/google";
+import { Toaster } from "sonner";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { getUserSession } from "@/lib/api/authService";
+import "./globals.css";
 
 const audiowide = Audiowide({
-  subsets: ['latin'],
-  weight: ['400'],
-  variable: '--font-audiowide',
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-audiowide",
 });
 
 const orbitron = Orbitron({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-orbitron',
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-orbitron",
 });
 
 const spaceMono = Space_Mono({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-space-mono',
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-space-mono",
 });
 
 /**
@@ -39,7 +39,7 @@ export default async function RootLayout({ children }) {
       suppressHydrationWarning
     >
       <body>
-      <AuthProvider user={user} isTokenExpired={isTokenExpired}>
+        <AuthProvider user={user} isTokenExpired={isTokenExpired}>
           {children}
           <Toaster richColors position="bottom-right" />
         </AuthProvider>

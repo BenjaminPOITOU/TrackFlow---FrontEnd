@@ -11,7 +11,7 @@ import { Plus } from "lucide-react";
  */
 export default function ProjectListPageHeader({ onActionClick }) {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex flex-col sm:flex-row items-start gap-2 sm:items-center justify-between px-3 py-2">
       <div>
         <h1 className="text-3xl font-bold font-orbitron">Projets</h1>
         <p className="mt-1 text-muted-foreground">

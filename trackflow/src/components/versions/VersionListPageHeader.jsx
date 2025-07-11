@@ -16,6 +16,7 @@ import { updateCompositionById } from "@/lib/api/compositions";
 import DataBadge from "../shared/DataBadge";
 import { DropdownMenuCompositionStatus } from "../compositions/DropdownMenuCompositionStatus";
 import { CreateVersionModal } from "../modals/versionCreateModal/CreateVersionModal";
+import { ArrowLeft } from "lucide-react";
 
 /**
  * Generates a consistent style for a sub-genre tag based on its string content.
@@ -89,20 +90,27 @@ export function VersionListPageHeader({ composition, projectId, branchList }) {
   );
   const projectTitleUpperCase =
     composition?.projectTitle?.toLocaleUpperCase() || "N/A";
-  const subGenreStyle = getSubGenreStyle(subGenreText);
+
   const isSubmitDisabled =
     isUpdating || selectedValue === composition.compositionStatus;
 
   return (
     <div className="flex flex-col lg:flex-row w-full items-start lg:items-center justify-between gap-4">
       <div className="flex flex-col items-start gap-2 w-full">
+        <Link
+          href={`/projects/${projectId}`}
+          className="p-2 rounded-full hover:bg-zinc-700"
+          title="Back to projects list"
+        >
+          <ArrowLeft size={24} className="text-gray-300" />
+        </Link>
         <div className="flex flex-col sm:flex-row sm:min-h-[40px] items-start sm:items-center justify-start gap-3 w-full">
-          <span className="text-3xl lg:text-4xl glow-text">
+          <span className="text-3xl lg:text-4xl glow-text whitespace-nowrap">
             {composition.title}
           </span>
-          <Terminal color="#e0e0e0" className="hidden sm:block" />
+          <Terminal color="#e0e0e0" className="hidden sm:block self-end" size={60} />
           {!showDropdown ? (
-            <div className="flex items-center justify-start gap-2">
+            <div className="flex items-center justify-start w-[75%] sm:w-full gap-2">
               <DataBadge
                 type="compositionStatus"
                 value={composition.compositionStatus}
@@ -113,7 +121,7 @@ export function VersionListPageHeader({ composition, projectId, branchList }) {
               </DataBadge>
               <SquarePen
                 onClick={() => setShowDropdown(true)}
-                className="hidden md:block cursor-pointer transition-colors hover:text-gray-400"
+                className="cursor-pointer transition-colors hover:text-gray-400"
                 size={20}
                 color="#e0e0e0"
               />
@@ -121,7 +129,7 @@ export function VersionListPageHeader({ composition, projectId, branchList }) {
           ) : (
             <form
               onSubmit={handleUpdateStatus}
-              className="flex items-center justify-start gap-2 sm:gap-4"
+              className="flex items-center justify-start gap-2 w-[80%] sm:w-full sm:gap-4"
             >
               <DropdownMenuCompositionStatus
                 selectedValue={selectedValue}
@@ -154,12 +162,6 @@ export function VersionListPageHeader({ composition, projectId, branchList }) {
           )}
         </div>
         <div className="hidden md:flex flex-wrap items-center justify-start gap-x-2 gap-y-1 text-sm text-gray-400 py-2">
-          <Link
-            href={`/projects/${projectId}`}
-            className="cursor-pointer rounded pr-2 hover:bg-neutral-800 text-white"
-          >
-            PROJECT : {projectTitleUpperCase}
-          </Link>
           <CircleDot color="#e0e0e0" strokeWidth={0.5} />
           <span>
             {composition.totalBranches}{" "}
@@ -171,22 +173,23 @@ export function VersionListPageHeader({ composition, projectId, branchList }) {
             {composition.totalVersions > 1 ? "VERSIONS" : "VERSION"}
           </span>
         </div>
-        <div className="flex w-full items-center gap-1 overflow-x-auto whitespace-nowrap pb-2 md:flex-wrap md:whitespace-normal md:pb-0">
+        <div className="hidden md:flex w-full items-center gap-1 overflow-x-auto whitespace-nowrap pb-2 md:flex-wrap md:whitespace-normal md:pb-0">
           {subGenreText?.map((genre, index) => (
-            <span
-              key={index}
-              className={`rounded border px-2 text-center text-sm ${subGenreStyle}`}
-            >
-              {genre}
-            </span>
+            <DataBadge
+              key={`subgenre-${index}`}
+              type="projectMusicalGender"
+              value={genre}
+              variant="badge"
+              className="text-sm"
+            />
           ))}
           {composition.projectMusicalGenderPreDefinedList?.map(
             (genre, index) => (
               <DataBadge
-                key={`${genre}-${index}`}
+                key={`predefined-${index}`}
                 type="projectMusicalGender"
                 value={genre}
-                styleIndex={index}
+                variant="badge"
                 className="text-sm"
               />
             )
@@ -195,7 +198,7 @@ export function VersionListPageHeader({ composition, projectId, branchList }) {
       </div>
       <button
         onClick={() => setShowModal(true)}
-        className="hidden md:flex w-full lg:w-auto shrink-0 cursor-pointer items-center justify-center gap-2 border border-gray-300 bg-neutral-800 p-3 lg:p-4 text-gray-300 hover:bg-gray-500 rounded-md"
+        className="hidden sm:flex items-center gap-2 cursor-pointer rounded-md border border-gray-300 bg-neutral-800 px-4 py-2 text-gray-300 transition-colors hover:bg-neutral-700"
       >
         <Plus color="#e0e0e0" />
         <div className="hidden md:block">NEW_VERSION</div>

@@ -28,7 +28,7 @@ export const ModalWrapper = ({ isOpen, onClose, title, children }) => {
     >
       <div
         ref={modalRef}
-        className="flex flex-col relative bg-zinc-800 rounded-md shadow-xl border border-b-gray-300 w-full max-w-[55rem] max-h-[90vh] p-6 relative"
+        className="flex flex-col relative bg-zinc-800 rounded-md shadow-xl border border-b-gray-300 w-full max-w-[55rem] max-h-[90vh] p-6 "
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center border-b pb-3 mb-4">

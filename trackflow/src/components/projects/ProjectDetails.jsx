@@ -87,7 +87,7 @@ export function ProjectDetails({ project, user, onProjectUpdated }) {
             <SquarePen size={18} />
           </button>
         </div>
-        <div className="flex items-center gap-4 text-sm text-gray-400">
+        <div className="hidden sm:flex items-center gap-4 text-sm text-gray-400">
           <div className="flex items-center gap-2">
             <CalendarMinus2 size={16} />
             <span>CREE : {formatDate(project.createdDate)}</span>

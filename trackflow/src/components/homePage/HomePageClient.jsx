@@ -30,10 +30,6 @@ export default function HomePageClient() {
   const showRegister = () => setActiveView('register');
   const showTitle = () => setActiveView('title');
 
-  /**
-   * Handles a successful login event by triggering an exit animation
-   * and then programmatically navigating the user to the '/projects' page.
-   */
   const handleLoginSuccess = () => {
     setIsExiting(true);
     setTimeout(() => {
@@ -41,10 +37,6 @@ export default function HomePageClient() {
     }, 500);
   };
   
-  /**
-   * Handles a successful registration event by displaying a success notification
-   * and automatically switching the view to the login form for the user to sign in.
-   */
   const handleRegisterSuccess = () => {
     toast.success("Inscription réussie ! Veuillez vous connecter.");
     showLogin();

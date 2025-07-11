@@ -16,6 +16,21 @@ const musicalKeys = [
   "Cm", "C#m", "Dm", "D#m", "Em", "Fm", "F#m", "Gm", "G#m", "Am", "A#m", "Bm",
 ];
 
+  /**
+   * A modal form for creating a new version.
+   * This component acts as the single source of truth for all form data.
+   * It fetches the master list of all instruments and provides a success
+   * notification upon version creation, ensuring the parent page is refreshed.
+   *
+   * @param {object} props - The component props.
+   * @param {boolean} props.isOpen - Controls the visibility of the modal.
+   * @param {Function} props.onClose - Function to call when the modal should be closed.
+   * @param {string} props.compositionId - The ID of the composition this new version belongs to.
+   * @param {string} props.projectId - The ID of the parent project.
+   * @param {Array<object>} props.branchList - A list of available branches for the composition.
+   * @returns {JSX.Element | null} The rendered modal component or null if it is not open.
+   */
+
 export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, branchList }) => {
   const router = useRouter();
 
@@ -35,20 +50,7 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
   const [error, setError] = useState(null);
   const [submissionStep, setSubmissionStep] = useState("idle");
 
-  /**
-   * A modal form for creating a new version.
-   * This component acts as the single source of truth for all form data.
-   * It fetches the master list of all instruments and provides a success
-   * notification upon version creation, ensuring the parent page is refreshed.
-   *
-   * @param {object} props - The component props.
-   * @param {boolean} props.isOpen - Controls the visibility of the modal.
-   * @param {Function} props.onClose - Function to call when the modal should be closed.
-   * @param {string} props.compositionId - The ID of the composition this new version belongs to.
-   * @param {string} props.projectId - The ID of the parent project.
-   * @param {Array<object>} props.branchList - A list of available branches for the composition.
-   * @returns {JSX.Element | null} The rendered modal component or null if it is not open.
-   */
+
   const resetFormState = useCallback(() => {
     setSelectedBranchId(null);
     setVersionName("");
@@ -262,7 +264,7 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
                   id="musical-key"
                   value={key}
                   onChange={(e) => setKey(e.target.value)}
-                  className="mt-1 block w-full p-2 border border-gray-600 bg-gray-700 text-white rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  className="mt-1 block w-full p-2 border border-gray-600 bg-gray-700 text-white rounded-md shadow-sm cursor-pointer"
                   disabled={isLoadingData}
                 >
                   <option value="">Non définie</option>
@@ -304,7 +306,7 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
           <button
             type="submit"
             disabled={submissionStep !== "idle" || !selectedBranchId || !fileToUpload}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 py-2 text-sm font-medium text-zinc-800 bg-gray-300 border border-transparent rounded-md shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {submissionStep === "creating" ? "Création en cours..." : "Créer la version"}
           </button>

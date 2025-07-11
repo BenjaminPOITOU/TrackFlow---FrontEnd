@@ -31,7 +31,7 @@ function SelectEnumComponent({
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent
-        className={cn(
+        className={cn("z-999",
           "bg-zinc-700 border-zinc-600 text-white",
           "data-[state=open]:ring-2 data-[state=open]:ring-gray-300 data-[state=open]:ring-offset-2 data-[state=open]:ring-offset-zinc-900"
         )}

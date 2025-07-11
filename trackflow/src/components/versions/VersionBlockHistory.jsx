@@ -5,15 +5,17 @@
 "use client";
 
 import { History, Trash2 } from "lucide-react";
+import { version } from "react";
 
 /**
  * A utility function to format an ISO date string into a more readable format.
  * @param {string} dateString - The ISO date string to format.
  * @returns {string} The formatted date (e.g., "18/04/2024").
  */
-function formatDate(dateString) {
-  if (!dateString) return "N/A";
-  const date = new Date(dateString);
+function formatDate(timestampInSeconds) {
+  if (!timestampInSeconds) return "N/A";
+  const date = new Date(timestampInSeconds * 1000); 
+  
   return date.toLocaleDateString('fr-FR', {
     day: '2-digit',
     month: '2-digit',
@@ -37,7 +39,6 @@ export default function VersionBlockHistory({
   versionList,
   selectedVersionId,
   onVersionChange,
-  onVersionDelete,
 }) {
   if (!versionList || versionList.length === 0) {
     return (
@@ -46,13 +47,6 @@ export default function VersionBlockHistory({
       </div>
     );
   }
-
-  const handleDeleteClick = (e, versionId) => {
-    e.stopPropagation();
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cette version ? Cette action est irréversible.")) {
-      onVersionDelete(versionId);
-    }
-  };
 
   return (
     <div className="w-full border-t border-gray-700 pt-3">
@@ -66,17 +60,16 @@ export default function VersionBlockHistory({
             <tr>
               <th className="px-4 py-3 text-left font-medium text-zinc-800">Nom</th>
               <th className="px-4 py-3 text-left font-medium text-zinc-800">Branche</th>
-              <th className="px-4 py-3 text-left font-medium text-zinc-800">Date de Création</th>
-              <th className="px-4 py-3 text-center font-medium text-zinc-800">Actions</th>
+              <th className="px-4 py-3 text-left font-medium text-zinc-800 ">Date de Création</th>
             </tr>
           </thead>
           <tbody>
             {versionList.map((version) => {
               const isSelected = version.id === selectedVersionId;
               const rowClasses = `
-                border-b border-neutral-700 transition-colors
+                border-b border-neutral-700 transition-colors cursor-pointer hover:bg-zinc-700
                 ${isSelected 
-                  ? 'bg-blue-900/60' 
+                  ? 'bg-zinc-800' 
                   : 'hover:bg-neutral-700/50 cursor-pointer'
                 }
               `;
@@ -85,22 +78,13 @@ export default function VersionBlockHistory({
                 <tr
                   key={version.id}
                   className={rowClasses}
-                  onClick={() => onVersionChange(version.id)}
+                  onClick={() => onVersionChange(version.id)
+                   
+                  }
                 >
                   <td className="px-4 py-3 text-sm text-white font-semibold">{version.name}</td>
                   <td className="px-4 py-3 text-sm text-gray-300">{version.branchName}</td>
                   <td className="px-4 py-3 text-sm text-gray-300">{formatDate(version.createdDate)}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center justify-center">
-                      <button
-                        onClick={(e) => handleDeleteClick(e, version.id)}
-                        className="p-1 text-gray-400 hover:text-red-400"
-                        title="Supprimer la version"
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  </td>
                 </tr>
               );
             })}

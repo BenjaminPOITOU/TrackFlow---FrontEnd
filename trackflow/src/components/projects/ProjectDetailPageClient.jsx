@@ -41,6 +41,7 @@ export default function ProjectDetailPageClient({
   const refreshPageData = useCallback(() => {
     router.refresh();
   }, [router]);
+  
 
   const handleCompositionCreated = () => {
     refreshPageData();

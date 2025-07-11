@@ -6,6 +6,7 @@ import { fr } from "date-fns/locale";
 import { FileMusic, Trash2, SquarePen, Check, X } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import DataBadge from "../shared/DataBadge";
 import { AlertDialogCompostion } from "./AlertDialogComposition";
 import { updateCompositionById } from "@/lib/api/compositions";
 
@@ -26,10 +27,18 @@ import { updateCompositionById } from "@/lib/api/compositions";
  * @param {Function} props.onCompositionUpdated A callback function executed after a composition is successfully updated.
  * @returns {JSX.Element} The rendered composition card component.
  */
-export function CompositionCard({ composition, background, projectId, onCompositionDeleted, onCompositionUpdated }) {
+export function CompositionCard({
+  composition,
+  background,
+  projectId,
+  onCompositionDeleted,
+  onCompositionUpdated,
+}) {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(composition.title);
+
+  console.log("COMPOSITION STATUS  : ", composition?.status?.value)
 
   const compositionUrl = `/projects/${projectId}/compositions/${composition?.id}`;
 
@@ -39,21 +48,23 @@ export function CompositionCard({ composition, background, projectId, onComposit
   const versionLabel = totalVersions > 1 ? "VERSIONS" : "VERSION";
 
   const formattedDate = composition?.lastUpdateDate
-  ? (() => {
-      let dateObj;
-      const dateInput = composition.lastUpdateDate;
+    ? (() => {
+        let dateObj;
+        const dateInput = composition.lastUpdateDate;
 
-      if (typeof dateInput === "string") {
-        dateObj = parseISO(dateInput);
-      } else if (typeof dateInput === "number") {
-        dateObj = new Date(dateInput * 1000);
-      } else {
-        return "N/A";
-      }
+        if (typeof dateInput === "string") {
+          dateObj = parseISO(dateInput);
+        } else if (typeof dateInput === "number") {
+          dateObj = new Date(dateInput * 1000);
+        } else {
+          return "N/A";
+        }
 
-      return isValid(dateObj) ? format(dateObj, "dd/MM/yyyy", { locale: fr }) : "N/A";
-    })()
-  : "N/A";
+        return isValid(dateObj)
+          ? format(dateObj, "dd/MM/yyyy", { locale: fr })
+          : "N/A";
+      })()
+    : "N/A";
 
   const handleSaveTitle = async () => {
     if (editedTitle === composition.title || !editedTitle.trim()) {
@@ -63,7 +74,9 @@ export function CompositionCard({ composition, background, projectId, onComposit
     }
 
     try {
-      await updateCompositionById(projectId, composition.id, { title: editedTitle });
+      await updateCompositionById(projectId, composition.id, {
+        title: editedTitle,
+      });
       toast.success("Composition title updated successfully.");
       if (onCompositionUpdated) {
         onCompositionUpdated();
@@ -82,48 +95,113 @@ export function CompositionCard({ composition, background, projectId, onComposit
   };
 
   return (
-    <div className={`relative flex w-full items-center py-2 px-2 border border-gray-700 ${background}`}>
-      <div className="w-1/3 self-start flex items-center gap-2">
-        <FileMusic className="w-4 h-4 text-gray-300 flex-shrink-0" />
-        {isEditing ? (
-          <div className="flex items-center gap-2 w-full">
-            <input
-              type="text"
-              value={editedTitle}
-              onChange={(e) => setEditedTitle(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') handleSaveTitle();
-                if (e.key === 'Escape') handleCancelEdit();
-              }}
-              className="bg-zinc-700 border border-cyan-500 rounded-md p-1 text-white w-full"
-              autoFocus
-            />
-            <button onClick={handleSaveTitle} className="p-1 text-green-400 hover:text-green-300" title="Save"><Check size={20} /></button>
-            <button onClick={handleCancelEdit} className="p-1 text-red-400 hover:text-red-300" title="Cancel"><X size={20} /></button>
-          </div>
-        ) : (
-          <div className="flex items-center gap-2">
-            <Link href={compositionUrl} className="text-lg hover:underline">
-              {composition.title || "Composition Sans Titre"}
-            </Link>
-            <button onClick={() => setIsEditing(true)} className="p-1 text-gray-400 hover:text-white" title="Edit Title"><SquarePen size={16} /></button>
-          </div>
-        )}
-      </div>
+    <tr
+      className={`border-b border-gray-700 ${background} hover:bg-gray-800 transition-colors`}
+    >
+      <td className="p-3 w-full sm:w-auto">
+        <div className="flex items-center gap-2">
+          <FileMusic className="w-4 h-4 text-gray-300 flex-shrink-0" />
+          {isEditing ? (
+            <div className="flex items-center gap-2 w-full">
+              <input
+                type="text"
+                value={editedTitle}
+                onChange={(e) => setEditedTitle(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSaveTitle();
+                  if (e.key === "Escape") handleCancelEdit();
+                }}
+                className="bg-zinc-700 border border-cyan-500 rounded-md p-1 text-white w-full text-[0.875rem]"
+                autoFocus
+              />
+              <button
+                onClick={handleSaveTitle}
+                className="p-1 text-green-400 hover:text-green-300"
+                title="Save"
+              >
+                <Check size={16} />
+              </button>
+              <button
+                onClick={handleCancelEdit}
+                className="p-1 text-red-400 hover:text-red-300"
+                title="Cancel"
+              >
+                <X size={16} />
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 w-full">
+              <Link
+                href={compositionUrl}
+                className="text-[0.875rem] hover:underline text-white flex-1"
+              >
+                {composition.title || "Composition Sans Titre"}
+              </Link>
+              <button
+                onClick={() => setIsEditing(true)}
+                className="p-1 text-gray-400 hover:text-white"
+                title="Edit Title"
+              >
+                <SquarePen size={16} />
+              </button>
 
-      <Link href={compositionUrl} className="w-2/3 flex items-center cursor-pointer">
-        <div className="flex items-center w-full">
-          <span className="flex-1 text-center">{`${totalVersions} ${versionLabel}`}</span>
-          <span className="flex-1 text-center">{`${totalBranches} ${brancheLabel}`}</span>
-          <span className="flex-1 text-center px-2 py-1 rounded-md border text-sm">{composition.status.value}</span>
-          <span className="flex-1 text-center">{formattedDate}</span>
+              <div className="sm:hidden flex items-center gap-2 ml-auto">
+                <DataBadge
+                  type="compositionStatus"
+                  value={composition?.status?.value}
+                  className="text-[0.75rem] px-2 py-1"
+                />
+                <button
+                  onClick={() => setIsAlertOpen(true)}
+                  className="p-1 text-red-600 hover:text-red-400"
+                  title="Supprimer"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
+          )}
         </div>
-      </Link>
-      
-      <button onClick={() => setIsAlertOpen(true)} className="absolute top-0 right-0 h-full px-2 flex items-center cursor-pointer">
-        <Trash2 className="text-red-600 transition-transform duration-200 hover:scale-110" size={20} />
-      </button>
+      </td>
 
+      <td className="hidden sm:table-cell p-3 text-center">
+        <Link href={compositionUrl} className="text-[0.875rem] hover:underline">
+          {`${totalVersions} ${versionLabel}`}
+        </Link>
+      </td>
+
+      <td className="hidden sm:table-cell p-3 text-center">
+        <Link href={compositionUrl} className="text-[0.875rem] hover:underline">
+          {`${totalBranches} ${brancheLabel}`}
+        </Link>
+      </td>
+
+      <td className="hidden sm:table-cell p-3 text-center">
+        <Link href={compositionUrl} className="inline-block">
+          <DataBadge
+                  type="compositionStatus"
+                  value={composition?.status?.value}
+                  className="text-[0.75rem] px-2 py-1"
+                />
+        </Link>
+      </td>
+
+      <td className="hidden sm:table-cell p-3 text-center">
+        <Link href={compositionUrl} className="text-[0.875rem] hover:underline">
+          {formattedDate}
+        </Link>
+      </td>
+
+      <td className="hidden sm:table-cell p-3 text-center">
+        <button
+          onClick={() => setIsAlertOpen(true)}
+          className="p-1 text-red-600 hover:text-red-400 transition-colors"
+          title="Supprimer"
+        >
+          <Trash2 size={16} />
+        </button>
+      </td>
+      
       {isAlertOpen && (
         <AlertDialogCompostion
           isOpen={isAlertOpen}
@@ -133,6 +211,6 @@ export function CompositionCard({ composition, background, projectId, onComposit
           onCompositionDeleted={onCompositionDeleted}
         />
       )}
-    </div>
+    </tr>
   );
 }
