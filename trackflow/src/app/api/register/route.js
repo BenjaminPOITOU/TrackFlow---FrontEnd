@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 const backendApiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -15,13 +15,13 @@ const backendApiUrl = process.env.NEXT_PUBLIC_API_URL;
 export async function POST(request) {
   try {
     const body = await request.json();
-    
+
     const targetUrl = `${backendApiUrl}/api/auth/register`;
 
     const backendResponse = await fetch(targetUrl, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(body),
     });
@@ -29,12 +29,16 @@ export async function POST(request) {
     const responseData = await backendResponse.json();
 
     if (!backendResponse.ok) {
-      return NextResponse.json(responseData, { status: backendResponse.status });
+      return NextResponse.json(responseData, {
+        status: backendResponse.status,
+      });
     }
 
     return NextResponse.json(responseData, { status: 201 });
-
   } catch (error) {
-    return NextResponse.json({ message: 'An internal server error occurred' }, { status: 500 });
+    return NextResponse.json(
+      { message: "An internal server error occurred" },
+      { status: 500 }
+    );
   }
 }

@@ -108,7 +108,11 @@ export function VersionListPageHeader({ composition, projectId, branchList }) {
           <span className="text-3xl lg:text-4xl glow-text whitespace-nowrap">
             {composition.title}
           </span>
-          <Terminal color="#e0e0e0" className="hidden sm:block self-end" size={60} />
+          <Terminal
+            color="#e0e0e0"
+            className="hidden sm:block self-end"
+            size={60}
+          />
           {!showDropdown ? (
             <div className="flex items-center justify-start w-[75%] sm:w-full gap-2">
               <DataBadge

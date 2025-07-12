@@ -1,4 +1,10 @@
 "use client";
+/**
+ * @file components/forms/ProjectUpdateForm.js (or .tsx)
+ * @description A container component that renders a form for updating an existing project.
+ * It leverages the `useProjectUpdateForm` custom hook to manage all complex logic, including
+ * fetching existing project data, handling state, and submitting changes.
+ */
 
 import React, { useEffect } from "react";
 import { useProjectUpdateForm } from "./hooks/useProjectUpdateForm";
@@ -11,7 +17,20 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
 /**
- * Renders the form for updating a project, using the useProjectUpdateForm hook for its logic.
+ * Renders a stateful form for updating an existing project's details.
+ *
+ * This component is a "smart" container that consumes the `useProjectUpdateForm` hook.
+ * Its responsibilities are to:
+ * 1.  Orchestrate the flow of data from the hook to the presentational UI components.
+ * 2.  Provide clear UI feedback for various states (loading initial data, submitting changes, errors).
+ * 3.  Connect user interactions (input changes, checkbox selections, etc.) to the handlers provided by the hook.
+ *
+ * @param {object} props - The component props.
+ * @param {string|number} props.projectId - The ID of the project to fetch and update.
+ * @param {string|number} props.userId - The ID of the user performing the update, for authorization purposes.
+ * @param {function(): void} props.onCancel - Callback executed when the user cancels the update.
+ * @param {function(): void} props.onSuccess - Callback executed after a successful update.
+ * @returns {JSX.Element} The JSX for the update form, or a loading/error state.
  */
 export function ProjectUpdateForm({ projectId, userId, onCancel, onSuccess }) {
   console.log("ProjectUpdateForm rendered with props:", { projectId, userId });
@@ -22,7 +41,6 @@ export function ProjectUpdateForm({ projectId, userId, onCancel, onSuccess }) {
       userId,
       onSuccess,
     });
-
 
   console.log("useProjectUpdateForm output:", {
     status,

@@ -44,15 +44,27 @@ export function SubGenderInput({ value, onChange, disabled }) {
           onKeyDown={handleKeyDown}
           disabled={disabled}
         />
-        <Button type="button" onClick={handleAdd} disabled={disabled || !inputValue}>
+        <Button
+          type="button"
+          onClick={handleAdd}
+          disabled={disabled || !inputValue}
+        >
           Ajouter
         </Button>
       </div>
       <div className="flex flex-wrap gap-2 min-h-[2.5rem] p-2 bg-zinc-800 rounded-md">
         {value.map((tag) => (
-          <div key={tag} className="flex items-center gap-1.5 bg-zinc-600 text-white text-sm rounded-full px-3 py-1">
+          <div
+            key={tag}
+            className="flex items-center gap-1.5 bg-zinc-600 text-white text-sm rounded-full px-3 py-1"
+          >
             <span>{tag}</span>
-            <button type="button" onClick={() => handleRemove(tag)} disabled={disabled} className="rounded-full hover:bg-zinc-500">
+            <button
+              type="button"
+              onClick={() => handleRemove(tag)}
+              disabled={disabled}
+              className="rounded-full hover:bg-zinc-500"
+            >
               <X size={14} />
             </button>
           </div>

@@ -1,11 +1,18 @@
 "use client";
 
+/**
+ * @file components/sidebar/Sidebar.js (or .tsx)
+ * @description The main application sidebar component. It's responsible for primary navigation,
+ * user session controls (menu and logout), and features a collapsible design. It's also responsive,
+ * displaying a compact header on smaller screens and a full sidebar on larger screens.
+ */
+
 import { useState } from "react";
 import Link from "next/link";
 import UserMenu from "@/components/usermenu/UserMenu";
 import SidebarSection from "./SidebarSection";
 import SidebarItem from "./SidebarItem";
-import AlertDialogLogout from "../logout/AlertDialogLogout";
+import LogoutDialog from "../logout/AlertDialogLogout";
 import {
   Home,
   Music2,
@@ -20,6 +27,11 @@ import {
   SquarePower,
   Router,
 } from "lucide-react";
+
+/**
+ * Configuration data for the sidebar navigation links, organized by section.
+ * This structure makes it easy to add, remove, or disable navigation items.
+ */
 
 const mainNavItems = [
   {
@@ -43,7 +55,7 @@ const mainNavItems = [
     icon: PlaySquare,
     disabled: true,
   },
-  { id: "ARCHIVED", text: "Archivés", href: "", icon: Archive, disabled: true },
+  { id: "ARCHIVED", text: "Archives", href: "", icon: Archive, disabled: true },
   { id: "TRASH", text: "Corbeille", href: "", icon: Trash2, disabled: true },
 ];
 
@@ -83,6 +95,13 @@ const navSections = [
   },
 ];
 
+
+/**
+ * Renders the application logo and name ("TrackFlow").
+ * The name text is conditionally displayed based on the sidebar's collapsed state to save space.
+ * @param {{isCollapsed: boolean}} props - Component props.
+ * @returns {JSX.Element}
+ */
 function SidebarLogo({ isCollapsed }) {
   const logoTextClasses = [
     "text-lg",
@@ -119,6 +138,14 @@ function SidebarLogo({ isCollapsed }) {
   );
 }
 
+/**
+ * Renders the main list of navigation items.
+ * It iterates over the `navSections` data structure and maps each section and its
+ * items to `SidebarSection` and `SidebarItem` components, respectively.
+ * @param {{isCollapsed: boolean}} props - Component props used to pass down the collapsed state.
+ * @returns {JSX.Element}
+ */
+
 function NavigationList({ isCollapsed }) {
   return (
     <nav className="flex-1 p-2 overflow-y-auto overflow-x-hidden">
@@ -145,10 +172,9 @@ function NavigationList({ isCollapsed }) {
   );
 }
 
-export default function Sidebar() {
+export default function Sidebar({ userData }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
-
 
   const toggleSidebar = () => setIsCollapsed(!isCollapsed);
 
@@ -157,14 +183,12 @@ export default function Sidebar() {
   const sidebarWidthClass = isCollapsed ? "w-20" : "lg:w-64";
   const sidebarClasses = `${sidebarBaseClasses} ${sidebarWidthClass}`;
 
-
   return (
     <>
       <header className="flex lg:hidden items-center justify-between w-full h-16 px-4 border-b border-zinc-700 bg-zinc-900 z-10">
-        <Link href="/dashboard">
+        <Link href="/projects">
           <SidebarLogo isCollapsed={true} />
         </Link>
-        <UserMenu isCollapsed={true} />
       </header>
 
       <aside className={sidebarClasses}>
@@ -179,7 +203,8 @@ export default function Sidebar() {
           <SidebarLogo isCollapsed={isCollapsed} />
         </div>
 
-        <div className="p-3 border-b border-zinc-700 flex justify-end items-center">
+        <div className="p-3 border-b border-zinc-700 flex justify-end items-center gap-2">
+          <UserMenu userData={userData} isCollapsed={isCollapsed} />
           <button
             onClick={() => setIsAlertOpen(true)}
             className="cursor-pointer"
@@ -192,7 +217,7 @@ export default function Sidebar() {
       </aside>
 
       {isAlertOpen && (
-        <AlertDialogLogout
+        <LogoutDialog
           isOpen={isAlertOpen}
           onClose={() => setIsAlertOpen(false)}
         />

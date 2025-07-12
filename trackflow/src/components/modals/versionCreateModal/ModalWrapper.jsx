@@ -1,6 +1,41 @@
+/**
+ * @file components/modals/ModalWrapper.js (or .tsx)
+ * @description A generic, reusable, and accessible modal component. It provides the basic
+ * structure (overlay, container, title, close button) and logic for a modal dialog.
+ */
+
 import React, { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 
+/**
+ * @file components/ui/ModalWrapper.js (or .tsx)
+ * @description A generic, reusable, and accessible modal component. It provides the basic
+ * structure (overlay, container, title, close button) and logic for a modal dialog.
+ */
+
+"use-client";
+
+import React, { useEffect, useRef } from "react";
+import { X } from "lucide-react";
+
+/**
+ * Renders a generic modal dialog wrapper.
+ *
+ * This component handles the common functionality of a modal, such as:
+ * - Displaying an overlay that covers the page.
+ * - Providing a title bar and a close button.
+ * - Allowing the user to close the modal by clicking the overlay or pressing the 'Escape' key.
+ * - Preventing clicks inside the modal from accidentally closing it.
+ *
+ * It is designed to be a wrapper, with the modal's specific content being passed in as `children`.
+ *
+ * @param {object} props - The component props.
+ * @param {boolean} props.isOpen - Controls whether the modal is visible.
+ * @param {function(): void} props.onClose - A callback function invoked when the modal should be closed.
+ * @param {string} props.title - The text to display in the modal's header.
+ * @param {React.ReactNode} props.children - The content to be rendered inside the modal's body.
+ * @returns {JSX.Element | null} The JSX for the modal, or null if `isOpen` is false.
+ */
 export const ModalWrapper = ({ isOpen, onClose, title, children }) => {
   const modalRef = useRef(null);
 

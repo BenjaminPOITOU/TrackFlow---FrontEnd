@@ -3,7 +3,32 @@
 import { Music2 } from "lucide-react";
 import { EditableDetailCard } from "./EditableDetailCard";
 
-const musicalKeys = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "Cm", "C#m", "Dm", "D#m", "Em", "Fm", "F#m", "Gm", "G#m", "Am", "A#m", "Bm"];
+const musicalKeys = [
+  "C",
+  "C#",
+  "D",
+  "D#",
+  "E",
+  "F",
+  "F#",
+  "G",
+  "G#",
+  "A",
+  "A#",
+  "B",
+  "Cm",
+  "C#m",
+  "Dm",
+  "D#m",
+  "Em",
+  "Fm",
+  "F#m",
+  "Gm",
+  "G#m",
+  "Am",
+  "A#m",
+  "Bm",
+];
 
 /**
  * Displays and allows editing of the version's musical key.
@@ -31,7 +56,11 @@ export function KeyVersion({ versionKey, onKeySave, isEditable }) {
           className="w-full bg-zinc-700 border border-cyan-500 rounded-md p-1 text-white"
         >
           <option value="">Non définie</option>
-          {musicalKeys.map(k => <option key={k} value={k}>{k}</option>)}
+          {musicalKeys.map((k) => (
+            <option key={k} value={k}>
+              {k}
+            </option>
+          ))}
         </select>
       )}
     </EditableDetailCard>

@@ -8,8 +8,6 @@ import { Funnel, ArrowDownNarrowWide, LayoutGrid, List } from "lucide-react";
  */
 export function ProjectListHeader() {
   return (
-    <div className="flex items-center justify-between border bg-card bg-zinc-800 p-2 text-card-foreground">
-    
-    </div>
+    <div className="flex items-center justify-between border bg-card bg-zinc-800 p-2 text-card-foreground"></div>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from 'react';
-import { X, Loader2 } from 'lucide-react';
+import { useState } from "react";
+import { X, Loader2 } from "lucide-react";
 
 /**
  * Manages the selection and display of musical instruments for a version.
@@ -17,29 +17,34 @@ import { X, Loader2 } from 'lucide-react';
  * @param {Function} props.onRemoveInstrument - Callback function executed when an instrument is removed. Receives the instrument value (string).
  * @returns {JSX.Element} The rendered instruments manager component.
  */
-export const InstrumentsManager = ({ allInstruments, isLoading, currentInstruments, onAddInstrument, onRemoveInstrument }) => {
-  const [instrumentToAdd, setInstrumentToAdd] = useState('');
-
-
+export const InstrumentsManager = ({
+  allInstruments,
+  isLoading,
+  currentInstruments,
+  onAddInstrument,
+  onRemoveInstrument,
+}) => {
+  const [instrumentToAdd, setInstrumentToAdd] = useState("");
 
   const handleAddClick = () => {
     if (!instrumentToAdd) return;
     onAddInstrument(instrumentToAdd);
-    setInstrumentToAdd(''); 
+    setInstrumentToAdd("");
   };
-
 
   const availableInstruments = allInstruments.filter(
     (inst) => !(currentInstruments || []).includes(inst.value)
   );
-  
+
   /**
    * Finds the display label for a given instrument value and converts it to uppercase.
    * @param {string} instrumentValue - The value of the instrument (e.g., 'GUITARE').
    * @returns {string} The corresponding display label in uppercase (e.g., 'GUITARE') or the value itself if not found.
    */
   const getInstrumentLabel = (instrumentValue) => {
-    const instrument = allInstruments.find(inst => inst.value === instrumentValue);
+    const instrument = allInstruments.find(
+      (inst) => inst.value === instrumentValue
+    );
     return (instrument ? instrument.label : instrumentValue).toUpperCase();
   };
 
@@ -55,18 +60,21 @@ export const InstrumentsManager = ({ allInstruments, isLoading, currentInstrumen
   return (
     <div className="mt-4">
       <h3 className="text-lg font-medium text-gray-300 mb-2">Instruments</h3>
-      
+
       {currentInstruments?.length > 0 ? (
         <ul className="mb-2 space-y-1">
           {currentInstruments.map((instrumentValue) => (
-            <li key={instrumentValue} className="flex items-center justify-between bg-zinc-700 p-2 rounded-md text-sm text-white">
-              <span>{getInstrumentLabel(instrumentValue)}</span> 
+            <li
+              key={instrumentValue}
+              className="flex items-center justify-between bg-zinc-700 p-2 rounded-md text-sm text-white"
+            >
+              <span>{getInstrumentLabel(instrumentValue)}</span>
               <button
                 type="button"
                 onClick={() => onRemoveInstrument(instrumentValue)}
                 className="text-red-400 hover:text-red-500 font-bold cursor-pointer"
               >
-                <X size={18}/>
+                <X size={18} />
               </button>
             </li>
           ))}
@@ -96,7 +104,7 @@ export const InstrumentsManager = ({ allInstruments, isLoading, currentInstrumen
         <button
           type="button"
           onClick={handleAddClick}
-          disabled={!instrumentToAdd} 
+          disabled={!instrumentToAdd}
           className="px-4 py-2 text-sm font-medium text-zinc-800 bg-gray-300 border border-transparent rounded-md hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Ajouter

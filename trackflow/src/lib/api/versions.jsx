@@ -11,7 +11,12 @@ import fetcher from "./api-helpers";
  * @param {object} params.versionData - The data for the new version (VersionCreateDto).
  * @returns {Promise<object>} A promise that resolves to the created version view (VersionViewDto).
  */
-export async function createVersion({ projectId, compositionId, branchId, versionData }) {
+export async function createVersion({
+  projectId,
+  compositionId,
+  branchId,
+  versionData,
+}) {
   const endpoint = `/api/projects/${projectId}/compositions/${compositionId}/branches/${branchId}/versions`;
   try {
     return await fetcher(endpoint, {
@@ -35,7 +40,11 @@ export async function createVersion({ projectId, compositionId, branchId, versio
  * @param {number} params.branchId - The ID of the branch.
  * @returns {Promise<Array<object>>} A promise that resolves to a list of version summaries (VersionSummaryDto[]).
  */
-export async function getVersionsByBranch({ projectId, compositionId, branchId }) {
+export async function getVersionsByBranch({
+  projectId,
+  compositionId,
+  branchId,
+}) {
   const endpoint = `/api/projects/${projectId}/compositions/${compositionId}/branches/${branchId}/versions`;
   try {
     return await fetcher(endpoint);
@@ -44,7 +53,6 @@ export async function getVersionsByBranch({ projectId, compositionId, branchId }
     throw new Error("Could not load the list of versions.");
   }
 }
-
 
 /**
  * Retrieves the latest version for a specific branch.
@@ -58,7 +66,11 @@ export async function getVersionsByBranch({ projectId, compositionId, branchId }
  * @returns {Promise<object>} A promise that resolves to the latest version view DTO (VersionViewDto).
  * @throws {Error} Throws an error if the fetch operation fails.
  */
-export async function getLatestVersionByBranch({ projectId, compositionId, branchId }) {
+export async function getLatestVersionByBranch({
+  projectId,
+  compositionId,
+  branchId,
+}) {
   const endpoint = `/api/projects/${projectId}/compositions/${compositionId}/branches/${branchId}/versions/latest`;
   try {
     return await fetcher(endpoint);
@@ -78,7 +90,12 @@ export async function getLatestVersionByBranch({ projectId, compositionId, branc
  * @param {number} params.versionId - The ID of the version to retrieve.
  * @returns {Promise<object>} A promise that resolves to the detailed version view (VersionViewDto).
  */
-export async function getVersionById({ projectId, compositionId, branchId, versionId }) {
+export async function getVersionById({
+  projectId,
+  compositionId,
+  branchId,
+  versionId,
+}) {
   const endpoint = `/api/projects/${projectId}/compositions/${compositionId}/branches/${branchId}/versions/${versionId}`;
   try {
     return await fetcher(endpoint);
@@ -100,7 +117,13 @@ export async function getVersionById({ projectId, compositionId, branchId, versi
  * @param {object} params.updateData - The data for the update (VersionUpdateDto).
  * @returns {Promise<object>} A promise that resolves to the updated version view (VersionViewDto).
  */
-export async function updateVersion({ projectId, compositionId, branchId, versionId, updateData }) {
+export async function updateVersion({
+  projectId,
+  compositionId,
+  branchId,
+  versionId,
+  updateData,
+}) {
   const endpoint = `/api/projects/${projectId}/compositions/${compositionId}/branches/${branchId}/versions/${versionId}`;
   try {
     return await fetcher(endpoint, {
@@ -125,7 +148,12 @@ export async function updateVersion({ projectId, compositionId, branchId, versio
  * @param {number} params.versionId - The ID of the version to delete.
  * @returns {Promise<void>}
  */
-export async function deleteVersion({ projectId, compositionId, branchId, versionId }) {
+export async function deleteVersion({
+  projectId,
+  compositionId,
+  branchId,
+  versionId,
+}) {
   const endpoint = `/api/projects/${projectId}/compositions/${compositionId}/branches/${branchId}/versions/${versionId}`;
   try {
     return await fetcher(endpoint, { method: "DELETE" });

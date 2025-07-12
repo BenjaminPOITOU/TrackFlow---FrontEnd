@@ -1,4 +1,12 @@
-'use client'
+"use client";
+
+/**
+ * @file components/dropdowns/DropdownMenuCompositionStatus.js (or .tsx)
+ * @description A controlled dropdown menu component specifically for selecting a composition's status.
+ * It autonomously fetches the list of available statuses from the API, manages its own loading
+ * and error states, and reports the selected value to its parent.
+ */
+
 
 import {
   Select,
@@ -11,6 +19,23 @@ import {
 
 import { useState, useEffect } from "react";
 import { getCompositionStatuses } from "@/lib/api/enum";
+
+
+
+/**
+ * Renders a specialized dropdown for selecting the status of a composition.
+ *
+ * This component handles the asynchronous fetching of composition statuses from the backend.
+ * It operates as a controlled component, meaning the parent component manages the
+ * `selectedValue` and listens for changes via the `onSelectedValueChange` callback.
+ * The `initialStatus` prop can be used to display a value before the user makes a selection.
+ *
+ * @param {object} props - The component props.
+ * @param {string} props.selectedValue - The currently selected status, controlled by the parent.
+ * @param {function(string): void} props.onSelectedValueChange - A callback function that is invoked with the new status value when a user makes a selection.
+ * @param {string} [props.initialStatus] - An optional initial value to display in the trigger before a selection is made or while data is loading.
+ * @returns {JSX.Element} The JSX for the status selection dropdown.
+ */
 
 export function DropdownMenuCompositionStatus({
   selectedValue,

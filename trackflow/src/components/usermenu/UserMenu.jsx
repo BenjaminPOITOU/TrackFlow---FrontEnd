@@ -1,76 +1,65 @@
-"use client"
+"use client";
+/**
+ * @file components/usermenu/UserMenu.jsx
+ * @description A user menu component that acts as a trigger to open a side panel (`Sheet`)
+ * displaying a summary of the logged-in user's profile.
+ */
 
-import { useState } from "react";
-import { UserCircle2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
 
-export default function UserMenu({ isCollapsed }) {
-  const [name, setName] = useState('BENJAMIN');
-  const [username, setUsername] = useState('Benji'); 
 
-  const handleSaveChanges = () => {
-    console.log("Saving changes:", { name, username });
-  };
+/**
+ * Renders a user menu button that, when clicked, opens a side panel with user profile details.
+ *
+ * @param {object} props - The component props.
+ * @param {{firstName: string, lastName: string}} props.userData - An object containing the user's data.
+ * @returns {JSX.Element} The JSX for the UserMenu component.
+ */
+
+export default function UserMenu({ userData }) {
+  const firstName = userData?.firstName;
+  const lastName = userData?.lastName;
 
   return (
     <Sheet>
-      <SheetTrigger className="w-full">
-        <div className={`flex items-center justify-center h-10 w-10 rounded-full hover:bg-zinc-700/50 transition-colors ${!isCollapsed && "lg:hidden"}`}>
-          <UserCircle2 size={24} />
-        </div>
-        <div className={`hidden h-10 px-4 py-2 rounded-md border border-input bg-background hover:bg-accent hover:text-accent-foreground ${!isCollapsed && "lg:inline-flex items-center justify-center"}`}>
-          {name} ACCOUNT
-        </div>
+      <SheetTrigger asChild>
+        <button className="flex justify-center items-center w-full gap-2 cursor-pointer hover:text-gray-400 text-gray-300">
+          <span>{firstName}</span>
+          <span>{lastName}</span>
+        </button>
       </SheetTrigger>
-      
-      <SheetContent>
+
+      <SheetContent className="bg-zinc-800 text-gray-300 px-4">
         <SheetHeader>
-          <SheetTitle>Modifier le profil</SheetTitle>
-          <SheetDescription>
-            Apportez des modifications à votre profil ici. Cliquez sur Enregistrer lorsque vous avez terminé.
-          </SheetDescription>
+          <SheetTitle>{`Resumé du profil de ${firstName}`}</SheetTitle>
         </SheetHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
-              Nom
+              Prénom :
             </Label>
-            <Input 
-              id="name" 
-              value={name} 
-              onChange={(e) => setName(e.target.value)} 
-              className="col-span-3" 
-            />
+            <Label htmlFor="name" className="text-right">
+              {firstName}
+            </Label>
+            <Label id="firstName" value={firstName} className="col-span-3" />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="username" className="text-right">
-              Pseudo
+              Nom :
             </Label>
-            <Input 
-              id="username" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)}
-              className="col-span-3" 
-            />
+            <Label htmlFor="name" className="text-right">
+              {lastName}
+            </Label>
+            <Label id="lastName" value={lastName} className="col-span-3" />
           </div>
         </div>
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button type="button" onClick={handleSaveChanges}>Enregistrer les modifications</Button>
-          </SheetClose>
-        </SheetFooter>
       </SheetContent>
     </Sheet>
   );

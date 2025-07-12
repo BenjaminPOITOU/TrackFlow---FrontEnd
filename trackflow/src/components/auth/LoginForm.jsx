@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
  * It handles user input for email and password, performs client-side validation,
  * and sends credentials to the server. It is designed to handle specific
  * authentication error responses (e.g., 401 Unauthorized).
- * 
+ *
  * @param {object} props The component props.
  * @param {boolean} props.isVisible Controls the form's visibility and animations.
  * @param {boolean} props.isExiting Triggers the form's exit animation on success.
@@ -58,7 +58,9 @@ export default function LoginForm({
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "L'email ou le mot de passe est incorrect.");
+        throw new Error(
+          errorData.message || "L'email ou le mot de passe est incorrect."
+        );
       }
       router.refresh();
 

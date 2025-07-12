@@ -1,6 +1,12 @@
+/**
+ * @file components/shared/DataBadge.js (or .tsx)
+ * @description A versatile, data-driven styling component that displays information
+ * (like a status or a tag) as a consistently styled badge or a status dot.
+ */
+
+
 import React from "react";
 import { cn } from "@/lib/utils";
-
 
 const projectStatusStyles = {
   EN_COURS: {
@@ -28,7 +34,6 @@ const projectStatusStyles = {
     border: "border-gray-600",
   },
 };
-
 
 const compositionStatusStyles = {
   EBAUCHE: {
@@ -73,6 +78,7 @@ const synthwaveStyle = {
 };
 
 
+
 const neutralStyles = {
   bg: "bg-gray-800",
   text: "text-gray-400",
@@ -81,12 +87,15 @@ const neutralStyles = {
 };
 
 /**
- * Affiche une donnée (status, genre, etc.) sous forme de badge ou de point coloré.
- * @param {string} type - Le type de donnée ('projectStatus', 'projectMusicalGender', etc.)
- * @param {string} value - La valeur brute de la donnée (ex: 'EN_COURS', 'ROCK')
- * @param {string} [label] - Texte optionnel à afficher
- * @param {'badge' | 'dot'} [variant='badge'] - La forme d'affichage
- * @param {string} [className] - Classes CSS additionnelles
+ * Renders a piece of data (like a status or genre) as a styled badge or a colored status dot.
+ * This component centralizes styling logic to create a consistent visual language across the application.
+ *
+ * @param {object} props - The component props.
+ * @param {'projectStatus' | 'compositionStatus' | 'projectMusicalGender'} props.type - The type of data being displayed. This determines which style map to use.
+ * @param {string} props.value - The raw data value (e.g., 'EN_COURS', 'ROCK'). This is used as a key to look up the style.
+ * @param {'badge' | 'dot'} [props.variant='badge'] - The visual variant to render. Defaults to 'badge'.
+ * @param {string} [props.className] - Optional additional CSS classes to be merged with the component's default classes.
+ * @returns {JSX.Element | null} The rendered badge or dot, or null if no value is provided.
  */
 const DataBadge = ({ type, value, variant = "badge", className }) => {
   if (!value) {
@@ -115,9 +124,7 @@ const DataBadge = ({ type, value, variant = "badge", className }) => {
       styles = neutralStyles;
   }
 
-
   const displayText = value || "";
-
 
   if (variant === "dot") {
     const dotColorClass = styles.dot;

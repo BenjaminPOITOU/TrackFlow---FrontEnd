@@ -1,9 +1,9 @@
-import React from 'react';
-import { redirect, notFound } from 'next/navigation';
-import { getUserSession } from '@/lib/api/authService';
-import { getProjectById } from '@/lib/api/projects';
-import { getCompositionsByProjectId } from '@/lib/api/compositions';
-import ProjectDetailPageClient from '@/components/projects/ProjectDetailPageClient';
+import React from "react";
+import { redirect, notFound } from "next/navigation";
+import { getUserSession } from "@/lib/api/authService";
+import { getProjectById } from "@/lib/api/projects";
+import { getCompositionsByProjectId } from "@/lib/api/compositions";
+import ProjectDetailPageClient from "@/components/projects/ProjectDetailPageClient";
 
 /**
  * Server Component for the project detail page.
@@ -18,31 +18,34 @@ import ProjectDetailPageClient from '@/components/projects/ProjectDetailPageClie
  * @returns {Promise<React.ReactElement>}
  */
 export default async function ProjectDetailPage({ params }) {
-    const { user } = await getUserSession();
-    const projectId = params.projectId;
-    if (!user) {
-        redirect('/');
+  const { user } = await getUserSession();
+  const projectId = params.projectId;
+  if (!user) {
+    redirect("/");
+  }
+
+  try {
+    const [projectData, compositionsData] = await Promise.all([
+      getProjectById(user.id, projectId),
+      getCompositionsByProjectId(projectId),
+    ]);
+
+    if (!projectData) {
+      notFound();
     }
 
-    try {
-        const [projectData, compositionsData] = await Promise.all([
-            getProjectById(user.id, projectId),
-            getCompositionsByProjectId(projectId)
-        ]);
-
-        if (!projectData) {
-            notFound();
-        }
-
-        return (
-            <ProjectDetailPageClient
-                initialProject={projectData}
-                initialCompositions={compositionsData || []}
-                user={user}
-            />
-        );
-    } catch (error) {
-        console.error(`[SERVER ERROR] Failed to load data for project ${params.projectId}:`, error);
-        notFound();
-    }
+    return (
+      <ProjectDetailPageClient
+        initialProject={projectData}
+        initialCompositions={compositionsData || []}
+        user={user}
+      />
+    );
+  } catch (error) {
+    console.error(
+      `[SERVER ERROR] Failed to load data for project ${params.projectId}:`,
+      error
+    );
+    notFound();
+  }
 }

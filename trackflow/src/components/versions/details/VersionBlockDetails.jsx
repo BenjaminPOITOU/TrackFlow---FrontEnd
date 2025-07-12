@@ -19,7 +19,12 @@ import { InstrumentVersion } from "./InstrumentVersion";
  * @param {Function} props.onBranchUpdate - Callback function to update properties specific to the branch (like the description).
  * @returns {JSX.Element} The rendered component with all version details.
  */
-export function VersionBlockDetails({ version, onVersionUpdate, onBranchUpdate, isVersionEditable }) {
+export function VersionBlockDetails({
+  version,
+  onVersionUpdate,
+  onBranchUpdate,
+  isVersionEditable,
+}) {
   return (
     <div className="flex flex-col gap-2 justify-center items-start w-full">
       <div className="w-full">
@@ -29,13 +34,24 @@ export function VersionBlockDetails({ version, onVersionUpdate, onBranchUpdate, 
         />
       </div>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 w-full">
-        <TempoVersion versionBpm={version?.bpm} onBpmSave={onVersionUpdate} isEditable={false} />
-        <KeyVersion versionKey={version?.key} onKeySave={onVersionUpdate} isEditable={false} />
-        <DurationVersion versionDuration={version?.durationSeconds} isEditable={false} />
+        <TempoVersion
+          versionBpm={version?.bpm}
+          onBpmSave={onVersionUpdate}
+          isEditable={false}
+        />
+        <KeyVersion
+          versionKey={version?.key}
+          onKeySave={onVersionUpdate}
+          isEditable={false}
+        />
+        <DurationVersion
+          versionDuration={version?.durationSeconds}
+          isEditable={false}
+        />
         <InstrumentVersion
           versionInstruments={version?.instruments}
           onInstrumentsSave={onVersionUpdate}
-          isEditable={false} 
+          isEditable={false}
         />
       </div>
     </div>

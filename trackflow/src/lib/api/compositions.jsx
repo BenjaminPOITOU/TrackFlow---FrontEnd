@@ -1,4 +1,4 @@
-import fetcher from './api-helpers'; // Adjust the path to your fetcher helper
+import fetcher from "./api-helpers"; // Adjust the path to your fetcher helper
 
 /**
  * @file API service functions for managing compositions and their versions.
@@ -22,7 +22,10 @@ export async function getCompositionsByProjectId(projectId) {
   try {
     return await fetcher(endpoint);
   } catch (error) {
-    console.error(`getCompositionsByProjectId: Failed for project ${projectId}.`, error.message);
+    console.error(
+      `getCompositionsByProjectId: Failed for project ${projectId}.`,
+      error.message
+    );
     throw error;
   }
 }
@@ -39,14 +42,19 @@ export async function getCompositionsByProjectId(projectId) {
  */
 export async function deleteCompositionById(projectId, compositionId) {
   if (!projectId || !compositionId) {
-    throw new Error("deleteCompositionById requires a projectId and a compositionId.");
+    throw new Error(
+      "deleteCompositionById requires a projectId and a compositionId."
+    );
   }
   const endpoint = `/api/projects/${projectId}/compositions/${compositionId}`;
   try {
     await fetcher(endpoint, { method: "DELETE" });
     return { success: true };
   } catch (error) {
-    console.error(`deleteCompositionById: Failed for composition ${compositionId}.`, error.message);
+    console.error(
+      `deleteCompositionById: Failed for composition ${compositionId}.`,
+      error.message
+    );
     throw error;
   }
 }
@@ -74,7 +82,10 @@ export async function createComposition(projectId, formData) {
   try {
     return await fetcher(endpoint, fetchOptions);
   } catch (error) {
-    console.error(`createComposition: Failed for project ${projectId}.`, error.message);
+    console.error(
+      `createComposition: Failed for project ${projectId}.`,
+      error.message
+    );
     throw error;
   }
 }
@@ -91,13 +102,18 @@ export async function createComposition(projectId, formData) {
  */
 export async function getCompositionById(projectId, compositionId) {
   if (!projectId || !compositionId) {
-    throw new Error("getCompositionById requires a projectId and a compositionId.");
+    throw new Error(
+      "getCompositionById requires a projectId and a compositionId."
+    );
   }
   const endpoint = `/api/projects/${projectId}/compositions/${compositionId}`;
   try {
     return await fetcher(endpoint);
   } catch (error) {
-    console.error(`getCompositionById: Failed for composition ${compositionId}.`, error.message);
+    console.error(
+      `getCompositionById: Failed for composition ${compositionId}.`,
+      error.message
+    );
     throw error;
   }
 }
@@ -113,9 +129,15 @@ export async function getCompositionById(projectId, compositionId) {
  * @returns {Promise<object>} A promise that resolves to the updated composition object.
  * @throws {Error} Throws an error if arguments are missing. Re-throws any errors from the `fetcher` helper.
  */
-export async function updateCompositionById(projectId, compositionId, compositionUpdated) {
+export async function updateCompositionById(
+  projectId,
+  compositionId,
+  compositionUpdated
+) {
   if (!projectId || !compositionId) {
-    throw new Error("updateCompositionById requires a projectId and a compositionId.");
+    throw new Error(
+      "updateCompositionById requires a projectId and a compositionId."
+    );
   }
   const endpoint = `/api/projects/${projectId}/compositions/${compositionId}`;
   const fetchOptions = {
@@ -126,7 +148,10 @@ export async function updateCompositionById(projectId, compositionId, compositio
   try {
     return await fetcher(endpoint, fetchOptions);
   } catch (error) {
-    console.error(`updateCompositionById: Failed for composition ${compositionId}.`, error.message);
+    console.error(
+      `updateCompositionById: Failed for composition ${compositionId}.`,
+      error.message
+    );
     throw error;
   }
 }
@@ -148,7 +173,10 @@ export async function getVersionsByCompositionId(compositionId) {
   try {
     return await fetcher(endpoint);
   } catch (error) {
-    console.error(`getVersionsByCompositionId: Failed for composition ${compositionId}.`, error.message);
+    console.error(
+      `getVersionsByCompositionId: Failed for composition ${compositionId}.`,
+      error.message
+    );
     throw error;
   }
 }

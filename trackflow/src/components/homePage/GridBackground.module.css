@@ -1,47 +1,57 @@
+/**
+ * @file styles/animated-grid.css
+ * @description This file contains the CSS for creating a full-screen, animated background grid.
+ * It consists of a container and horizontal/vertical lines that endlessly scroll
+ * across the viewport, creating a dynamic, futuristic visual effect.
+ */
+
+
+
 .gridContainer {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .gridLineHorizontal {
-    position: absolute;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background-color: rgba(255, 255, 255, 0.1);
-    animation-name: scroll-vertical;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  animation-name: scroll-vertical;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
 .gridLineVertical {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 1px;
-    background-color: rgba(255, 255, 255, 0.1);
-    animation-name: scroll-horizontal;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+  animation-name: scroll-horizontal;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
 @keyframes scroll-vertical {
-    from {
-        transform: translateY(-100%);
-    }
+  from {
+    transform: translateY(-100%);
+  }
 
-    to {
-        transform: translateY(100vh);
-    }
+  to {
+    transform: translateY(100vh);
+  }
 }
 
 @keyframes scroll-horizontal {
-    from {
-        transform: translateX(-100%);
-    }
+  from {
+    transform: translateX(-100%);
+  }
 
-    to {
-        transform: translateX(100vw);
-    } }
+  to {
+    transform: translateX(100vw);
+  }
+}

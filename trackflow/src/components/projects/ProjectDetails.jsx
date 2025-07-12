@@ -1,3 +1,9 @@
+/**
+ * @file components/projects/ProjectDetails.js (or .tsx)
+ * @description A comprehensive, interactive panel that displays detailed information about a project.
+ * It features a collapsible UI and provides an entry point for editing the project via a modal.
+ */
+
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
@@ -18,6 +24,11 @@ import { fr } from "date-fns/locale";
 import DataBadge from "../shared/DataBadge";
 import { ProjectUpdateModal } from "../modals/projectUpdateModal/ProjectUpdateModal";
 
+/**
+ * A utility function to safely format a date from various input types.
+ * @param {string|number|null} dateInput - The date to format, which can be an ISO string or a Unix timestamp in seconds.
+ * @returns {string} The formatted date string (e.g., "23/10/2023") or 'N/A' if the input is invalid.
+ */
 const formatDate = (dateInput) => {
   if (!dateInput) return "N/A";
 
@@ -26,7 +37,6 @@ const formatDate = (dateInput) => {
   if (typeof dateInput === "string") {
     dateObj = parseISO(dateInput);
   } else if (typeof dateInput === "number") {
-    // timestamp en secondes, convertir en millisecondes
     dateObj = new Date(dateInput * 1000);
   } else {
     return "N/A";
@@ -36,7 +46,12 @@ const formatDate = (dateInput) => {
     ? format(dateObj, "dd/MM/yyyy", { locale: fr })
     : "N/A";
 };
-
+/**
+ * A presentational sub-component for rendering a single key-value detail item
+ * with a consistent layout (icon, label, value).
+ * @param {{icon: React.ElementType, label: string, children: React.ReactNode}} props
+ * @returns {JSX.Element}
+ */
 const DetailItem = ({ icon: Icon, label, children }) => (
   <div className="w-full flex flex-col py-2 gap-2">
     <div className="flex gap-2 items-center">
@@ -48,7 +63,21 @@ const DetailItem = ({ icon: Icon, label, children }) => (
     </div>
   </div>
 );
-
+/**
+ * Renders an interactive panel displaying the details of a given project.
+ *
+ * This component manages its own UI state for:
+ * - A collapsible details section.
+ * - The visibility of the `ProjectUpdateModal` for editing.
+ * It fetches no data itself but orchestrates the display of the `project` prop data
+ * and triggers parent callbacks upon successful updates.
+ *
+ * @param {object} props - The component props.
+ * @param {object} props.project - The full project data object to display.
+ * @param {object} props.user - The current user object, required for the update modal's authorization logic.
+ * @param {function(): void} props.onProjectUpdated - A callback function executed after the project is successfully updated, to allow the parent to refetch data.
+ * @returns {JSX.Element}
+ */
 export function ProjectDetails({ project, user, onProjectUpdated }) {
   const router = useRouter();
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -103,7 +132,7 @@ export function ProjectDetails({ project, user, onProjectUpdated }) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 p-4 border border-t-0 border-gray-700 bg-neutral-900 rounded-b w-full">
           <DetailItem icon={BookA} label="DESCRIPTION">
             {project.description || (
-              <span className="italic text-gray-500">No description</span>
+              <span className="italic text-gray-500">Pas de description</span>
             )}
           </DetailItem>
           <DetailItem icon={Music} label="GENRE">
@@ -120,7 +149,7 @@ export function ProjectDetails({ project, user, onProjectUpdated }) {
                 ))
               ) : (
                 <span className="italic text-gray-500">
-                  No genres specified
+                  Pas de genre spécifié
                 </span>
               )}
             </div>
@@ -144,7 +173,7 @@ export function ProjectDetails({ project, user, onProjectUpdated }) {
                 ))
               ) : (
                 <span className="italic text-gray-500">
-                  No purposes specified
+                  Aucun objectif spécifié
                 </span>
               )}
             </div>

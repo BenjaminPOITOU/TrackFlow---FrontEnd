@@ -110,12 +110,12 @@ export function useProjectUpdateForm({ projectId, userId, onSuccess }) {
       setError(null);
       try {
         await updateProjectById(userId, projectId, formData);
-        toast.success("Project updated successfully!");
+        toast.success("Le projet a été mis à jour avec succés !");
         if (onSuccess) onSuccess();
       } catch (err) {
         setError(err.message);
         setStatus("error");
-        toast.error(`Failed to update project: ${err.message}`);
+        toast.error(`Echec de la mise à jour du projet : ${err.message}`);
       }
     },
     [userId, projectId, formData, onSuccess]

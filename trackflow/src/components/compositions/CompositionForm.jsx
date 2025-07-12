@@ -1,9 +1,36 @@
+/**
+ * @file components/forms/CompositionForm.js (or .tsx)
+ * @description A reusable and controlled form component for creating or editing a musical composition.
+ * As a presentational component, it is decoupled from business logic; it receives all its data
+ * and event handlers via props, making it highly portable (e.g., for use in a dialog or on a page).
+ */
+
+
+
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import SelectEnum from "../selects/SelectEnum";
 import { DialogFooter } from "../ui/dialog";
+
+
+/**
+ * Renders a form with fields for a musical composition's details.
+ *
+ * This component is fully controlled. It does not manage its own state. The parent component
+ * is responsible for providing the form data and handling all user interactions (input changes,
+ * status selection, submission, and cancellation) via callback props.
+ *
+ * @param {object} props - The component props.
+ * @param {Array<object>} props.compositionStatuses - An array of available status options to populate the status dropdown.
+ * @param {object} props.formData - An object containing the current values for all form fields (e.g., `title`, `description`, `compositionStatus`, `subGender`).
+ * @param {function(React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void} props.onInputChange - A callback function for standard input fields (`Input`, `Textarea`).
+ * @param {function(string): void} props.onStatusChange - A specific callback for the status dropdown (`SelectEnum`), which receives the new value directly.
+ * @param {function(React.FormEvent<HTMLFormElement>): void} props.onSubmit - The callback function to execute when the form is submitted.
+ * @param {function(): void} props.onCancel - The callback function to execute when the cancel button is clicked.
+ * @returns {JSX.Element} The JSX for the complete composition form.
+ */
 
 export function CompositionForm({
   compositionStatuses,
@@ -19,7 +46,6 @@ export function CompositionForm({
 
   return (
     <form onSubmit={onSubmit} className="space-y-6">
-      {/* Section Titre */}
       <div className="grid md:grid-cols-2 gap-x-6 pb-4">
         <div className="flex flex-col gap-2">
           <Label htmlFor="compositionTitle">COMPOSITION_TITLE</Label>
@@ -35,7 +61,6 @@ export function CompositionForm({
         </div>
       </div>
 
-      {/* Section des champs de formulaire */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8">
         <div className="flex flex-col justify-start gap-6">
           <div className="flex flex-col gap-2">
@@ -62,7 +87,6 @@ export function CompositionForm({
           </div>
         </div>
 
-        {/* Colonne de Droite - Description */}
         <div className="flex flex-col justify-start gap-2 flex-grow">
           <Label htmlFor="description">DESCRIPTION</Label>
           <Textarea

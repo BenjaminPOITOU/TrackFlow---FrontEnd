@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 import { KeyboardMusic, ChevronDown, ChevronUp, SquarePen } from "lucide-react";
-import { getInstrumentBadgeStyle } from '@/components/shared/InstrumentBadge';
+import { getInstrumentBadgeStyle } from "@/components/shared/InstrumentBadge";
 
 /**
  * @file This component displays a list of instruments for a version,
@@ -28,7 +28,9 @@ export function InstrumentVersion({ versionInstruments, isEditable = true }) {
   };
 
   const handleEdit = () => {
-    alert("Editing instruments requires a more complex UI (e.g., a multi-select modal). This is a placeholder.");
+    alert(
+      "Editing instruments requires a more complex UI (e.g., a multi-select modal). This is a placeholder."
+    );
   };
 
   return (
@@ -43,29 +45,41 @@ export function InstrumentVersion({ versionInstruments, isEditable = true }) {
             <KeyboardMusic color="#e0e0e0" />
             <span>INSTRUMENTS ({versionInstruments?.length || 0})</span>
           </button>
-          
+
           {hasInstruments && (
             <button onClick={toggleOpen} className="p-1">
-              {isOpen ? <ChevronUp size={20} color="#e0e0e0" /> : <ChevronDown size={20} color="#e0e0e0" />}
+              {isOpen ? (
+                <ChevronUp size={20} color="#e0e0e0" />
+              ) : (
+                <ChevronDown size={20} color="#e0e0e0" />
+              )}
             </button>
           )}
 
           {isEditable && (
-            <button onClick={handleEdit} className="p-1 text-gray-400 hover:text-white" title="Edit Instruments">
+            <button
+              onClick={handleEdit}
+              className="p-1 text-gray-400 hover:text-white"
+              title="Edit Instruments"
+            >
               <SquarePen size={16} />
             </button>
           )}
         </div>
 
         {!hasInstruments && (
-           <p className="text-sm text-gray-500 w-full pl-1">Aucun instrument</p>
+          <p className="text-sm text-gray-500 w-full pl-1">Aucun instrument</p>
         )}
       </div>
 
       {isOpen && hasInstruments && (
         <div className="absolute top-full left-0 mt-1 w-full z-10 flex flex-col gap-2 rounded-md border border-gray-500 bg-neutral-900 p-2 shadow-lg overflow-y-auto max-h-36">
           {versionInstruments.map((instrument, index) => (
-            <p key={index} style={getInstrumentBadgeStyle(instrument)} className="text-sm whitespace-nowrap bg-opacity-80 px-2 py-1 rounded-md">
+            <p
+              key={index}
+              style={getInstrumentBadgeStyle(instrument)}
+              className="text-sm whitespace-nowrap bg-opacity-80 px-2 py-1 rounded-md"
+            >
               {instrument}
             </p>
           ))}

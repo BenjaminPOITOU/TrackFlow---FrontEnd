@@ -34,8 +34,6 @@ export function AddAnnotationBlock({
       onCancel,
     });
 
-  
-
   return (
     <form
       onSubmit={actions.submit}

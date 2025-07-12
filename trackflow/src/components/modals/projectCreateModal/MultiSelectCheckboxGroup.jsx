@@ -16,7 +16,13 @@ import { Search } from "lucide-react";
  * @param {boolean} [props.disabled=false] - Whether the component is disabled.
  * @returns {JSX.Element} A multi-select checkbox group component.
  */
-export default function MultiSelectCheckboxGroup({ label, options = [], selectedValues = [], onSelectionChange, disabled = false }) {
+export default function MultiSelectCheckboxGroup({
+  label,
+  options = [],
+  selectedValues = [],
+  onSelectionChange,
+  disabled = false,
+}) {
   const [filter, setFilter] = useState("");
 
   const handleCheckboxChange = (checked, value) => {
@@ -29,7 +35,9 @@ export default function MultiSelectCheckboxGroup({ label, options = [], selected
   const filteredOptions = useMemo(
     () =>
       filter
-        ? options.filter((o) => o.label.toLowerCase().includes(filter.toLowerCase()))
+        ? options.filter((o) =>
+            o.label.toLowerCase().includes(filter.toLowerCase())
+          )
         : options,
     [options, filter]
   );
@@ -55,10 +63,15 @@ export default function MultiSelectCheckboxGroup({ label, options = [], selected
               <Checkbox
                 id={`${label}-${option.value}`}
                 checked={selectedValues.includes(option.value)}
-                onCheckedChange={(checked) => handleCheckboxChange(checked, option.value)}
+                onCheckedChange={(checked) =>
+                  handleCheckboxChange(checked, option.value)
+                }
                 disabled={disabled}
               />
-              <Label htmlFor={`${label}-${option.value}`} className="cursor-pointer font-normal">
+              <Label
+                htmlFor={`${label}-${option.value}`}
+                className="cursor-pointer font-normal"
+              >
                 {option.label}
               </Label>
             </div>

@@ -54,7 +54,12 @@ export async function getBranchesByComposition({ projectId, compositionId }) {
  * @param {object} params.updateData - The data for the update (BranchUpdateDto).
  * @returns {Promise<object>} A promise that resolves to the updated branch summary (BranchSummaryDto).
  */
-export async function updateBranch({ projectId, compositionId, branchId, updateData }) {
+export async function updateBranch({
+  projectId,
+  compositionId,
+  branchId,
+  updateData,
+}) {
   const endpoint = `/api/projects/${projectId}/compositions/${compositionId}/branches/${branchId}`;
   try {
     return await fetcher(endpoint, {

@@ -3,11 +3,24 @@
 import { useState, useCallback } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useProjectAction } from "@/components/projects/hooks/useProjectAction";
-import { Ellipsis, Trash2, Archive, Loader2, AlertTriangle } from "lucide-react";
+import {
+  Ellipsis,
+  Trash2,
+  Archive,
+  Loader2,
+  AlertTriangle,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import ActionConfirmationDialog from "@/components/shared/ActionConfirmationDialog";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 /**
  * Provides a dropdown menu for project actions, using a custom hook for logic
@@ -17,7 +30,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
  * @param {string} [props.className] - Optional additional class names.
  * @param {(isHovered: boolean) => void} props.onSetCardHovered - Callback to control the parent card's hover state.
  */
-export function DropdownMenuProjectCard({ projectId, className, onSetCardHovered }) {
+export function DropdownMenuProjectCard({
+  projectId,
+  className,
+  onSetCardHovered,
+}) {
   const { user } = useAuth();
   const { isProcessing, handleArchive, handleDelete } = useProjectAction();
   const [dialogAction, setDialogAction] = useState(null);
@@ -31,9 +48,9 @@ export function DropdownMenuProjectCard({ projectId, className, onSetCardHovered
   };
 
   const handleConfirmAction = async () => {
-    if (dialogAction === 'archive') {
+    if (dialogAction === "archive") {
       await handleArchive(user?.id, projectId);
-    } else if (dialogAction === 'delete') {
+    } else if (dialogAction === "delete") {
       await handleDelete(user?.id, projectId);
     }
     setDialogAction(null);
@@ -43,7 +60,7 @@ export function DropdownMenuProjectCard({ projectId, className, onSetCardHovered
     e.stopPropagation();
     e.preventDefault();
   }, []);
-  
+
   const handleMenuOpenChange = (open) => {
     setIsMenuOpen(open);
     if (open && onSetCardHovered) {
@@ -51,7 +68,7 @@ export function DropdownMenuProjectCard({ projectId, className, onSetCardHovered
     }
   };
 
-  const isActionLoading = isProcessing('archive') || isProcessing('delete');
+  const isActionLoading = isProcessing("archive") || isProcessing("delete");
 
   return (
     <>
@@ -60,34 +77,46 @@ export function DropdownMenuProjectCard({ projectId, className, onSetCardHovered
           <Button
             variant="ghost"
             size="icon"
-            className={cn("h-6 w-6 rounded text-muted-foreground hover:bg-zinc-700 hover:text-foreground", isActionLoading && "cursor-not-allowed opacity-50", className)}
+            className={cn(
+              "h-6 w-6 rounded text-muted-foreground hover:bg-zinc-700 hover:text-foreground",
+              isActionLoading && "cursor-not-allowed opacity-50",
+              className
+            )}
             disabled={isActionLoading}
             aria-label="Project options"
           >
-            {isActionLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Ellipsis className="h-4 w-4" />}
+            {isActionLoading ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Ellipsis className="h-4 w-4" />
+            )}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent 
-          align="end" 
-          className="w-56 border-neutral-700 bg-neutral-800 text-gray-300" 
+        <DropdownMenuContent
+          align="end"
+          className="w-56 border-neutral-700 bg-neutral-800 text-gray-300"
           onClick={stopPropagation}
           onCloseAutoFocus={(e) => e.preventDefault()}
         >
-          <DropdownMenuLabel className="text-gray-400">Actions</DropdownMenuLabel>
+          <DropdownMenuLabel className="text-gray-400">
+            Actions
+          </DropdownMenuLabel>
           <DropdownMenuSeparator className="bg-neutral-700" />
-          <DropdownMenuItem 
-            onSelect={() => handleActionSelect('archive')} 
-            disabled={isActionLoading} 
+          <DropdownMenuItem
+            onSelect={() => handleActionSelect("archive")}
+            disabled={isActionLoading}
             className="cursor-pointer"
           >
-            <Archive className="mr-2 h-4 w-4" /><span>Archive</span>
+            <Archive className="mr-2 h-4 w-4" />
+            <span>Archiver</span>
           </DropdownMenuItem>
-          <DropdownMenuItem 
-            onSelect={() => handleActionSelect('delete')} 
-            disabled={isActionLoading} 
+          <DropdownMenuItem
+            onSelect={() => handleActionSelect("delete")}
+            disabled={isActionLoading}
             className="cursor-pointer text-red-500 focus:text-red-400"
           >
-            <Trash2 className="mr-2 h-4 w-4" /><span>Delete</span>
+            <Trash2 className="mr-2 h-4 w-4" />
+            <span>Supprimer</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -97,11 +126,29 @@ export function DropdownMenuProjectCard({ projectId, className, onSetCardHovered
         onOpenChange={(open) => !open && setDialogAction(null)}
         onConfirm={handleConfirmAction}
         isConfirming={isProcessing(dialogAction)}
-        title={dialogAction === 'archive' ? "Archive Project?" : "Delete Project Permanently?"}
-        titleIcon={dialogAction === 'archive' ? <Archive className="h-5 w-5 text-yellow-400" /> : <AlertTriangle className="h-5 w-5 text-red-500" />}
-        description={dialogAction === 'archive' ? "Archiving this project will hide it from view, but it can be restored later." : "This action is irreversible. All associated data will be permanently deleted."}
-        confirmText={dialogAction === 'archive' ? "Confirm Archive" : "Yes, Delete Permanently"}
-        variant={dialogAction === 'archive' ? 'warning' : 'danger'}
+        title={
+          dialogAction === "archive"
+            ? "Archiver le projet ?"
+            : "Supprimer le projet définitivement ?"
+        }
+        titleIcon={
+          dialogAction === "archive" ? (
+            <Archive className="h-5 w-5 text-yellow-400" />
+          ) : (
+            <AlertTriangle className="h-5 w-5 text-red-500" />
+          )
+        }
+        description={
+          dialogAction === "archive"
+            ? "Archiver le projet le masquera, mais il pourra être réccupéré dans la section 'Archives'."
+            : "Cette action est irréversible. Toutes les données associées seront supprimées de manière permanente."
+        }
+        confirmText={
+          dialogAction === "archive"
+            ? "Confirmation archivage"
+            : "Oui, supprimer de manière permanente"
+        }
+        variant={dialogAction === "archive" ? "warning" : "danger"}
       />
     </>
   );

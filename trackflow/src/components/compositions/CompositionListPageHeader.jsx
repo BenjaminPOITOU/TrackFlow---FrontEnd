@@ -20,10 +20,16 @@ export default function CompositionListPageHeader({ title, onActionClick }) {
   return (
     <div className="flex flex-col gap-2 sm:gap-0 sm:flex-row w-full items-start sm:items-center justify-between">
       <div className="flex items-center gap-4">
-        <Link href="/projects" className="p-2 rounded-full hover:bg-zinc-700" title="Back to projects list">
+        <Link
+          href="/projects"
+          className="p-2 rounded-full hover:bg-zinc-700"
+          title="Back to projects list"
+        >
           <ArrowLeft size={24} className="text-gray-300" />
         </Link>
-        <h1 className="text-3xl font-bold tracking-tight text-white">{title}</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-white">
+          {title}
+        </h1>
       </div>
 
       <button

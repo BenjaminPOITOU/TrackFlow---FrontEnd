@@ -12,26 +12,54 @@ import { getInstruments } from "@/lib/api/enum";
 import { uploadAudio } from "@/lib/api/upload";
 
 const musicalKeys = [
-  "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B",
-  "Cm", "C#m", "Dm", "D#m", "Em", "Fm", "F#m", "Gm", "G#m", "Am", "A#m", "Bm",
+  "C",
+  "C#",
+  "D",
+  "D#",
+  "E",
+  "F",
+  "F#",
+  "G",
+  "G#",
+  "A",
+  "A#",
+  "B",
+  "Cm",
+  "C#m",
+  "Dm",
+  "D#m",
+  "Em",
+  "Fm",
+  "F#m",
+  "Gm",
+  "G#m",
+  "Am",
+  "A#m",
+  "Bm",
 ];
 
-  /**
-   * A modal form for creating a new version.
-   * This component acts as the single source of truth for all form data.
-   * It fetches the master list of all instruments and provides a success
-   * notification upon version creation, ensuring the parent page is refreshed.
-   *
-   * @param {object} props - The component props.
-   * @param {boolean} props.isOpen - Controls the visibility of the modal.
-   * @param {Function} props.onClose - Function to call when the modal should be closed.
-   * @param {string} props.compositionId - The ID of the composition this new version belongs to.
-   * @param {string} props.projectId - The ID of the parent project.
-   * @param {Array<object>} props.branchList - A list of available branches for the composition.
-   * @returns {JSX.Element | null} The rendered modal component or null if it is not open.
-   */
+/**
+ * A modal form for creating a new version.
+ * This component acts as the single source of truth for all form data.
+ * It fetches the master list of all instruments and provides a success
+ * notification upon version creation, ensuring the parent page is refreshed.
+ *
+ * @param {object} props - The component props.
+ * @param {boolean} props.isOpen - Controls the visibility of the modal.
+ * @param {Function} props.onClose - Function to call when the modal should be closed.
+ * @param {string} props.compositionId - The ID of the composition this new version belongs to.
+ * @param {string} props.projectId - The ID of the parent project.
+ * @param {Array<object>} props.branchList - A list of available branches for the composition.
+ * @returns {JSX.Element | null} The rendered modal component or null if it is not open.
+ */
 
-export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, branchList }) => {
+export const CreateVersionModal = ({
+  isOpen,
+  onClose,
+  compositionId,
+  projectId,
+  branchList,
+}) => {
   const router = useRouter();
 
   const [versionName, setVersionName] = useState("");
@@ -42,14 +70,13 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
   const [instruments, setInstruments] = useState([]);
   const [annotations, setAnnotations] = useState([]);
   const [parentVersionId, setParentVersionId] = useState(null);
-  
+
   const [allInstruments, setAllInstruments] = useState([]);
   const [isInstrumentsLoading, setIsInstrumentsLoading] = useState(true);
-  
+
   const [isLoadingData, setIsLoadingData] = useState(false);
   const [error, setError] = useState(null);
   const [submissionStep, setSubmissionStep] = useState("idle");
-
 
   const resetFormState = useCallback(() => {
     setSelectedBranchId(null);
@@ -70,7 +97,9 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
       try {
         const data = await getInstruments();
         if (!Array.isArray(data)) {
-            throw new Error("Les données des instruments sont dans un format incorrect.");
+          throw new Error(
+            "Les données des instruments sont dans un format incorrect."
+          );
         }
         setAllInstruments(data);
       } catch (err) {
@@ -96,13 +125,13 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
 
   useEffect(() => {
     if (!selectedBranchId || isInstrumentsLoading) {
-        setVersionName("");
-        setInstruments([]);
-        setAnnotations([]);
-        setParentVersionId(null);
-        setBpm("");
-        setKey("");
-        return;
+      setVersionName("");
+      setInstruments([]);
+      setAnnotations([]);
+      setParentVersionId(null);
+      setBpm("");
+      setKey("");
+      return;
     }
 
     const fetchDataForBranch = async () => {
@@ -113,18 +142,21 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
         const latestVersion = await getLatestVersionByBranch({
           projectId,
           compositionId,
-          branchId: selectedBranchId
+          branchId: selectedBranchId,
         });
-        
+
         if (latestVersion) {
           setParentVersionId(latestVersion.id);
           setVersionName(generateNextVersionName(latestVersion.name));
           setBpm(latestVersion.bpm || "");
           setKey(latestVersion.key || "");
           setInstruments(latestVersion.instruments || []);
-          const inheritedAnnotations = (latestVersion.annotations || []).map(anno => ({
-            ...anno, resolved: true,
-          }));
+          const inheritedAnnotations = (latestVersion.annotations || []).map(
+            (anno) => ({
+              ...anno,
+              resolved: true,
+            })
+          );
           setAnnotations(inheritedAnnotations);
         } else {
           setParentVersionId(null);
@@ -156,8 +188,11 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
     setSubmissionStep("creating");
 
     try {
-      const audioUploadResponse = await uploadAudio(fileToUpload, compositionId);
-      
+      const audioUploadResponse = await uploadAudio(
+        fileToUpload,
+        compositionId
+      );
+
       const versionData = {
         branchId: selectedBranchId,
         parentVersionId: parentVersionId,
@@ -167,7 +202,9 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
         bpm: bpm,
         key: key,
         versionInstrumentPreDefinedList: instruments,
-        annotationIdsToResolve: annotations.filter((a) => a.resolved).map((a) => a.id),
+        annotationIdsToResolve: annotations
+          .filter((a) => a.resolved)
+          .map((a) => a.id),
         annotationsToCreate: [],
         metadata: {},
       };
@@ -175,21 +212,27 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
       if (versionData.parentVersionId === null) {
         delete versionData.parentVersionId;
       }
-      
-      const apiParams = { projectId, compositionId, branchId: selectedBranchId, versionData };
+
+      const apiParams = {
+        projectId,
+        compositionId,
+        branchId: selectedBranchId,
+        versionData,
+      };
       await createVersion(apiParams);
-      
+
       onClose();
       toast.success("La version a été créée avec succès !");
       router.refresh();
-
     } catch (err) {
       console.error("Error during submission process:", err);
       toast.error("Échec de la création de la version.");
-      setError("Une erreur est survenue durant la création. Veuillez réessayer.");
+      setError(
+        "Une erreur est survenue durant la création. Veuillez réessayer."
+      );
       setSubmissionStep("error");
     } finally {
-      if (submissionStep === 'creating') {
+      if (submissionStep === "creating") {
         setSubmissionStep("idle");
       }
     }
@@ -204,7 +247,7 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
       prev.filter((instValue) => instValue !== instrumentValueToRemove)
     );
   }, []);
-  
+
   const handleAnnotationToggle = useCallback((id) => {
     setAnnotations((prev) =>
       prev.map((a) => (a.id === id ? { ...a, resolved: !a.resolved } : a))
@@ -212,7 +255,11 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
   }, []);
 
   return (
-    <ModalWrapper isOpen={isOpen} onClose={onClose} title="Créer une nouvelle version">
+    <ModalWrapper
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Créer une nouvelle version"
+    >
       <form onSubmit={handleSubmit} className="space-y-6">
         <BranchSelector
           branches={branchList}
@@ -224,7 +271,10 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
         {selectedBranchId && (
           <>
             <div>
-              <label htmlFor="version-name" className="block text-sm font-medium text-gray-300">
+              <label
+                htmlFor="version-name"
+                className="block text-sm font-medium text-gray-300"
+              >
                 Nom de la version
               </label>
               <input
@@ -233,7 +283,9 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
                 value={versionName}
                 onChange={(e) => setVersionName(e.target.value)}
                 className="mt-1 block w-full p-2 border border-gray-600 bg-gray-700 text-white rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                placeholder={isLoadingData ? "Chargement..." : "ex: V2 - Mix Final"}
+                placeholder={
+                  isLoadingData ? "Chargement..." : "ex: V2 - Mix Final"
+                }
                 disabled={isLoadingData}
                 required
               />
@@ -243,7 +295,10 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label htmlFor="bpm" className="block text-sm font-medium text-gray-300">
+                <label
+                  htmlFor="bpm"
+                  className="block text-sm font-medium text-gray-300"
+                >
                   Tempo (BPM)
                 </label>
                 <input
@@ -257,7 +312,10 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
                 />
               </div>
               <div>
-                <label htmlFor="musical-key" className="block text-sm font-medium text-gray-300">
+                <label
+                  htmlFor="musical-key"
+                  className="block text-sm font-medium text-gray-300"
+                >
                   Tonalité
                 </label>
                 <select
@@ -305,10 +363,14 @@ export const CreateVersionModal = ({ isOpen, onClose, compositionId, projectId, 
           </button>
           <button
             type="submit"
-            disabled={submissionStep !== "idle" || !selectedBranchId || !fileToUpload}
+            disabled={
+              submissionStep !== "idle" || !selectedBranchId || !fileToUpload
+            }
             className="px-4 py-2 text-sm font-medium text-zinc-800 bg-gray-300 border border-transparent rounded-md shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {submissionStep === "creating" ? "Création en cours..." : "Créer la version"}
+            {submissionStep === "creating"
+              ? "Création en cours..."
+              : "Créer la version"}
           </button>
         </div>
       </form>

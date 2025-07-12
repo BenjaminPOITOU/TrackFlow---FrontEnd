@@ -27,7 +27,9 @@ export function DescriptionVersion({ branchDescription, onDescriptionSave }) {
       icon={<FileText size={20} color="#e0e0e0" />}
       value={branchDescription}
       onSave={handleSave}
-      displayFormatter={(val) => val || "Aucune description pour cette branche."}
+      displayFormatter={(val) =>
+        val || "Aucune description pour cette branche."
+      }
       className="cursor-pointer"
     >
       {(value, setValue) => (

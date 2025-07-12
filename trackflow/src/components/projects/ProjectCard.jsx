@@ -40,7 +40,6 @@ export default function ProjectCard({ project }) {
 
   const projectUrl = `/projects/${project?.id}`;
 
-
   return (
     <div
       onMouseEnter={() => setIsHovered(true)}

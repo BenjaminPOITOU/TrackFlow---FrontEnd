@@ -1,4 +1,4 @@
-import fetcher from './api-helpers';
+import fetcher from "./api-helpers";
 
 /**
  * @file API service functions for retrieving enumerated types from the backend.
@@ -16,7 +16,7 @@ import fetcher from './api-helpers';
  */
 export async function getProjectEnums() {
   try {
-    return await fetcher('/api/enums/projects');
+    return await fetcher("/api/enums/projects");
   } catch (error) {
     console.error("Failed to fetch project enums:", error.message);
     throw error;
@@ -33,7 +33,7 @@ export async function getProjectEnums() {
  */
 export async function getCompositionStatuses() {
   try {
-    return await fetcher('/api/enums/composition-statuses');
+    return await fetcher("/api/enums/composition-statuses");
   } catch (error) {
     console.error("Failed to fetch CompositionStatuses:", error.message);
     throw error;
@@ -50,7 +50,7 @@ export async function getCompositionStatuses() {
  */
 export async function getAnnotationCategories() {
   try {
-    return await fetcher('/api/enums/annotation-categories');
+    return await fetcher("/api/enums/annotation-categories");
   } catch (error) {
     console.error("Failed to fetch annotation-categories:", error.message);
     throw error;
@@ -67,7 +67,7 @@ export async function getAnnotationCategories() {
  */
 export async function getAnnotationStatus() {
   try {
-    return await fetcher('/api/enums/annotation-statuses');
+    return await fetcher("/api/enums/annotation-statuses");
   } catch (error) {
     console.error("Failed to fetch annotation-statuses:", error.message);
     throw error;

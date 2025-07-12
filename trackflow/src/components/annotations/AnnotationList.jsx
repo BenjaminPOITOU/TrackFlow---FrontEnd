@@ -20,37 +20,9 @@ function getFormatTime(time) {
  * @param {Function} props.onAnnotationUpdate - Callback to execute when saving an edited annotation.
  * @param {Function} props.onAnnotationDelete - Callback to execute when deleting an annotation.
  */
-export function AnnotationList({
-  annotationList,
-  onAnnotationUpdate,
-  onAnnotationDelete,
-}) {
+export function AnnotationList({ annotationList }) {
   const [editingId, setEditingId] = useState(null);
   const [editedContent, setEditedContent] = useState("");
-
-  const handleEditClick = (annotation) => {
-    setEditingId(annotation.id);
-    setEditedContent(annotation.content);
-  };
-
-  const handleCancelClick = () => {
-    setEditingId(null);
-    setEditedContent("");
-  };
-
-  const handleSaveClick = (annotationId) => {
-    onAnnotationUpdate(annotationId, { content: editedContent });
-    setEditingId(null);
-    setEditedContent("");
-  };
-
-  const handleDeleteClick = (annotationId) => {
-    if (
-      window.confirm("Etes-vous sur.e de vouloir supprimer cette annotation ?")
-    ) {
-      onAnnotationDelete(annotationId);
-    }
-  };
 
   return (
     <div className="w-full flex flex-col gap-2 border border-gray-300 p-2 rounded h-full">

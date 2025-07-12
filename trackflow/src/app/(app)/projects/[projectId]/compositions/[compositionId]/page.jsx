@@ -27,7 +27,6 @@ export default async function CompositionPage({ params }) {
     getBranchesByComposition({ projectId, compositionId }),
   ]);
 
-
   let versionList = [];
   if (branchList && branchList.length > 0) {
     const mainBranchId = branchList[0].id;
@@ -36,7 +35,10 @@ export default async function CompositionPage({ params }) {
       compositionId,
       branchId: mainBranchId,
     });
-    versionList = summaries.map(summary => ({ ...summary, branchId: mainBranchId }));
+    versionList = summaries.map((summary) => ({
+      ...summary,
+      branchId: mainBranchId,
+    }));
   }
 
   return (
@@ -53,7 +55,7 @@ export default async function CompositionPage({ params }) {
             projectId={projectId}
             compositionId={compositionId}
             versionList={versionList}
-            branchList = {branchList}
+            branchList={branchList}
           />
         </div>
       ) : (

@@ -1,7 +1,16 @@
 "use client";
 
 import { Loader2 } from "lucide-react";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 /**
  * A reusable confirmation dialog for critical actions.
@@ -39,13 +48,14 @@ export default function ActionConfirmationDialog({
   };
 
   const handleConfirmClick = (e) => {
-    console.log("[Dialog] 2. Bouton de confirmation cliqué.");
     onConfirm(e);
   };
 
   return (
     <AlertDialog open={isOpen} onOpenChange={onOpenChange}>
-      <AlertDialogContent className={`bg-zinc-900 ${variantClasses[variant] || 'border-border'}`}>
+      <AlertDialogContent
+        className={`bg-zinc-900 ${variantClasses[variant] || "border-border"}`}
+      >
         <AlertDialogHeader>
           <AlertDialogTitle className="flex items-center gap-2">
             {titleIcon}
@@ -59,7 +69,11 @@ export default function ActionConfirmationDialog({
           <AlertDialogCancel className="border-zinc-600 bg-transparent text-zinc-300 hover:bg-zinc-700">
             Cancel
           </AlertDialogCancel>
-          <AlertDialogAction className={buttonVariantClasses[variant]} onClick={handleConfirmClick} disabled={isConfirming}>
+          <AlertDialogAction
+            className={buttonVariantClasses[variant]}
+            onClick={handleConfirmClick}
+            disabled={isConfirming}
+          >
             {isConfirming && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {confirmText}
           </AlertDialogAction>

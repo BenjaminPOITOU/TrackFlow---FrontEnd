@@ -15,11 +15,8 @@ import MultiSelectCheckboxGroup from "./MultiSelectCheckboxGroup";
  * @returns {JSX.Element} The form fields component.
  */
 export function FormFields({ formState, onFieldChange, enums, disabled }) {
-
-  console.log("ENUMS : ", enums)
   return (
     <div className="space-y-8">
-      {/* Titre en pleine largeur */}
       <div className="space-y-3">
         <Label htmlFor="title" className="text-white font-medium">
           Titre du Projet
@@ -34,7 +31,6 @@ export function FormFields({ formState, onFieldChange, enums, disabled }) {
           className="bg-zinc-700 border-gray-300 text-white placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500"
         />
       </div>
-
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="space-y-6">
@@ -67,7 +63,9 @@ export function FormFields({ formState, onFieldChange, enums, disabled }) {
             <SelectEnum
               options={enums.commercialStatuses}
               value={formState.commercialStatus}
-              onValueChange={(value) => onFieldChange("commercialStatus", value)}
+              onValueChange={(value) =>
+                onFieldChange("commercialStatus", value)
+              }
               placeholder="Sélectionner un statut..."
               disabled={disabled}
               className="bg-zinc-700 border-gray-300 text-white"
@@ -78,7 +76,9 @@ export function FormFields({ formState, onFieldChange, enums, disabled }) {
             label="Genre(s) Musical(aux)"
             options={enums.musicalGenders}
             selectedValues={formState.musicalGenders}
-            onSelectionChange={(values) => onFieldChange("musicalGenders", values)}
+            onSelectionChange={(values) =>
+              onFieldChange("musicalGenders", values)
+            }
             disabled={disabled}
             className="space-y-3"
             labelClassName="text-white font-medium"
@@ -86,7 +86,6 @@ export function FormFields({ formState, onFieldChange, enums, disabled }) {
           />
         </div>
 
-        {/* Colonne de droite */}
         <div className="space-y-6 flex flex-col">
           <MultiSelectCheckboxGroup
             label="Objectif(s)"

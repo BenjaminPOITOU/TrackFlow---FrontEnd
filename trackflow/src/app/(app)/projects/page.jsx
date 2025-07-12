@@ -1,8 +1,7 @@
-import { redirect } from 'next/navigation';
-import { getUserSession } from '@/lib/api/authService';
-import { getAllProjects } from '@/lib/api/projects';
-import ProjectsPageClient from '@/components/projects/ProjectsPageClient';
-
+import { redirect } from "next/navigation";
+import { getUserSession } from "@/lib/api/authService";
+import { getAllProjects } from "@/lib/api/projects";
+import ProjectsPageClient from "@/components/projects/ProjectsPageClient";
 
 /**
  * @file Server-side page component for the list of projects.
@@ -13,35 +12,35 @@ import ProjectsPageClient from '@/components/projects/ProjectsPageClient';
  * @returns {Promise<JSX.Element>} The rendered projects page.
  */
 export default async function ProjectsPage() {
-  console.log('📄 [ProjectsPage] Début de la page');
-  
+  console.log("📄 [ProjectsPage] Début de la page");
+
   const { user, authToken, isTokenExpired } = await getUserSession();
-  
-  console.log('📄 [ProjectsPage] Résultat getUserSession:', {
+
+  console.log("📄 [ProjectsPage] Résultat getUserSession:", {
     hasUser: !!user,
     hasToken: !!authToken,
-    isTokenExpired
+    isTokenExpired,
   });
 
   if (!user || isTokenExpired) {
-    redirect('/');
+    redirect("/");
   }
-
 
   let initialData = { content: [] };
   let error = null;
   try {
-    initialData = await getAllProjects({ page: 0, size: 12, sort: "createdDate,desc" }, authToken);
+    initialData = await getAllProjects(
+      { page: 0, size: 12, sort: "createdDate,desc" },
+      authToken
+    );
   } catch (err) {
-    console.error('[ProjectsPage] Erreur chargement projets:', err);
-    error = err.message || "Impossible de charger les projets. Veuillez réessayer.";
+    console.error("[ProjectsPage] Erreur chargement projets:", err);
+    error =
+      err.message || "Impossible de charger les projets. Veuillez réessayer.";
   }
 
-  console.log('[ProjectsPage] Rendu du composant client');
+  console.log("[ProjectsPage] Rendu du composant client");
   return (
-    <ProjectsPageClient
-      initialProjects={initialData.content}
-      error={error}
-    />
+    <ProjectsPageClient initialProjects={initialData.content} error={error} />
   );
 }

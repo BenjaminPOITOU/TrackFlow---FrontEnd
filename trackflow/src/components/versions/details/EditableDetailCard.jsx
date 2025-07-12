@@ -23,7 +23,16 @@ import { Check, SquarePen, X } from "lucide-react";
  * @param {boolean} [props.isEditable=true] - A flag to explicitly control if the card can be switched to edit mode. If false, the edit button will not be rendered.
  * @returns {JSX.Element} The rendered editable detail card component.
  */
-export function EditableDetailCard({ title, icon, value, onSave, children, className, displayFormatter = (val) => val, isEditable = true }) {
+export function EditableDetailCard({
+  title,
+  icon,
+  value,
+  onSave,
+  children,
+  className,
+  displayFormatter = (val) => val,
+  isEditable = true,
+}) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedValue, setEditedValue] = useState(value);
 
@@ -50,14 +59,20 @@ export function EditableDetailCard({ title, icon, value, onSave, children, class
   }, [isEditable]);
 
   return (
-    <div className={`flex flex-col w-full h-full justify-center rounded gap-2 border border-gray-300 p-2 bg-neutral-800 ${className}`}>
+    <div
+      className={`flex flex-col w-full h-full justify-center rounded gap-2 border border-gray-300 p-2 bg-neutral-800 ${className}`}
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center justify-start gap-1">
           {icon}
           <span>{title}</span>
         </div>
         {!isEditing && onSave && isEditable && (
-          <button onClick={() => setIsEditing(true)} className="p-1 text-gray-400 hover:text-white" title="Edit">
+          <button
+            onClick={() => setIsEditing(true)}
+            className="p-1 text-gray-400 hover:text-white"
+            title="Edit"
+          >
             <SquarePen size={16} />
           </button>
         )}
@@ -67,10 +82,18 @@ export function EditableDetailCard({ title, icon, value, onSave, children, class
         <div className="flex flex-col gap-2">
           {children(editedValue, setEditedValue)}
           <div className="flex justify-end gap-2">
-            <button onClick={handleCancel} className="p-1 text-red-400 hover:text-red-300" title="Cancel">
+            <button
+              onClick={handleCancel}
+              className="p-1 text-red-400 hover:text-red-300"
+              title="Cancel"
+            >
               <X size={20} />
             </button>
-            <button onClick={handleSave} className="p-1 text-green-400 hover:text-green-300" title="Save">
+            <button
+              onClick={handleSave}
+              className="p-1 text-green-400 hover:text-green-300"
+              title="Save"
+            >
               <Check size={20} />
             </button>
           </div>

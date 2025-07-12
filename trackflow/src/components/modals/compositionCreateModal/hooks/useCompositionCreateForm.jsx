@@ -11,8 +11,8 @@ const initialFormState = {
   compositionStatus: "",
   subGender: [],
   description: "",
+  autoFill: false,
 };
-
 export function useCompositionCreateForm({ projectId, onSuccess }) {
   const [formData, setFormData] = useState(initialFormState);
   const [statusEnums, setStatusEnums] = useState([]);
@@ -47,14 +47,28 @@ export function useCompositionCreateForm({ projectId, onSuccess }) {
     setFormData((prev) => ({ ...prev, [key]: value }));
   }, []);
 
-  const handleAutofill = useCallback(() => {
-    setFormData({
-      title: "Nouvelle Piste",
-      compositionStatus: statusEnums[0]?.value || "",
-      subGender: ["Pop", "Rock"],
-      description: "Description de la nouvelle piste.",
-    });
-  }, [statusEnums]);
+  const handleAutofillToggle = useCallback(
+    (isChecked) => {
+      setFormData((prev) => {
+        if (isChecked) {
+          return {
+            ...prev,
+            autoFill: true,
+            title: "Composition Dév. " + Date.now().toString().slice(-5),
+            compositionStatus: statusEnums[0]?.value || "",
+            subGender: ["Pop", "Rock"],
+            description: "Description générée automatiquement pour test.",
+          };
+        } else {
+          return {
+            ...initialFormState,
+            autoFill: false,
+          };
+        }
+      });
+    },
+    [statusEnums]
+  );
 
   const handleSubmit = useCallback(
     async (event) => {
@@ -72,11 +86,10 @@ export function useCompositionCreateForm({ projectId, onSuccess }) {
         });
 
         const branchData = {
-            branchName: "main",
-            description: "Branche principale par défaut.",
-            branchParentId: null,
+          branchName: "main",
+          description: "Branche principale par défaut.",
+          branchParentId: null,
         };
-
 
         await createBranch({
           projectId: projectId,
@@ -85,8 +98,7 @@ export function useCompositionCreateForm({ projectId, onSuccess }) {
         });
 
         toast.success("Composition et branche 'main' créées avec succès !");
-        if (onSuccess) onSuccess(); 
-        
+        if (onSuccess) onSuccess();
       } catch (err) {
         setError(err.message);
         setStatus("error");
@@ -104,7 +116,7 @@ export function useCompositionCreateForm({ projectId, onSuccess }) {
     handlers: {
       handleFieldChange,
       handleSubmit,
-      handleAutofill,
+      handleAutofillToggle,
     },
   };
 }

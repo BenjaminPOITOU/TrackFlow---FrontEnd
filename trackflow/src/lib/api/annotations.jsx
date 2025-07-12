@@ -19,7 +19,7 @@ export async function createAnnotation({ versionId, annotationData }) {
     return await fetcher(endpoint, {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(annotationData),
     });
@@ -43,9 +43,11 @@ export async function getAnnotationsByVersionId({ versionId }) {
   const endpoint = `/api/versions/${versionId}/annotations`;
   try {
     return await fetcher(endpoint);
-  } catch (error)
- {
-    console.error(`Failed to fetch annotations for version ${versionId}:`, error);
+  } catch (error) {
+    console.error(
+      `Failed to fetch annotations for version ${versionId}:`,
+      error
+    );
     throw new Error(`Could not load annotations for version ${versionId}.`);
   }
 }
@@ -66,7 +68,7 @@ export async function updateAnnotation({ annotationId, updateData }) {
     return await fetcher(endpoint, {
       method: "PATCH",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(updateData),
     });

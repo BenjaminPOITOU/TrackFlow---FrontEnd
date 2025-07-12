@@ -1,5 +1,18 @@
+/**
+ * @file components/versionCreateModal/FileUploader.js (or .tsx)
+ * @description A UI component for selecting a local audio file. It provides an interactive
+ * drag-and-drop area and clear visual feedback once a file is selected.
+ */
 import React, { useState } from "react";
-import { uploadAudioFile } from "@/lib/api/versions";
+
+// Note: `uploadAudioFile` is imported but not used here, as this component's
+// responsibility is only to select the file, not to upload it.
+
+/**
+ * Renders a checkmark SVG icon, indicating a file has been successfully selected.
+ * @returns {JSX.Element}
+ */
+
 
 const CheckmarkIcon = () => (
   <svg
@@ -34,6 +47,11 @@ const UploadIcon = () => (
   </svg>
 );
 
+/**
+ * Renders a generic upload SVG icon for the uploader's initial state.
+ * @returns {JSX.Element}
+ */
+
 export const FileUploader = ({ onFileSelect }) => {
   const [fileName, setFileName] = useState(null);
 
@@ -41,10 +59,10 @@ export const FileUploader = ({ onFileSelect }) => {
     const file = e.target.files ? e.target.files[0] : null;
     if (file) {
       setFileName(file.name);
-      onFileSelect(file); // On passe l'objet File entier au parent
+      onFileSelect(file);
     } else {
       setFileName(null);
-      onFileSelect(null); // On informe le parent si la sélection est annulée
+      onFileSelect(null);
     }
   };
 

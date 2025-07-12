@@ -26,7 +26,6 @@ export default function ProjectsPageClient({ initialProjects, error }) {
 
   const handleProjectCreationSuccess = () => {
     setIsModalOpen(false);
-    toast.success("Project created! Refreshing list...");
     router.refresh();
   };
 
@@ -34,7 +33,7 @@ export default function ProjectsPageClient({ initialProjects, error }) {
     if (isAuthenticated) {
       setIsModalOpen(true);
     } else {
-      toast.error("You must be logged in to create a project.");
+      toast.error("Vous devez être connecté pour créer un projet.");
     }
   };
 

@@ -4,9 +4,9 @@ import { cn } from "@/lib/utils";
 import { Orbitron } from "next/font/google";
 
 const orbitron = Orbitron({
-  subsets: ['latin'],
-  weight: ['700'],
-  variable: '--font-orbitron',
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: "--font-orbitron",
 });
 
 /**
@@ -37,9 +37,7 @@ export default function HomePageTitle({ isVisible, onClick }) {
         </h1>
         <span className="ml-4 h-3 w-3 rounded-full bg-gray-300 animate-pulse" />
       </div>
-      <p className="mt-4 text-zinc-400">
-        Cliquez pour commencer
-      </p>
+      <p className="mt-4 text-zinc-400">Cliquez pour commencer</p>
     </div>
   );
 }

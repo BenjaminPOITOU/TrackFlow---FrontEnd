@@ -15,11 +15,11 @@ export function DurationVersion({ versionDuration, isEditable }) {
     if (versionDuration == null || isNaN(versionDuration)) {
       return "Durée non disponible";
     }
-    
+
     const minutes = Math.floor(versionDuration / 60);
     const seconds = Math.floor(versionDuration % 60);
-    const formattedSeconds = String(seconds).padStart(2, '0');
-    
+    const formattedSeconds = String(seconds).padStart(2, "0");
+
     return `${minutes}:${formattedSeconds}`;
   };
 

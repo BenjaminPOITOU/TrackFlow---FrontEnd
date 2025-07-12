@@ -15,16 +15,27 @@ import { cn } from "@/lib/utils";
  * @param {boolean} props.disabled - Whether the item is disabled (non-clickable).
  * @returns {JSX.Element} The sidebar item element.
  */
-export default function SidebarItem({ href, icon: Icon, text, isCollapsed, disabled }) {
+export default function SidebarItem({
+  href,
+  icon: Icon,
+  text,
+  isCollapsed,
+  disabled,
+}) {
   const pathname = usePathname();
   const isActive = href && pathname.startsWith(href);
 
   const content = (
     <>
       <Icon size={18} className="flex-shrink-0" />
-      <span className={cn("whitespace-nowrap transition-opacity duration-200 hidden", {
-        "lg:inline": !isCollapsed,
-      })}>
+      <span
+        className={cn(
+          "whitespace-nowrap transition-opacity duration-200 hidden",
+          {
+            "lg:inline": !isCollapsed,
+          }
+        )}
+      >
         {text}
       </span>
     </>

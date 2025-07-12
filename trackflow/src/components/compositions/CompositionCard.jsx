@@ -7,7 +7,7 @@ import { FileMusic, Trash2, SquarePen, Check, X } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import DataBadge from "../shared/DataBadge";
-import { AlertDialogCompostion } from "./AlertDialogComposition";
+import { DeleteCompositionDialog } from "./DeleteCompositionDialog";
 import { updateCompositionById } from "@/lib/api/compositions";
 
 /**
@@ -37,8 +37,6 @@ export function CompositionCard({
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(composition.title);
-
-  console.log("COMPOSITION STATUS  : ", composition?.status?.value)
 
   const compositionUrl = `/projects/${projectId}/compositions/${composition?.id}`;
 
@@ -77,12 +75,12 @@ export function CompositionCard({
       await updateCompositionById(projectId, composition.id, {
         title: editedTitle,
       });
-      toast.success("Composition title updated successfully.");
+      toast.success("Le titre de la composition a été mis à jour avec succés !");
       if (onCompositionUpdated) {
         onCompositionUpdated();
       }
     } catch (error) {
-      toast.error("Failed to update composition title.");
+      toast.error("Echec de la mise à jour du titre de la compositon.");
       setEditedTitle(composition.title);
     } finally {
       setIsEditing(false);
@@ -179,10 +177,10 @@ export function CompositionCard({
       <td className="hidden sm:table-cell p-3 text-center">
         <Link href={compositionUrl} className="inline-block">
           <DataBadge
-                  type="compositionStatus"
-                  value={composition?.status?.value}
-                  className="text-[0.75rem] px-2 py-1"
-                />
+            type="compositionStatus"
+            value={composition?.status?.value}
+            className="text-[0.75rem] px-2 py-1"
+          />
         </Link>
       </td>
 
@@ -201,9 +199,9 @@ export function CompositionCard({
           <Trash2 size={16} />
         </button>
       </td>
-      
+
       {isAlertOpen && (
-        <AlertDialogCompostion
+        <DeleteCompositionDialog
           isOpen={isAlertOpen}
           onClose={() => setIsAlertOpen(false)}
           projectId={projectId}

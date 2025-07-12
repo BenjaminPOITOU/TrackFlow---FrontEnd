@@ -5,12 +5,12 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
-import { 
+import {
   getAnnotationsByVersionId,
   createAnnotation,
   updateAnnotation,
-  deleteAnnotation 
-} from '@/lib/api/annotations';
+  deleteAnnotation,
+} from "@/lib/api/annotations";
 import { AddAnnotationBlock } from "../annotations/AddAnnotationBlock";
 import { AnnotationList } from "../annotations/AnnotationList";
 import AudioPlayer from "../audioPlayer/AudioPlayer";
@@ -64,33 +64,17 @@ export function VersionBlockMediaPlayer({
     fetchAnnotations();
   }, [versionId]);
 
-  const handleAnnotationAdded = useCallback((annotations) => {
-    setAnnotations(prev => [annotations, ...prev].sort((a, b) => b.createdDate - a.createdDate));
-    setIsAnnotationFormOpen(false);
-  }, [annotations]);
-
-  const handleAnnotationUpdate = useCallback(async (annotationId, updateData) => {
-    try {
-      const updated = await updateAnnotation({ annotationId, updateData });
-      setAnnotations(prev => prev.map(anno => (anno.id === annotationId ? updated : anno)));
-    } catch (err) {
-      console.error(`Failed to update annotation ${annotationId} in component:`, err);
-      setError("Could not update the annotation.");
-    }
-  }, []);
-
-  const handleAnnotationDelete = useCallback(async (annotationId) => {
-    try {
-      await deleteAnnotation({ annotationId });
-      setAnnotations(prev => prev.filter(anno => anno.id !== annotationId));
-    } catch (err) {
-      console.error(`Failed to delete annotation ${annotationId} in component:`, err);
-      setError("Could not delete the annotation.");
-    }
-  }, []);
+  const handleAnnotationAdded = useCallback(
+    (annotations) => {
+      setAnnotations((prev) =>
+        [annotations, ...prev].sort((a, b) => b.createdDate - a.createdDate)
+      );
+      setIsAnnotationFormOpen(false);
+    },
+    [annotations]
+  );
 
   return (
-  
     <div className="flex flex-col w-full border border-gray-300 bg-neutral-800 px-2 md:px-4 py-4 min-h-0 gap-6 justify-between rounded-lg">
       <div className="w-full">
         <AudioPlayer
@@ -137,14 +121,12 @@ export function VersionBlockMediaPlayer({
               {isLoadingAnnotations ? (
                 <div className="flex items-center justify-center h-full">
                   <Loader2 className="animate-spin text-gray-400" />
-                  <span className="ml-2 text-gray-400">Chargement des annotations...</span>
+                  <span className="ml-2 text-gray-400">
+                    Chargement des annotations...
+                  </span>
                 </div>
               ) : (
-                <AnnotationList
-                  annotationList={annotations}
-                  onAnnotationUpdate={handleAnnotationUpdate}
-                  onAnnotationDelete={handleAnnotationDelete}
-                />
+                <AnnotationList annotationList={annotations} />
               )}
               {error && <p className="text-red-500 mt-2">{error}</p>}
             </div>

@@ -1,11 +1,28 @@
 "use client";
 
+/**
+ * @file components/contexts/AuthContext.js (or .tsx)
+ * @description Defines the React Context for managing global authentication state and actions.
+ * This includes the user's session data, authentication status, and a logout function.
+ */
+
 import { createContext, useContext, useEffect, useMemo } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { toast } from "sonner";
 
 const AuthContext = createContext(undefined);
 
+
+/**
+ * The provider component that supplies the authentication context to the component tree.
+ * It is designed to be initialized with server-side data from a parent component (like `RootLayout`).
+ *
+ * @param {object} props - The component props.
+ * @param {React.ReactNode} props.children - The child components that will consume the context.
+ * @param {object | null} props.user - The initial user object, typically fetched on the server and passed down.
+ * @param {boolean} [props.isTokenExpired=false] - A flag indicating if the auth token has expired, also determined on the server.
+ * @returns {JSX.Element}
+ */
 export function AuthProvider({
   children,
   user: initialUser,
@@ -23,11 +40,11 @@ export function AuthProvider({
 
   const logout = async () => {
     try {
-      await fetch('/api/logout', { method: 'POST' });
+      await fetch("/api/logout", { method: "POST" });
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error("Logout failed:", error);
     } finally {
-      router.push('/login');
+      router.push("/login");
       router.refresh();
     }
   };

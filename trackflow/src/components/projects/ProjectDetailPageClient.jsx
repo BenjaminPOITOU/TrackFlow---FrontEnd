@@ -41,7 +41,6 @@ export default function ProjectDetailPageClient({
   const refreshPageData = useCallback(() => {
     router.refresh();
   }, [router]);
-  
 
   const handleCompositionCreated = () => {
     refreshPageData();
@@ -50,7 +49,7 @@ export default function ProjectDetailPageClient({
   const handleCompositionDeleted = () => {
     refreshPageData();
   };
-  
+
   const handleCompositionUpdated = () => {
     refreshPageData();
   };
