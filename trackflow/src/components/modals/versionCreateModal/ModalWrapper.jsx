@@ -1,14 +1,7 @@
-/**
- * @file components/modals/ModalWrapper.js (or .tsx)
- * @description A generic, reusable, and accessible modal component. It provides the basic
- * structure (overlay, container, title, close button) and logic for a modal dialog.
- */
 
-import React, { useEffect, useRef } from "react";
-import { X } from "lucide-react";
 
 /**
- * @file components/ui/ModalWrapper.js (or .tsx)
+ * @file components/versionCreateModal/ModalWrapper.js (or .tsx)
  * @description A generic, reusable, and accessible modal component. It provides the basic
  * structure (overlay, container, title, close button) and logic for a modal dialog.
  */
