@@ -24,8 +24,6 @@ import {
   Trash2,
   ChevronLeft,
   ChevronRight,
-  SquarePower,
-  Router,
 } from "lucide-react";
 
 /**
@@ -94,7 +92,6 @@ const navSections = [
     visualizerType: "circles",
   },
 ];
-
 
 /**
  * Renders the application logo and name ("TrackFlow").
@@ -189,6 +186,14 @@ export default function Sidebar({ userData }) {
         <Link href="/projects">
           <SidebarLogo isCollapsed={true} />
         </Link>
+
+        <div className="p-3 flex justify-end items-center gap-2">
+          <UserMenu
+            userData={userData}
+            isCollapsed={true}
+            handleAlert={setIsAlertOpen}
+          />
+        </div>
       </header>
 
       <aside className={sidebarClasses}>
@@ -203,14 +208,12 @@ export default function Sidebar({ userData }) {
           <SidebarLogo isCollapsed={isCollapsed} />
         </div>
 
-        <div className="p-3 border-b border-zinc-700 flex justify-end items-center gap-2">
-          <UserMenu userData={userData} isCollapsed={isCollapsed} />
-          <button
-            onClick={() => setIsAlertOpen(true)}
-            className="cursor-pointer"
-          >
-            <SquarePower color="#c80404" size={25} />
-          </button>
+        <div className="p-3 border-b border-zinc-700 flex justify-center items-center gap-2">
+          <UserMenu
+            userData={userData}
+            isCollapsed={isCollapsed}
+            handleAlert={setIsAlertOpen}
+          />
         </div>
 
         <NavigationList isCollapsed={isCollapsed} />

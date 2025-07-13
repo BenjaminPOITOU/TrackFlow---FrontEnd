@@ -28,7 +28,7 @@ export default function HomePageTitle({ isVisible, onClick }) {
       <div className="flex items-center">
         <h1
           className={cn(
-            "font-orbitron text-[5rem] font-bold tracking-wider text-zinc-100",
+            "font-orbitron text-[3rem] sm:text-[5rem] font-bold tracking-wider text-zinc-100",
             orbitron.variable
           )}
           style={{ textShadow: "0 0 15px rgba(255, 255, 255, 0.3)" }}

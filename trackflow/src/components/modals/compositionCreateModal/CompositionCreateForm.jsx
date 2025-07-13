@@ -99,7 +99,7 @@ export function CompositionCreateForm({ projectId, onCancel, onSuccess }) {
         />
       </div>
 
-      <div className="space-y-2">
+     {/*<div className="space-y-2">
         <Label htmlFor="description">DESCRIPTION</Label>
         <Textarea
           id="description"
@@ -110,7 +110,7 @@ export function CompositionCreateForm({ projectId, onCancel, onSuccess }) {
           disabled={isSubmitting}
           className="min-h-[100px]"
         />
-      </div>
+      </div> TODO: Implement descritpion*/}
 
       <div className="flex justify-end items-center gap-3 pt-4">
         <Button
